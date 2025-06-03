@@ -8,12 +8,11 @@ import {
   TextVariant,
   TextColor,
 } from '../../../../component-library/components/Texts/Text';
-import { useStyles } from '../../../../component-library/hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 import useTooltipModal from '../../../../components/hooks/useTooltipModal';
 import React from 'react';
 import { View } from 'react-native';
 import { KeyValueRowLabelProps, TooltipSizes } from '../KeyValueRow.types';
-import styleSheet from './KeyValueLabel.styles';
 import { isPreDefinedKeyValueRowLabel } from '../KeyValueRow.utils';
 
 /**
@@ -26,7 +25,10 @@ import { isPreDefinedKeyValueRowLabel } from '../KeyValueRow.utils';
  * @returns {JSX.Element} The rendered KeyValueRowLabel component.
  */
 const KeyValueRowLabel = ({ label, tooltip }: KeyValueRowLabelProps) => {
-  const { styles } = useStyles(styleSheet, {});
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getLabelContainerStyles = () => tw`flex-row items-center gap-1`;
 
   const { openTooltipModal } = useTooltipModal();
 
@@ -39,7 +41,7 @@ const KeyValueRowLabel = ({ label, tooltip }: KeyValueRowLabelProps) => {
   };
 
   return (
-    <View style={styles.labelContainer}>
+    <View style={getLabelContainerStyles()}>
       {isPreDefinedKeyValueRowLabel(label) ? (
         <Label
           variant={label?.variant ?? TextVariant.BodyMDMedium}

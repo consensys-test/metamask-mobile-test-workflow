@@ -11,16 +11,25 @@ import Animated, {
 } from 'react-native-reanimated';
 
 // External dependencies.
-import { useStyles } from '../../hooks';
+import { useTw } from '../../../hooks/useTwrncTheme';
 
 // Internal dependencies.
-import styleSheet from './Overlay.styles';
 import { OverlayProps } from './Overlay.types';
 import { DEFAULT_OVERLAY_ANIMATION_DURATION } from './Overlay.constants';
 
 const Overlay: React.FC<OverlayProps> = ({ style, onPress, color }) => {
-  const { styles } = useStyles(styleSheet, { style, color });
+  const tw = useTw();
   const opacityVal = useSharedValue(0);
+
+  // Modern styling with Tailwind utilities
+  const getOverlayStyles = () => {
+    const baseClasses = 'absolute inset-0 bg-overlay-default';
+
+    return [tw`${baseClasses}`, color ? { backgroundColor: color } : {}, style];
+  };
+
+  const getFillStyles = () => tw`absolute inset-0`;
+
   const animatedStyles = useAnimatedStyle(
     () => ({
       opacity: opacityVal.value,
@@ -34,8 +43,10 @@ const Overlay: React.FC<OverlayProps> = ({ style, onPress, color }) => {
   });
 
   return (
-    <Animated.View style={[styles.base, animatedStyles]}>
-      {onPress && <TouchableOpacity onPress={onPress} style={styles.fill} />}
+    <Animated.View style={[getOverlayStyles(), animatedStyles]}>
+      {onPress && (
+        <TouchableOpacity onPress={onPress} style={getFillStyles()} />
+      )}
     </Animated.View>
   );
 };

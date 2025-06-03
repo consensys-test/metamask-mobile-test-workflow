@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { Platform, View } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../hooks';
+import { useTw } from '../../hooks/useTwrncTheme';
 import Button, {
   ButtonSize,
   ButtonVariants,
@@ -14,10 +14,9 @@ import generateTestId from '../../../../wdio/utils/generateTestId';
 
 // Internal dependencies.
 import { SheetActionsProps } from './SheetActions.types';
-import styleSheet from './SheetActions.styles';
 
 const SheetActions = ({ actions }: SheetActionsProps) => {
-  const { styles } = useStyles(styleSheet, {});
+  const tw = useTw();
 
   const renderActions = useCallback(
     () =>
@@ -34,7 +33,7 @@ const SheetActions = ({ actions }: SheetActionsProps) => {
           return (
             <React.Fragment key={key}>
               {actions.length > 1 && !isFirstElement && (
-                <View style={styles.separator} />
+                <View style={tw`h-px bg-border-muted mx-4`} />
               )}
               <View>
                 <Button
@@ -54,7 +53,7 @@ const SheetActions = ({ actions }: SheetActionsProps) => {
           );
         },
       ),
-    [actions, styles.separator],
+    [actions, tw],
   );
 
   return <>{renderActions()}</>;

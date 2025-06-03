@@ -4,11 +4,11 @@ import React from 'react';
 import { View } from 'react-native';
 
 // External dependencies.
-import { useComponentSize, useStyles } from '../../../hooks';
+import { useComponentSize } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 
 // Internal dependencies
-import { BadgeWrapperProps } from './BadgeWrapper.types';
-import styleSheet from './BadgeWrapper.styles';
+import { BadgeWrapperProps, BadgePosition } from './BadgeWrapper.types';
 import {
   DEFAULT_BADGEWRAPPER_BADGEANCHORELEMENTSHAPE,
   DEFAULT_BADGEWRAPPER_BADGEPOSITION,
@@ -22,24 +22,47 @@ const BadgeWrapper: React.FC<BadgeWrapperProps> = ({
   badgeElement,
   style,
 }) => {
-  const { size: containerSize, onLayout: onLayoutContainerSize } =
-    useComponentSize();
+  const tw = useTw();
+  const { onLayout: onLayoutContainerSize } = useComponentSize();
 
-  const { styles } = useStyles(styleSheet, {
-    style,
-    anchorElementShape,
-    badgePosition,
-    containerSize,
-  });
+  // Modern styling with Tailwind utilities
+  const getBaseStyles = () => {
+    const baseClasses = 'relative';
+
+    return [tw`${baseClasses}`, style];
+  };
+
+  const getBadgeStyles = () => {
+    let positionClasses = '';
+
+    switch (badgePosition) {
+      case BadgePosition.TopRight:
+        positionClasses = 'absolute -top-1 -right-1';
+        break;
+      case BadgePosition.TopLeft:
+        positionClasses = 'absolute -top-1 -left-1';
+        break;
+      case BadgePosition.BottomRight:
+        positionClasses = 'absolute -bottom-1 -right-1';
+        break;
+      case BadgePosition.BottomLeft:
+        positionClasses = 'absolute -bottom-1 -left-1';
+        break;
+      default:
+        positionClasses = 'absolute -top-1 -right-1';
+    }
+
+    return tw`${positionClasses} z-10`;
+  };
 
   return (
     <View
-      style={styles.base}
+      style={getBaseStyles()}
       onLayout={onLayoutContainerSize}
       testID={BADGE_WRAPPER_BADGE_TEST_ID}
     >
       <View>{children}</View>
-      <View style={styles.badge}>{badgeElement}</View>
+      <View style={getBadgeStyles()}>{badgeElement}</View>
     </View>
   );
 };

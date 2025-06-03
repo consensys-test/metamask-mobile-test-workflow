@@ -6,11 +6,10 @@ import { GestureResponderEvent, TouchableOpacity } from 'react-native';
 
 // External dependencies.
 import Icon from '../../Icons/Icon';
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 
 // Internal dependencies.
-import { ButtonIconProps } from './ButtonIcon.types';
-import stylesheet from './ButtonIcon.styles';
+import { ButtonIconProps, ButtonIconSizes } from './ButtonIcon.types';
 import {
   DEFAULT_BUTTONICON_SIZE,
   DEFAULT_BUTTONICON_ICONCOLOR,
@@ -28,13 +27,35 @@ const ButtonIcon = ({
   isDisabled = false,
   ...props
 }: ButtonIconProps) => {
+  const tw = useTw();
   const [pressed, setPressed] = useState(false);
-  const { styles } = useStyles(stylesheet, {
-    style,
-    size,
-    pressed,
-    isDisabled,
-  });
+
+  // Modern styling with Tailwind utilities
+  const getButtonStyles = () => {
+    const baseClasses = 'items-center justify-center rounded-lg';
+    const disabledClasses = isDisabled ? 'opacity-50' : '';
+    const pressedClasses = pressed ? 'opacity-80' : '';
+
+    let sizeClasses = '';
+    switch (size) {
+      case ButtonIconSizes.Sm:
+        sizeClasses = 'w-8 h-8';
+        break;
+      case ButtonIconSizes.Md:
+        sizeClasses = 'w-10 h-10';
+        break;
+      case ButtonIconSizes.Lg:
+        sizeClasses = 'w-12 h-12';
+        break;
+      default:
+        sizeClasses = 'w-10 h-10';
+    }
+
+    return [
+      tw`${baseClasses} ${sizeClasses} ${disabledClasses} ${pressedClasses}`,
+      style,
+    ];
+  };
 
   const triggerOnPressedIn = useCallback(
     (e: GestureResponderEvent) => {
@@ -54,7 +75,7 @@ const ButtonIcon = ({
 
   return (
     <TouchableOpacity
-      style={styles.base}
+      style={getButtonStyles()}
       onPress={!isDisabled ? onPress : undefined}
       onPressIn={!isDisabled ? triggerOnPressedIn : undefined}
       onPressOut={!isDisabled ? triggerOnPressedOut : undefined}

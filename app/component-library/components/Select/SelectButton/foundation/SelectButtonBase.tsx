@@ -5,11 +5,10 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../../../hooks';
+import { useTw } from '../../../../../hooks/useTwrncTheme';
 import SelectValue from '../../SelectValue/SelectValue';
 
 // Internal dependencies.
-import styleSheet from './SelectButtonBase.styles';
 import { SelectButtonBaseProps } from './SelectButtonBase.types';
 
 const SelectButtonBase: React.FC<SelectButtonBaseProps> = ({
@@ -27,17 +26,29 @@ const SelectButtonBase: React.FC<SelectButtonBaseProps> = ({
   isDisabled,
   ...touchableOpacityProps
 }) => {
-  const { styles } = useStyles(styleSheet, { style });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getButtonStyles = () => {
+    const baseClasses =
+      'flex-row items-center justify-between p-4 bg-background-default border border-border-default rounded-lg';
+    const disabledClasses = isDisabled ? 'opacity-50' : '';
+
+    return [tw`${baseClasses} ${disabledClasses}`, style];
+  };
+
+  const getValueStyles = () => tw`flex-1`;
+
   return (
     <TouchableOpacity
-      style={styles.base}
+      style={getButtonStyles()}
       activeOpacity={1}
       {...touchableOpacityProps}
       disabled={isDisabled}
       accessibilityRole="button"
     >
       <SelectValue
-        style={styles.value}
+        style={getValueStyles()}
         iconEl={iconEl}
         iconProps={iconProps}
         label={label}

@@ -4,12 +4,11 @@
 import React from 'react';
 
 // External dependencies.
-import { useStyles } from '../../../../hooks';
+import { useTw } from '../../../../../hooks/useTwrncTheme';
 import ListItem from '../../../List/ListItem';
 import ListItemColumn, { WidthType } from '../../../List/ListItemColumn';
 
 // Internal dependencies.
-import styleSheet from './SelectValueBase.styles';
 import { SelectValueBaseProps } from './SelectValueBase.types';
 
 const SelectValueBase: React.FC<SelectValueBaseProps> = ({
@@ -21,10 +20,18 @@ const SelectValueBase: React.FC<SelectValueBaseProps> = ({
   style,
   ...props
 }) => {
-  const { styles } = useStyles(styleSheet, { style });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getSelectValueStyles = () => {
+    const baseClasses = 'flex-row items-center p-3';
+
+    return [tw`${baseClasses}`, style];
+  };
+
   return (
     <ListItem
-      style={styles.base}
+      style={getSelectValueStyles()}
       gap={gap}
       verticalAlignment={verticalAlignment}
       {...props}

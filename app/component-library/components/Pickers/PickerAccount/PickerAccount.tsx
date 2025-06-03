@@ -8,13 +8,12 @@ import { TouchableOpacity, View } from 'react-native';
 import Avatar, { AvatarSize, AvatarVariant } from '../../Avatars/Avatar';
 import Text, { TextVariant } from '../../Texts/Text';
 import { formatAddress } from '../../../../util/address';
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 import { IconSize } from '../../Icons/Icon';
 
 // Internal dependencies.
 import PickerBase from '../PickerBase';
 import { PickerAccountProps } from './PickerAccount.types';
-import styleSheet from './PickerAccount.styles';
 import { WalletViewSelectorsIDs } from '../../../../../e2e/selectors/wallet/WalletView.selectors';
 
 const PickerAccount: React.ForwardRefRenderFunction<
@@ -32,22 +31,39 @@ const PickerAccount: React.ForwardRefRenderFunction<
   },
   ref: React.Ref<typeof TouchableOpacity>,
 ) => {
-  const { styles } = useStyles(styleSheet, {
-    style,
-    cellAccountContainerStyle,
-  });
+  const tw = useTw();
   const shortenedAddress = formatAddress(accountAddress, 'short');
 
+  // Modern styling with Tailwind utilities
+  const getPickerContainerStyles = () => tw`flex-col`;
+
+  const getPickerBaseStyles = () => [tw`bg-background-default`, style];
+
+  const getDropdownIconStyles = () => tw`text-icon-default`;
+
+  const getCellAccountStyles = () => [
+    tw`flex-row items-center p-2`,
+    cellAccountContainerStyle,
+  ];
+
+  const getAccountNameLabelStyles = () => tw`flex-1`;
+
+  const getAccountNameAvatarStyles = () => tw`flex-row items-center`;
+
+  const getAccountAvatarStyles = () => tw`mr-2`;
+
+  const getAccountAddressLabelStyles = () => tw`text-text-muted mt-1 ml-2`;
+
   const renderCellAccount = () => (
-    <View style={styles.cellAccount}>
-      <View style={styles.accountNameLabel}>
-        <View style={styles.accountNameAvatar}>
+    <View style={getCellAccountStyles()}>
+      <View style={getAccountNameLabelStyles()}>
+        <View style={getAccountNameAvatarStyles()}>
           <Avatar
             variant={AvatarVariant.Account}
             type={accountAvatarType}
             accountAddress={accountAddress}
             size={AvatarSize.Xs}
-            style={styles.accountAvatar}
+            style={getAccountAvatarStyles()}
           />
           <Text
             variant={TextVariant.BodyMDMedium}
@@ -62,13 +78,13 @@ const PickerAccount: React.ForwardRefRenderFunction<
 
   return (
     <TouchableOpacity
-      style={styles.pickerAccountContainer}
+      style={getPickerContainerStyles()}
       onPress={props.onPress}
     >
       <PickerBase
         iconSize={IconSize.Xs}
-        style={styles.base}
-        dropdownIconStyle={styles.dropDownIcon}
+        style={getPickerBaseStyles()}
+        dropdownIconStyle={getDropdownIconStyles()}
         {...props}
         ref={ref as React.Ref<View>}
       >
@@ -77,7 +93,7 @@ const PickerAccount: React.ForwardRefRenderFunction<
       {showAddress && (
         <Text
           variant={TextVariant.BodySMMedium}
-          style={styles.accountAddressLabel}
+          style={getAccountAddressLabelStyles()}
         >
           {shortenedAddress}
         </Text>

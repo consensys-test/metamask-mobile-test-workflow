@@ -5,13 +5,12 @@ import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, GestureResponderEvent } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../../../../hooks';
+import { useTw } from '../../../../../../hooks/useTwrncTheme';
 import Button from '../../foundation/ButtonBase';
 import Text from '../../../../Texts/Text/Text';
 
 // Internal dependencies.
 import { ButtonPrimaryProps } from './ButtonPrimary.types';
-import styleSheet from './ButtonPrimary.styles';
 import {
   DEFAULT_BUTTONPRIMARY_LABEL_TEXTVARIANT,
   DEFAULT_BUTTONPRIMARY_LABEL_COLOR,
@@ -25,12 +24,17 @@ const ButtonPrimary = ({
   label,
   ...props
 }: ButtonPrimaryProps) => {
+  const tw = useTw();
   const [pressed, setPressed] = useState(false);
-  const { styles } = useStyles(styleSheet, {
-    style,
-    isDanger,
-    pressed,
-  });
+
+  // Modern styling with Tailwind utilities
+  const getButtonStyles = () => {
+    const baseClasses = 'bg-primary-default';
+    const dangerClasses = isDanger ? 'bg-error-default' : '';
+    const pressedClasses = pressed ? 'opacity-80' : '';
+
+    return [tw`${baseClasses} ${dangerClasses} ${pressedClasses}`, style];
+  };
 
   const triggerOnPressedIn = useCallback(
     (e: GestureResponderEvent) => {
@@ -60,13 +64,13 @@ const ButtonPrimary = ({
       label
     );
 
-    const renderLoading = () => (
-      <ActivityIndicator size="small" color={DEFAULT_BUTTONPRIMARY_LABEL_COLOR} />
-    );
+  const renderLoading = () => (
+    <ActivityIndicator size="small" color={DEFAULT_BUTTONPRIMARY_LABEL_COLOR} />
+  );
 
   return (
     <Button
-      style={styles.base}
+      style={getButtonStyles()}
       label={!props.loading ? renderLabel() : renderLoading()}
       labelColor={DEFAULT_BUTTONPRIMARY_LABEL_COLOR}
       onPressIn={triggerOnPressedIn}

@@ -5,11 +5,10 @@ import React from 'react';
 import { Image, View } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../../../../hooks';
+import { useTw } from '../../../../../../hooks/useTwrncTheme';
 import BannerBase from '../../foundation/BannerBase';
 
 // Internal dependencies.
-import styleSheet from './BannerTip.styles';
 import { BannerTipProps } from './BannerTip.types';
 import {
   DEFAULT_BANNERTIP_LOGOTYPE,
@@ -22,13 +21,24 @@ const BannerTip: React.FC<BannerTipProps> = ({
   logoType = DEFAULT_BANNERTIP_LOGOTYPE,
   ...props
 }) => {
-  const { styles } = useStyles(styleSheet, { style });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getBannerStyles = () => {
+    const baseClasses = 'bg-primary-muted border-primary-default';
+
+    return [tw`${baseClasses}`, style];
+  };
+
+  const getLogoContainerStyles = () => tw`w-8 h-8 items-center justify-center`;
+
+  const getLogoStyles = () => tw`w-6 h-6`;
 
   const foxLogo = (
-    <View style={styles.logoContainer}>
+    <View style={getLogoContainerStyles()}>
       <Image
         source={IMAGESOURCE_BY_BANNERTIPLOGOTYPE[logoType]}
-        style={styles.logo}
+        style={getLogoStyles()}
         resizeMode={'contain'}
       />
     </View>
@@ -36,7 +46,7 @@ const BannerTip: React.FC<BannerTipProps> = ({
 
   return (
     <BannerBase
-      style={styles.base}
+      style={getBannerStyles()}
       startAccessory={foxLogo}
       testID={BANNERTIP_TEST_ID}
       {...props}

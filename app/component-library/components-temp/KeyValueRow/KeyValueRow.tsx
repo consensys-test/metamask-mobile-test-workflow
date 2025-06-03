@@ -1,6 +1,5 @@
-import { useStyles } from '../../hooks';
+import { useTw } from '../../hooks/useTwrncTheme';
 import React from 'react';
-import stylesheet from './KeyValueRow.styles';
 import {
   KeyValueRowProps,
   KeyValueRowFieldIconSides,
@@ -26,7 +25,10 @@ import KeyValueRowRoot from './KeyValueRoot/KeyValueRoot';
  * @returns {JSX.Element} The rendered KeyValueRow component.
  */
 const KeyValueRow = React.memo(({ field, value, style }: KeyValueRowProps) => {
-  const { styles } = useStyles(stylesheet, {});
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getFlexRowStyles = () => tw`flex-row items-center`;
 
   // Field (left side)
   const fieldIcon = field?.icon;
@@ -39,7 +41,7 @@ const KeyValueRow = React.memo(({ field, value, style }: KeyValueRowProps) => {
   return (
     <KeyValueRowRoot style={[style]}>
       <KeyValueSection>
-        <View style={styles.flexRow}>
+        <View style={getFlexRowStyles()}>
           {shouldShowFieldIcon &&
             (fieldIcon.side === KeyValueRowFieldIconSides.LEFT ||
               fieldIcon.side === KeyValueRowFieldIconSides.BOTH ||
@@ -53,7 +55,7 @@ const KeyValueRow = React.memo(({ field, value, style }: KeyValueRowProps) => {
         </View>
       </KeyValueSection>
       <KeyValueSection align={KeyValueRowSectionAlignments.RIGHT}>
-        <View style={styles.flexRow}>
+        <View style={getFlexRowStyles()}>
           {shouldShowValueIcon &&
             (valueIcon?.side === KeyValueRowFieldIconSides.LEFT ||
               valueIcon?.side === KeyValueRowFieldIconSides.BOTH ||

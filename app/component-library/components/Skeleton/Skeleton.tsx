@@ -5,10 +5,9 @@ import React, { useEffect, useRef } from 'react';
 import { Animated, View } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../../component-library/hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 
 // Internal dependencies.
-import styleSheet from './Skeleton.styles';
 import { SkeletonProps } from './Skeleton.types';
 
 const Skeleton: React.FC<SkeletonProps> = ({
@@ -21,12 +20,22 @@ const Skeleton: React.FC<SkeletonProps> = ({
   animatedViewProps = {},
   ...props
 }) => {
+  const tw = useTw();
   const opacityAnim = useRef(new Animated.Value(0.2)).current;
-  const { styles } = useStyles(styleSheet, {
-    height,
-    width,
-    style,
-  });
+
+  // Modern styling with Tailwind utilities
+  const getSkeletonStyles = () => {
+    const baseClasses = 'relative bg-background-alternative rounded-md';
+
+    return [tw`${baseClasses}`, { height, width }, style];
+  };
+
+  const getBackgroundStyles = () =>
+    tw`absolute inset-0 bg-text-muted rounded-md`;
+
+  const getChildrenContainerStyles = () => tw`relative z-10`;
+
+  const getHideChildrenStyles = () => tw`opacity-0`;
 
   const startAnimation = () => {
     Animated.sequence([
@@ -62,10 +71,10 @@ const Skeleton: React.FC<SkeletonProps> = ({
   }, [children, hideChildren]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <View style={styles.base} {...props}>
+    <View style={getSkeletonStyles()} {...props}>
       {/* Animated background always present */}
       <Animated.View
-        style={[styles.background, { opacity: opacityAnim }]}
+        style={[getBackgroundStyles(), { opacity: opacityAnim }]}
         pointerEvents="none"
         {...animatedViewProps}
       />
@@ -73,8 +82,8 @@ const Skeleton: React.FC<SkeletonProps> = ({
       {children && (
         <View
           style={[
-            styles.childrenContainer,
-            hideChildren ? styles.hideChildren : undefined,
+            getChildrenContainerStyles(),
+            hideChildren ? getHideChildrenStyles() : undefined,
           ]}
           {...childrenWrapperProps}
         >

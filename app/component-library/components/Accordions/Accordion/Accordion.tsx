@@ -5,11 +5,10 @@ import React, { useState } from 'react';
 import Animated from 'react-native-reanimated';
 
 // External dependencies.
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 import AccordionHeader from './foundation/AccordionHeader';
 
 // Internal dependencies.
-import styleSheet from './Accordion.styles';
 import { AccordionProps } from './Accordion.types';
 import {
   TESTID_ACCORDION,
@@ -25,8 +24,16 @@ const Accordion: React.FC<AccordionProps> = ({
   onPress,
   ...props
 }) => {
-  const { styles } = useStyles(styleSheet, { style });
+  const tw = useTw();
   const [expanded, setExpanded] = useState(isExpanded);
+
+  // Modern styling with Tailwind utilities
+  const getAccordionStyles = () => {
+    const baseClasses = 'bg-background-default rounded-lg';
+
+    return [tw`${baseClasses}`, style];
+  };
+
   // const ref = useRef<TransitioningView>(null);
   // const transition = (
   //   <Transition.Together>
@@ -54,7 +61,7 @@ const Accordion: React.FC<AccordionProps> = ({
         title={title}
         isExpanded={expanded}
         onPress={onHeaderPressed}
-        style={styles.base}
+        style={getAccordionStyles()}
         testID={TESTID_ACCORDION}
         {...props}
       />

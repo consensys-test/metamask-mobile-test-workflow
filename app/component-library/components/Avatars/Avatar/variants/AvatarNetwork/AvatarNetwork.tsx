@@ -7,12 +7,11 @@ import { Image, ImageSourcePropType } from 'react-native';
 // External dependencies.
 import AvatarBase from '../../foundation/AvatarBase';
 import Text from '../../../../Texts/Text';
-import { useStyles } from '../../../../../hooks';
+import { useTw } from '../../../../../../hooks/useTwrncTheme';
 import { TEXTVARIANT_BY_AVATARSIZE } from '../../Avatar.constants';
 
 // Internal dependencies.
 import { AvatarNetworkProps } from './AvatarNetwork.types';
-import stylesheet from './AvatarNetwork.styles';
 import {
   DEFAULT_AVATARNETWORK_SIZE,
   DEFAULT_AVATARNETWORK_ERROR_TEXT,
@@ -26,9 +25,22 @@ const AvatarNetwork = ({
   imageSource,
   ...props
 }: AvatarNetworkProps) => {
+  const tw = useTw();
   const [showFallback, setShowFallback] = useState(!imageSource);
-  const { styles } = useStyles(stylesheet, { style, size, showFallback });
   const chainNameFirstLetter = name?.[0] ?? DEFAULT_AVATARNETWORK_ERROR_TEXT;
+
+  // Modern styling with Tailwind utilities
+  const getAvatarStyles = () => {
+    const baseClasses = showFallback
+      ? 'bg-background-alternative'
+      : 'bg-transparent';
+
+    return [tw`${baseClasses}`, style];
+  };
+
+  const getLabelStyles = () => tw`text-text-default text-center font-medium`;
+
+  const getImageStyles = () => tw`w-full h-full`;
 
   const onError = useCallback(() => setShowFallback(true), [setShowFallback]);
 
@@ -37,15 +49,18 @@ const AvatarNetwork = ({
   }, [imageSource]);
 
   return (
-    <AvatarBase size={size} style={styles.base} {...props}>
+    <AvatarBase size={size} style={getAvatarStyles()} {...props}>
       {showFallback ? (
-        <Text style={styles.label} variant={TEXTVARIANT_BY_AVATARSIZE[size]}>
+        <Text
+          style={getLabelStyles()}
+          variant={TEXTVARIANT_BY_AVATARSIZE[size]}
+        >
           {chainNameFirstLetter}
         </Text>
       ) : (
         <Image
           source={imageSource as ImageSourcePropType}
-          style={styles.image}
+          style={getImageStyles()}
           onError={onError}
           testID={AVATARNETWORK_IMAGE_TESTID}
           resizeMode={'contain'}

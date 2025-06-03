@@ -7,30 +7,44 @@ import { View } from 'react-native';
 // External dependencies.
 import Avatar, { AvatarSize, AvatarVariant } from '../../Avatars/Avatar';
 import Button, { ButtonVariants } from '../../Buttons/Button';
-import Text, { TextVariant } from '../../Texts/Text';
-import { useStyles } from '../../../hooks';
+import TextComponent, { TextVariant } from '../../Texts/Text';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 
 // Internal dependencies.
-import styleSheet from './TagUrl.styles';
 import { TagUrlProps } from './TagUrl.types';
 
 const TagUrl = ({ imageSource, label, cta, style, ...props }: TagUrlProps) => {
-  const { styles } = useStyles(styleSheet, { style });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getBaseStyles = () => {
+    const baseClasses =
+      'flex-row items-center p-2 bg-background-alternative rounded-lg';
+
+    return [tw`${baseClasses}`, style];
+  };
+
+  const getFaviconStyles = () => tw`mr-2`;
+
+  const getLabelStyles = () => tw`flex-1 text-text-default font-medium`;
+
+  const getCtaStyles = () => tw`ml-2`;
+
   return (
-    <View style={styles.base} {...props}>
+    <View style={getBaseStyles()} {...props}>
       <Avatar
         variant={AvatarVariant.Favicon}
         imageSource={imageSource}
         size={AvatarSize.Md}
-        style={styles.favicon}
+        style={getFaviconStyles()}
       />
-      <Text style={styles.label} variant={TextVariant.BodyMD}>
+      <TextComponent style={getLabelStyles()} variant={TextVariant.BodyMD}>
         {label}
-      </Text>
+      </TextComponent>
       {cta && (
         <Button
           variant={ButtonVariants.Link}
-          style={styles.cta}
+          style={getCtaStyles()}
           onPress={cta.onPress}
           label={cta.label}
         />

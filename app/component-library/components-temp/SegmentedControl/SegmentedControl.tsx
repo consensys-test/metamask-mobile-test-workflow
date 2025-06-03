@@ -3,7 +3,7 @@ import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { View, ScrollView } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../hooks';
+import { useTw } from '../../hooks/useTwrncTheme';
 import ButtonToggle from '../../components-temp/Buttons/ButtonToggle';
 import { ButtonWidthTypes } from '../../components/Buttons/Button/Button.types';
 
@@ -13,7 +13,6 @@ import {
   SingleSelectSegmentedControlProps,
   MultiSelectSegmentedControlProps,
 } from './SegmentedControl.types';
-import styleSheet from './SegmentedControl.styles';
 import { DEFAULT_SEGMENTEDCONTROL_SIZE } from './SegmentedControl.constants';
 
 const SegmentedControl = ({
@@ -26,11 +25,31 @@ const SegmentedControl = ({
   style,
   ...props
 }: SegmentedControlProps) => {
-  const { styles } = useStyles(styleSheet, {
-    style,
-    size,
-    isButtonWidthFlexible,
-  });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getBaseStyles = () => {
+    let flexClasses = '';
+
+    if (isButtonWidthFlexible) {
+      flexClasses = 'flex-row flex-wrap';
+    } else {
+      flexClasses = 'flex-row';
+    }
+
+    const baseClasses = `${flexClasses} gap-2`;
+
+    return [tw`${baseClasses}`, style];
+  };
+
+  const getButtonContainerStyles = () => {
+    if (isButtonWidthFlexible) {
+      return tw`flex-grow min-w-0`;
+    }
+    return tw`flex-1`;
+  };
+
+  const getScrollContentContainerStyles = () => tw`px-4`;
 
   // Single select state
   const singleSelectProps = useMemo(
@@ -161,7 +180,7 @@ const SegmentedControl = ({
       const { value, label, ...optionProps } = option;
 
       return (
-        <View key={value} style={styles.buttonContainer}>
+        <View key={value} style={getButtonContainerStyles()}>
           <ButtonToggle
             label={label}
             isActive={isOptionActive(value)}
@@ -185,16 +204,16 @@ const SegmentedControl = ({
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContentContainer}
+        contentContainerStyle={getScrollContentContainerStyles()}
         {...props}
       >
-        <View style={styles.base}>{renderButtons()}</View>
+        <View style={getBaseStyles()}>{renderButtons()}</View>
       </ScrollView>
     );
   }
 
   return (
-    <View style={styles.base} {...props}>
+    <View style={getBaseStyles()} {...props}>
       {renderButtons()}
     </View>
   );

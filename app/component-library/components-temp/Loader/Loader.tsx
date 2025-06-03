@@ -3,21 +3,22 @@ import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../hooks';
+import { useTw } from '../../hooks/useTwrncTheme';
 
 // Internal dependencies.
-import styleSheet from './Loader.styles';
 import { LoaderProps } from './Loader.types';
 
 const Loader = ({ size = 'large', color }: LoaderProps) => {
-  const { styles, theme } = useStyles(styleSheet, {});
-  const { colors } = theme;
+  const tw = useTw();
 
-  const indicatorColor = color ?? colors.primary.default;
+  // Modern styling with Tailwind utilities
+  const getBaseStyles = () => tw`flex-1 items-center justify-center p-4`;
+
+  const getIndicatorColor = () => color || tw.color('primary-default');
 
   return (
-    <View style={styles.base}>
-      <ActivityIndicator size={size} color={indicatorColor} />
+    <View style={getBaseStyles()}>
+      <ActivityIndicator size={size} color={getIndicatorColor()} />
     </View>
   );
 };

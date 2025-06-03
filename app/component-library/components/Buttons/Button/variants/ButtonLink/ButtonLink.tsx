@@ -5,13 +5,12 @@ import { GestureResponderEvent } from 'react-native';
 
 // External dependencies.
 import Text from '../../../../Texts/Text';
-import { useStyles } from '../../../../../hooks';
+import { useTw } from '../../../../../../hooks/useTwrncTheme';
 import Button from '../../foundation/ButtonBase';
 import { ButtonSize } from '../../Button.types';
 
 // Internal dependencies.
 import { ButtonLinkProps } from './ButtonLink.types';
-import styleSheet from './ButtonLink.styles';
 import {
   DEFAULT_BUTTONLINK_SIZE,
   DEFAULT_BUTTONLINK_LABEL_TEXTVARIANT,
@@ -30,8 +29,18 @@ const ButtonLink: React.FC<ButtonLinkProps> = ({
   label,
   ...props
 }) => {
+  const tw = useTw();
   const [pressed, setPressed] = useState(false);
-  const { styles } = useStyles(styleSheet, { style, isDanger, pressed });
+
+  // Modern styling with Tailwind utilities
+  const getButtonStyles = () => {
+    const baseClasses = 'bg-transparent';
+    const pressedClasses = pressed ? 'opacity-80' : '';
+
+    return [tw`${baseClasses} ${pressedClasses}`, style];
+  };
+
+  const getPressedTextStyles = () => (pressed ? tw`opacity-80` : tw``);
 
   const triggerOnPressedIn = useCallback(
     (e: GestureResponderEvent) => {
@@ -63,7 +72,7 @@ const ButtonLink: React.FC<ButtonLinkProps> = ({
       <Text
         variant={DEFAULT_BUTTONLINK_LABEL_TEXTVARIANT}
         color={getLabelColor()}
-        style={pressed && styles.pressedText}
+        style={getPressedTextStyles()}
       >
         {label}
       </Text>
@@ -75,7 +84,7 @@ const ButtonLink: React.FC<ButtonLinkProps> = ({
     <>
       {size === ButtonSize.Auto ? (
         <Text
-          style={styles.base}
+          style={getButtonStyles()}
           suppressHighlighting
           onPressIn={triggerOnPressedIn}
           onPressOut={triggerOnPressedOut}
@@ -87,7 +96,7 @@ const ButtonLink: React.FC<ButtonLinkProps> = ({
         </Text>
       ) : (
         <Button
-          style={styles.base}
+          style={getButtonStyles()}
           label={renderLabel()}
           labelColor={getLabelColor()}
           onPressIn={triggerOnPressedIn}

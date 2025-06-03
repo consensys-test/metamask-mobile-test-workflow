@@ -3,12 +3,11 @@ import React, { useCallback } from 'react';
 import { View } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 import Avatar from '../Avatar';
-import Text from '../../Texts/Text';
+import TextComponent, { TextVariant } from '../../Texts/Text';
 
 // Internal dependencies.
-import styleSheet from './AvatarGroup.styles';
 import { AvatarGroupProps } from './AvatarGroup.types';
 import {
   DEFAULT_AVATARGROUP_AVATARSIZE,
@@ -29,15 +28,20 @@ const AvatarGroup = ({
   spaceBetweenAvatars,
   style,
 }: AvatarGroupProps) => {
+  const tw = useTw();
   const overflowCounter = avatarPropsList.length - maxStackedAvatars;
   const avatarNegativeSpacing =
     spaceBetweenAvatars || SPACEBETWEENAVATARS_BY_AVATARSIZE[size];
   const shouldRenderOverflowCounter = overflowCounter > 0;
 
-  const { styles } = useStyles(styleSheet, {
-    size,
-    style,
-  });
+  // Modern styling with Tailwind utilities
+  const getBaseStyles = () => {
+    const baseClasses = 'flex-row items-center';
+
+    return [tw`${baseClasses}`, style];
+  };
+
+  const getTextStyles = () => tw`ml-2 text-text-muted font-medium`;
 
   const renderAvatarList = useCallback(
     () =>
@@ -69,15 +73,15 @@ const AvatarGroup = ({
   );
 
   return (
-    <View style={styles.base}>
+    <View style={getBaseStyles()}>
       {renderAvatarList()}
       {shouldRenderOverflowCounter && (
-        <Text
+        <TextComponent
           variant={TEXTVARIANT_BY_AVATARSIZE[size]}
           color={DEFAULT_AVATARGROUP_COUNTER_TEXTCOLOR}
-          style={styles.textStyle}
+          style={getTextStyles()}
           testID={AVATARGROUP_OVERFLOWCOUNTER_TESTID}
-        >{`+${overflowCounter}`}</Text>
+        >{`+${overflowCounter}`}</TextComponent>
       )}
     </View>
   );

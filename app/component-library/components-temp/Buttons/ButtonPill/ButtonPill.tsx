@@ -1,12 +1,13 @@
 // Third party dependencies.
 import React, { useCallback, useState } from 'react';
-import { GestureResponderEvent, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import {
+  GestureResponderEvent,
+  TouchableOpacity,
+  TouchableOpacityProps,
+} from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../../hooks';
-
-// Internal dependencies.
-import stylesheet from './ButtonPill.styles';
+import { useTw } from '../../../hooks/useTwrncTheme';
 
 /**
  * ButtonPill component props.
@@ -27,12 +28,25 @@ const ButtonPill = ({
   children,
   ...props
 }: ButtonPillProps) => {
+  const tw = useTw();
   const [isPressed, setIsPressed] = useState(false);
-  const { styles } = useStyles(stylesheet, {
-    style,
-    isPressed,
-    isDisabled,
-  });
+
+  // Modern styling with Tailwind utilities
+  const getBaseStyles = () => {
+    let stateClasses = '';
+
+    if (isDisabled) {
+      stateClasses = 'opacity-50 bg-background-alternative';
+    } else if (isPressed) {
+      stateClasses = 'opacity-80 bg-primary-muted';
+    } else {
+      stateClasses = 'bg-primary-default';
+    }
+
+    const baseClasses = `px-4 py-2 rounded-full items-center justify-center ${stateClasses}`;
+
+    return [tw`${baseClasses}`, style];
+  };
 
   const triggerOnPressedIn = useCallback(
     (e: GestureResponderEvent) => {
@@ -52,7 +66,7 @@ const ButtonPill = ({
 
   return (
     <TouchableOpacity
-      style={styles.base}
+      style={getBaseStyles()}
       onPress={!isDisabled ? onPress : undefined}
       onPressIn={!isDisabled ? triggerOnPressedIn : undefined}
       onPressOut={!isDisabled ? triggerOnPressedOut : undefined}

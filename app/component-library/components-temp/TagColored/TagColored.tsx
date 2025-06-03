@@ -5,12 +5,11 @@ import React from 'react';
 import { View } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../hooks';
-import Text from '../../../component-library/components/Texts/Text';
+import { useTw } from '../../hooks/useTwrncTheme';
+import TextComponent from '../../../component-library/components/Texts/Text';
 
 // Internal dependencies.
-import styleSheet from './TagColored.styles';
-import { TagColoredProps } from './TagColored.types';
+import { TagColoredProps, TagColor } from './TagColored.types';
 import {
   DEFAULT_TAGCOLORED_COLOR,
   DEFAULT_TAGCOLORED_TEXTVARIANT,
@@ -23,17 +22,73 @@ const TagColored: React.FC<TagColoredProps> = ({
   color = DEFAULT_TAGCOLORED_COLOR,
   children,
 }) => {
-  const { styles } = useStyles(styleSheet, { style, color });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getBaseStyles = () => {
+    let colorClasses = '';
+
+    switch (color) {
+      case TagColor.Primary:
+        colorClasses = 'bg-primary-muted border-primary-default';
+        break;
+      case TagColor.Info:
+        colorClasses = 'bg-info-muted border-info-default';
+        break;
+      case TagColor.Warning:
+        colorClasses = 'bg-warning-muted border-warning-default';
+        break;
+      case TagColor.Danger:
+        colorClasses = 'bg-error-muted border-error-default';
+        break;
+      case TagColor.Success:
+        colorClasses = 'bg-success-muted border-success-default';
+        break;
+      default:
+        colorClasses = 'bg-background-alternative border-border-muted';
+    }
+
+    const baseClasses = `px-3 py-1 rounded-full border ${colorClasses}`;
+
+    return [tw`${baseClasses}`, style];
+  };
+
+  const getTextStyles = () => {
+    let textColorClass = '';
+
+    switch (color) {
+      case TagColor.Primary:
+        textColorClass = 'text-primary-default';
+        break;
+      case TagColor.Info:
+        textColorClass = 'text-info-default';
+        break;
+      case TagColor.Warning:
+        textColorClass = 'text-warning-default';
+        break;
+      case TagColor.Danger:
+        textColorClass = 'text-error-default';
+        break;
+      case TagColor.Success:
+        textColorClass = 'text-success-default';
+        break;
+      default:
+        textColorClass = 'text-text-default';
+    }
+
+    return tw`font-medium ${textColorClass}`;
+  };
+
   return (
-    <View style={styles.base} testID={TAGCOLORED_TESTID}>
+    <View style={getBaseStyles()} testID={TAGCOLORED_TESTID}>
       {typeof children === 'string' ? (
-        <Text
+        <TextComponent
           variant={DEFAULT_TAGCOLORED_TEXTVARIANT}
-          style={styles.text}
+          style={getTextStyles()}
           testID={TAGCOLORED_TEXT_TESTID}
         >
           {children}
-        </Text>
+        </TextComponent>
       ) : (
         children
       )}

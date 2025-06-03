@@ -5,28 +5,36 @@ import React, { forwardRef } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 import Icon, { IconName, IconSize } from '../../Icons/Icon';
 
 // Internal dependencies.
 import { PickerBaseProps } from './PickerBase.types';
-import styleSheet from './PickerBase.styles';
 
 const PickerBase: React.ForwardRefRenderFunction<View, PickerBaseProps> = (
   { iconSize = IconSize.Md, style, dropdownIconStyle, children, ...props },
   ref,
 ) => {
-  const { styles, theme } = useStyles(styleSheet, { style, dropdownIconStyle });
-  const { colors } = theme;
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getPickerStyles = () => {
+    const baseClasses =
+      'flex-row items-center justify-between p-4 bg-background-default border border-border-default rounded-lg';
+
+    return [tw`${baseClasses}`, style];
+  };
+
+  const getDropdownIconStyles = () => [tw`ml-2`, dropdownIconStyle];
 
   return (
-    <TouchableOpacity style={styles.base} {...props} ref={ref}>
+    <TouchableOpacity style={getPickerStyles()} {...props} ref={ref}>
       {children}
       <Icon
         size={iconSize}
-        color={colors.icon.default}
+        color={tw.color('icon-default')}
         name={IconName.ArrowDown}
-        style={styles.dropdownIcon}
+        style={getDropdownIconStyles()}
       />
     </TouchableOpacity>
   );

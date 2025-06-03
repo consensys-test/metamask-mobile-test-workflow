@@ -4,12 +4,11 @@
 import React from 'react';
 
 // External dependencies.
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 import Text from '../../Texts/Text/Text';
 import Avatar from '../../Avatars/Avatar';
 
 // Internal dependencies.
-import styleSheet from './SelectValue.styles';
 import { SelectValueProps } from './SelectValue.types';
 import SelectValueBase from './foundation/SelectValueBase';
 import {
@@ -30,9 +29,10 @@ const SelectValue: React.FC<SelectValueProps> = ({
   endAccessory,
   ...props
 }) => {
-  const { styles } = useStyles(styleSheet, {
-    style,
-  });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getSelectValueStyles = () => [tw``, style];
 
   const renderLabel = () =>
     typeof label === 'string' ? (
@@ -45,6 +45,7 @@ const SelectValue: React.FC<SelectValueProps> = ({
     ) : (
       label
     );
+
   const renderDescription = () =>
     typeof description === 'string' ? (
       <Text
@@ -72,7 +73,7 @@ const SelectValue: React.FC<SelectValueProps> = ({
 
   return (
     <SelectValueBase
-      style={styles.base}
+      style={getSelectValueStyles()}
       startAccessory={renderStartAccessory()}
       endAccessory={endAccessory}
       {...props}

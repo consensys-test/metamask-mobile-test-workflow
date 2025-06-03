@@ -7,27 +7,27 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 // External dependencies.
 import TabBarItem from '../TabBarItem';
-import { useStyles } from '../../../hooks';
 import Routes from '../../../../constants/navigation/Routes';
 import { useTheme } from '../../../../util/theme';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 import { MetaMetricsEvents } from '../../../../core/Analytics';
 import { getDecimalChainId } from '../../../../util/networks';
 import { useMetrics } from '../../../../components/hooks/useMetrics';
 
 // Internal dependencies.
 import { TabBarProps } from './TabBar.types';
-import styleSheet from './TabBar.styles';
-import { ICON_BY_TAB_BAR_ICON_KEY } from './TabBar.constants';
+import { ICON_BY_TAB_BAR_ICON_KEY, TAB_BAR_HEIGHT } from './TabBar.constants';
 import { colors as importedColors } from '../../../../styles/common';
 import { AvatarSize } from '../../Avatars/Avatar';
 import OnboardingWizard from '../../../../components/UI/OnboardingWizard';
 import { selectChainId } from '../../../../selectors/networkController';
+import Device from '../../../../util/device';
 
 const TabBar = ({ state, descriptors, navigation }: TabBarProps) => {
   const { colors } = useTheme();
+  const tw = useTw();
   const { trackEvent, createEventBuilder } = useMetrics();
   const { bottom: bottomInset } = useSafeAreaInsets();
-  const { styles } = useStyles(styleSheet, { bottomInset });
   const chainId = useSelector(selectChainId);
   const tabBarRef = useRef(null);
   /**
@@ -144,10 +144,20 @@ const TabBar = ({ state, descriptors, navigation }: TabBarProps) => {
     [state, renderTabBarItem],
   );
 
+  // Modern styling with Tailwind utilities
+  const borderStyle = Device.isAndroid()
+    ? tw`border-0.5 border-border-muted`
+    : tw`shadow-lg shadow-overlay-default`;
+
+  const baseStyle = [
+    tw`flex-row items-center bg-background-default px-4`,
+    { height: TAB_BAR_HEIGHT, marginBottom: bottomInset },
+  ];
+
   return (
     <>
-      <View style={styles.border} />
-      <View style={styles.base} ref={tabBarRef}>
+      <View style={[tw`bg-background-default`, borderStyle]} />
+      <View style={baseStyle} ref={tabBarRef}>
         {renderTabBarItems()}
         {renderOnboardingWizard()}
       </View>

@@ -6,11 +6,10 @@ import React from 'react';
 // External dependencies.
 import AvatarBase from '../../foundation/AvatarBase';
 import Icon from '../../../../Icons/Icon';
-import { useStyles } from '../../../../../hooks';
+import { useTw } from '../../../../../../hooks/useTwrncTheme';
 import { ICONSIZE_BY_AVATARSIZE } from '../../Avatar.constants';
 
 // Internal dependencies.
-import stylesheet from './AvatarIcon.styles';
 import { AvatarIconProps } from './AvatarIcon.types';
 import { DEFAULT_AVATARICON_SIZE } from './AvatarIcon.constants';
 
@@ -22,12 +21,34 @@ const AvatarIcon = ({
   backgroundColor,
   ...props
 }: AvatarIconProps) => {
-  const { styles } = useStyles(stylesheet, { style, backgroundColor });
+  const tw = useTw();
   const iconSize = ICONSIZE_BY_AVATARSIZE[size];
-  const iconColor = iconColorProp || styles.icon.color;
+
+  // Modern styling with Tailwind utilities
+  const getAvatarStyles = () => {
+    let backgroundClasses = '';
+
+    if (backgroundColor) {
+      // Use provided background color
+      backgroundClasses = '';
+    } else {
+      // Default background styling
+      backgroundClasses = 'bg-background-alternative';
+    }
+
+    const baseStyle = [
+      tw`${backgroundClasses}`,
+      backgroundColor ? { backgroundColor } : {},
+      style,
+    ];
+
+    return baseStyle;
+  };
+
+  const iconColor = iconColorProp || tw.color('icon-default');
 
   return (
-    <AvatarBase size={size} style={styles.base} {...props}>
+    <AvatarBase size={size} style={getAvatarStyles()} {...props}>
       <Icon name={name} size={iconSize} color={iconColor} />
     </AvatarBase>
   );

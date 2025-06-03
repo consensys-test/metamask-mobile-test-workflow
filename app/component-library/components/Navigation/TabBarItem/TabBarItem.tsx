@@ -5,10 +5,9 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 
 // Internal dependencies
-import styleSheet from './TabBarItem.styles';
 import { TabBarItemProps } from './TabBarItem.types';
 import Avatar, { AvatarVariant } from '../../Avatars/Avatar';
 
@@ -20,10 +19,17 @@ const TabBarItem = ({
   iconBackgroundColor,
   ...props
 }: TabBarItemProps) => {
-  const { styles } = useStyles(styleSheet, { style });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getTabBarItemStyles = () => {
+    const baseClasses = 'items-center justify-center p-2';
+
+    return [tw`${baseClasses}`, style];
+  };
 
   return (
-    <TouchableOpacity {...props} style={styles.base}>
+    <TouchableOpacity {...props} style={getTabBarItemStyles()}>
       <Avatar
         variant={AvatarVariant.Icon}
         name={icon}

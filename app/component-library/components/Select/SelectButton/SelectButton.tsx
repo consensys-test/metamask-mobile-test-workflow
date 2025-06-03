@@ -4,12 +4,11 @@
 import React from 'react';
 
 // External dependencies.
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 import Icon from '../../Icons/Icon/Icon';
 import Avatar from '../../Avatars/Avatar/Avatar';
 
 // Internal dependencies.
-import styleSheet from './SelectButton.styles';
 import { SelectButtonProps } from './SelectButton.types';
 import SelectButtonBase from './foundation/SelectButtonBase';
 import {
@@ -35,12 +34,19 @@ const SelectButton: React.FC<SelectButtonProps> = ({
   iconProps,
   ...props
 }) => {
-  const { styles } = useStyles(styleSheet, {
-    style,
-    size,
-    isDisabled,
-    isDanger,
-  });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getSelectButtonStyles = () => {
+    const baseClasses = 'flex-row items-center';
+    const disabledClasses = isDisabled ? 'opacity-50' : '';
+    const dangerClasses = isDanger
+      ? 'border-error-default'
+      : 'border-border-default';
+
+    return [tw`${baseClasses} ${disabledClasses} ${dangerClasses}`, style];
+  };
+
   const renderStartAccessory = () => {
     let accessory;
     if (startAccessory) {
@@ -62,7 +68,7 @@ const SelectButton: React.FC<SelectButtonProps> = ({
 
   return (
     <SelectButtonBase
-      style={styles.base}
+      style={getSelectButtonStyles()}
       gap={gap}
       verticalAlignment={verticalAlignment}
       caretIconEl={

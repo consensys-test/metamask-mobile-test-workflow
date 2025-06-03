@@ -8,11 +8,10 @@ import { TouchableOpacity, View } from 'react-native';
 import Avatar, { AvatarSize, AvatarVariant } from '../../Avatars/Avatar';
 import Icon, { IconName, IconSize } from '../../Icons/Icon';
 import Text, { TextVariant } from '../../Texts/Text';
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 
 // Internal dependencies.
 import { PickerNetworkProps } from './PickerNetwork.types';
-import stylesheet from './PickerNetwork.styles';
 import { WalletViewSelectorsIDs } from '../../../../../e2e/selectors/wallet/WalletView.selectors';
 import { PICKERNETWORK_ARROW_TESTID } from './PickerNetwork.constants';
 
@@ -25,16 +24,31 @@ const PickerNetwork = ({
   isDisabled = false,
   ...props
 }: PickerNetworkProps) => {
-  const { styles } = useStyles(stylesheet, { style });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getPickerStyles = () => {
+    const baseClasses =
+      'flex-row items-center p-2 bg-background-default rounded-lg';
+    const disabledClasses = isDisabled ? 'opacity-50' : '';
+
+    return [tw`${baseClasses} ${disabledClasses}`, style];
+  };
+
+  const getNetworkIconContainerStyles = () => tw`mr-2`;
+
+  const getLabelStyles = () => tw`flex-1 text-text-default font-medium mr-2`;
 
   return (
     <TouchableOpacity
-      style={styles.base}
+      style={getPickerStyles()}
       onPress={onPress}
       disabled={isDisabled}
       {...props}
     >
-      <View style={hideNetworkName ? styles.networkIconContainer : null}>
+      <View
+        style={hideNetworkName ? getNetworkIconContainerStyles() : undefined}
+      >
         <Avatar
           variant={AvatarVariant.Network}
           size={AvatarSize.Xs}
@@ -46,7 +60,7 @@ const PickerNetwork = ({
       </View>
       {hideNetworkName ? null : (
         <Text
-          style={styles.label}
+          style={getLabelStyles()}
           numberOfLines={1}
           variant={TextVariant.BodyMD}
           testID={WalletViewSelectorsIDs.NAVBAR_NETWORK_TEXT}
@@ -58,6 +72,7 @@ const PickerNetwork = ({
         <Icon
           size={IconSize.Xs}
           name={IconName.ArrowDown}
+          color={tw.color('icon-default')}
           testID={PICKERNETWORK_ARROW_TESTID}
         />
       )}

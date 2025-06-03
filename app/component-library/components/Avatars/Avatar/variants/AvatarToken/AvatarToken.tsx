@@ -8,12 +8,11 @@ import { selectIsIpfsGatewayEnabled } from '../../../../../../selectors/preferen
 import { isIPFSUri } from '../../../../../../util/general';
 import AvatarBase from '../../foundation/AvatarBase';
 import Text from '../../../../Texts/Text';
-import { useStyles } from '../../../../../hooks';
+import { useTw } from '../../../../../../hooks/useTwrncTheme';
 import { TEXTVARIANT_BY_AVATARSIZE } from '../../Avatar.constants';
 
 // Internal dependencies.
 import { AvatarTokenProps } from './AvatarToken.types';
-import stylesheet from './AvatarToken.styles';
 import {
   DEFAULT_AVATARTOKEN_SIZE,
   DEFAULT_AVATARTOKEN_ERROR_TEXT,
@@ -29,14 +28,26 @@ const AvatarToken = ({
   isIpfsGatewayCheckBypassed = false,
   ...props
 }: AvatarTokenProps) => {
+  const tw = useTw();
   const [showFallback, setShowFallback] = useState(!imageSource);
 
-  const { styles } = useStyles(stylesheet, {
-    style,
-    size,
-    isHaloEnabled,
-    showFallback,
-  });
+  // Modern styling with Tailwind utilities
+  const getAvatarStyles = () => {
+    const baseClasses = showFallback
+      ? 'bg-background-alternative'
+      : 'bg-transparent';
+
+    return [tw`${baseClasses}`, style];
+  };
+
+  const getLabelStyles = () => tw`text-text-default text-center font-medium`;
+
+  const getImageStyles = () => tw`w-full h-full`;
+
+  const getHaloStyles = () => tw`items-center justify-center`;
+
+  const getHaloImageStyles = () => tw`rounded-full`;
+
   let isIpfsGatewayEnabled = false;
 
   if (!isIpfsGatewayCheckBypassed) {
@@ -55,15 +66,18 @@ const AvatarToken = ({
     : false;
 
   const tokenImage = () => (
-    <AvatarBase size={size} style={styles.base} {...props}>
+    <AvatarBase size={size} style={getAvatarStyles()} {...props}>
       {showFallback || isIpfsDisabledAndUriIsIpfs ? (
-        <Text style={styles.label} variant={TEXTVARIANT_BY_AVATARSIZE[size]}>
+        <Text
+          style={getLabelStyles()}
+          variant={TEXTVARIANT_BY_AVATARSIZE[size]}
+        >
           {tokenNameFirstLetter}
         </Text>
       ) : (
         <Image
           source={imageSource as ImageSourcePropType}
-          style={styles.image}
+          style={getImageStyles()}
           onError={onError}
           testID={AVATARTOKEN_IMAGE_TESTID}
           resizeMode={'contain'}
@@ -77,8 +91,8 @@ const AvatarToken = ({
   ) : (
     <ImageBackground
       blurRadius={20}
-      style={styles.halo}
-      imageStyle={styles.haloImage}
+      style={getHaloStyles()}
+      imageStyle={getHaloImageStyles()}
       source={imageSource as ImageSourcePropType}
     >
       {tokenImage()}

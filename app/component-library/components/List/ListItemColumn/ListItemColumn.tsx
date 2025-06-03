@@ -5,11 +5,10 @@ import React from 'react';
 import { View } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 
 // Internal dependencies.
-import styleSheet from './ListItemColumn.styles';
-import { ListItemColumnProps } from './ListItemColumn.types';
+import { ListItemColumnProps, WidthType } from './ListItemColumn.types';
 import {
   DEFAULT_LISTITEMCOLUMN_WIDTHTYPE,
   TESTID_LISTITEMCOLUMN,
@@ -20,13 +19,31 @@ const ListItemColumn: React.FC<ListItemColumnProps> = ({
   children,
   widthType = DEFAULT_LISTITEMCOLUMN_WIDTHTYPE,
 }) => {
-  const { styles } = useStyles(styleSheet, {
-    style,
-    widthType,
-  });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getColumnStyles = () => {
+    let widthClasses = '';
+
+    switch (widthType) {
+      case WidthType.Auto:
+        widthClasses = 'flex-0';
+        break;
+      case WidthType.Fill:
+        widthClasses = 'flex-1';
+        break;
+      case WidthType.Fixed:
+        widthClasses = 'flex-0';
+        break;
+      default:
+        widthClasses = 'flex-0';
+    }
+
+    return [tw`${widthClasses}`, style];
+  };
 
   return (
-    <View style={styles.base} testID={TESTID_LISTITEMCOLUMN}>
+    <View style={getColumnStyles()} testID={TESTID_LISTITEMCOLUMN}>
       {children}
     </View>
   );

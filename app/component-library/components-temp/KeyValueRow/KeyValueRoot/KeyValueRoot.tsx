@@ -1,8 +1,7 @@
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../hooks/useTwrncTheme';
 import React from 'react';
 import { View } from 'react-native';
 import { KeyValueRowRootProps } from '../KeyValueRow.types';
-import styleSheet from './KeyValueRoot.styles';
 
 /**
  * The main container for the KeyValueRow component.
@@ -27,11 +26,17 @@ const KeyValueRowRoot = ({
   children,
   style: customStyles,
 }: KeyValueRowRootProps) => {
-  const { styles: defaultStyles } = useStyles(styleSheet, {});
+  const tw = useTw();
 
-  const styles = [defaultStyles.rootContainer, customStyles];
+  // Modern styling with Tailwind utilities
+  const getRootContainerStyles = () => {
+    const baseClasses =
+      'flex-row justify-between items-start p-4 bg-background-default';
 
-  return <View style={styles}>{children}</View>;
+    return [tw`${baseClasses}`, customStyles];
+  };
+
+  return <View style={getRootContainerStyles()}>{children}</View>;
 };
 
 export default KeyValueRowRoot;

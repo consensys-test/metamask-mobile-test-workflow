@@ -5,14 +5,13 @@ import React from 'react';
 import { View } from 'react-native';
 
 // External dependencies.
-import Text, { TextVariant } from '../../Texts/Text';
+import TextComponent, { TextVariant } from '../../Texts/Text';
 import Button, { ButtonVariants } from '../../Buttons/Button';
 import ButtonIcon from '../../Buttons/ButtonIcon';
 import { IconName, IconColor } from '../../Icons/Icon';
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 
 // Internal dependencies.
-import styleSheet from './SheetHeader.styles';
 import { SheetHeaderProps } from './SheetHeader.types';
 import {
   SHEET_HEADER_ACTION_BUTTON_ID,
@@ -25,11 +24,19 @@ const SheetHeader = ({
   actionButtonOptions,
   ...props
 }: SheetHeaderProps) => {
-  const { styles } = useStyles(styleSheet, {});
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getBaseStyles = () =>
+    tw`flex-row items-center justify-between p-4 bg-background-default`;
+
+  const getLeftAccessoryStyles = () => tw`w-16 items-start`;
+
+  const getRightAccessoryStyles = () => tw`w-16 items-end`;
 
   return (
-    <View style={styles.base} {...props}>
-      <View style={styles.leftAccessory}>
+    <View style={getBaseStyles()} {...props}>
+      <View style={getLeftAccessoryStyles()}>
         {onBack && (
           <ButtonIcon
             testID={SHEET_HEADER_BACK_BUTTON_ID}
@@ -39,8 +46,8 @@ const SheetHeader = ({
           />
         )}
       </View>
-      <Text variant={TextVariant.HeadingMD}>{title}</Text>
-      <View style={styles.rightAccessory}>
+      <TextComponent variant={TextVariant.HeadingMD}>{title}</TextComponent>
+      <View style={getRightAccessoryStyles()}>
         {actionButtonOptions && (
           <Button
             variant={ButtonVariants.Link}

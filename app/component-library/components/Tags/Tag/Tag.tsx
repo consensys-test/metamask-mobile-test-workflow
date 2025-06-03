@@ -6,17 +6,23 @@ import { View } from 'react-native';
 
 // External dependencies.
 import Text, { TextVariant } from '../../Texts/Text';
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 
 // Internal dependencies.
-import styleSheet from './Tag.styles';
 import { TagProps } from './Tag.types';
 
 const Tag = ({ label, style, ...props }: TagProps) => {
-  const { styles } = useStyles(styleSheet, { style });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getTagStyles = () => {
+    const baseClasses = 'bg-background-alternative px-2 py-1 rounded-full';
+
+    return [tw`${baseClasses}`, style];
+  };
 
   return (
-    <View style={styles.base} {...props}>
+    <View style={getTagStyles()} {...props}>
       <Text variant={TextVariant.BodyMD}>{label}</Text>
     </View>
   );

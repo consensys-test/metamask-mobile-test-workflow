@@ -5,7 +5,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../../../../hooks';
+import { useTw } from '../../../../../../hooks/useTwrncTheme';
 import Text from '../../../../Texts/Text';
 import Tag from '../../../../Tags/Tag';
 import Avatar from '../../../../Avatars/Avatar';
@@ -17,7 +17,6 @@ import {
   DEFAULT_CELLBASE_AVATAR_SECONDARYTEXT_TEXTVARIANT,
   DEFAULT_CELLBASE_AVATAR_TERTIARYTEXT_TEXTVARIANT,
 } from './CellBase.constants';
-import styleSheet from './CellBase.styles';
 import { CellBaseProps } from './CellBase.types';
 import { CellComponentSelectorsIDs } from '../../../../../../../e2e/selectors/wallet/CellComponent.selectors';
 
@@ -30,18 +29,18 @@ const CellBase = ({
   tagLabel,
   children,
 }: CellBaseProps) => {
-  const { styles } = useStyles(styleSheet, { style });
+  const tw = useTw();
 
   return (
-    <View style={styles.cellBase}>
+    <View style={[tw`flex-row items-center p-4`, style]}>
       {/* DEV Note: Account Avatar should be replaced with Avatar with Badge whenever available */}
       <Avatar
-        style={styles.avatar}
+        style={tw`mr-3`}
         testID={CellComponentSelectorsIDs.BASE_AVATAR}
         size={DEFAULT_CELLBASE_AVATAR_SIZE}
         {...avatarProps}
       />
-      <View style={styles.cellBaseInfo}>
+      <View style={tw`flex-1`}>
         <Text
           numberOfLines={1}
           variant={DEFAULT_CELLBASE_AVATAR_TITLE_TEXTVARIANT}
@@ -53,7 +52,7 @@ const CellBase = ({
           <Text
             numberOfLines={1}
             variant={DEFAULT_CELLBASE_AVATAR_SECONDARYTEXT_TEXTVARIANT}
-            style={styles.secondaryText}
+            style={tw`mt-1 text-text-alternative`}
           >
             {secondaryText}
           </Text>
@@ -62,14 +61,14 @@ const CellBase = ({
           <Text
             numberOfLines={1}
             variant={DEFAULT_CELLBASE_AVATAR_TERTIARYTEXT_TEXTVARIANT}
-            style={styles.tertiaryText}
+            style={tw`mt-1 text-text-muted`}
           >
             {tertiaryText}
           </Text>
         )}
-        {!!tagLabel && <Tag label={tagLabel} style={styles.tagLabel} />}
+        {!!tagLabel && <Tag label={tagLabel} style={tw`mt-2`} />}
       </View>
-      {children && <View style={styles.optionalAccessory}>{children}</View>}
+      {children && <View style={tw`ml-3`}>{children}</View>}
     </View>
   );
 };

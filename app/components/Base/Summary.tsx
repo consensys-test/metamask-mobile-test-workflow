@@ -35,12 +35,8 @@ const createStyles = (colors: DesignTokenTheme['colors']) =>
     },
   });
 
-const useGetStyles = () => {
-  const { colors } = useTheme();
-  return createStyles(colors);
-};
-
 interface SummaryProps {
+  children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -61,29 +57,62 @@ interface SummaryComponent extends React.FC<SummaryProps> {
   Separator: React.FC<SummarySeparatorProps>;
 }
 
-const Summary: SummaryComponent = ({ style, ...props }) => {
-  const styles = useGetStyles();
-  return <View style={[styles.wrapper, style]} {...props} />;
+const Summary: SummaryComponent = ({ children, style, ...props }) => {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
+  return (
+    <View style={[styles.wrapper, style]} {...props}>
+      {children}
+    </View>
+  );
 };
 
-const SummaryRow: React.FC<SummaryRowProps> = ({ style, end, last, ...props }) => {
-  const styles = useGetStyles();
+const SummaryRow: React.FC<SummaryRowProps> = ({
+  children,
+  style,
+  end,
+  last,
+  ...props
+}) => {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
   return (
     <View
       style={[styles.row, end && styles.rowEnd, last && styles.rowLast, style]}
       {...props}
-    />
+    >
+      {children}
+    </View>
   );
 };
 
-const SummaryCol: React.FC<SummaryColProps> = ({ style, end, ...props }) => {
-  const styles = useGetStyles();
-  return <View style={[styles.col, end && styles.rowEnd, style]} {...props} />;
+const SummaryCol: React.FC<SummaryColProps> = ({
+  children,
+  style,
+  end,
+  ...props
+}) => {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
+  return (
+    <View style={[styles.col, end && styles.rowEnd, style]} {...props}>
+      {children}
+    </View>
+  );
 };
 
-const SummarySeparator: React.FC<SummarySeparatorProps> = ({ style, ...props }) => {
-  const styles = useGetStyles();
-  return <View style={[styles.separator, style]} {...props} />;
+const SummarySeparator: React.FC<SummarySeparatorProps> = ({
+  children,
+  style,
+  ...props
+}) => {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
+  return (
+    <View style={[styles.separator, style]} {...props}>
+      {children}
+    </View>
+  );
 };
 
 Summary.Row = SummaryRow;

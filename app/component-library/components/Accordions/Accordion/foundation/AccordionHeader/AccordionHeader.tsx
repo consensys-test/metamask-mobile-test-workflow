@@ -11,14 +11,16 @@ import Animated, {
 } from 'react-native-reanimated';
 
 // External dependencies.
-import { useStyles } from '../../../../../hooks';
+import { useTw } from '../../../../../../hooks/useTwrncTheme';
 import Icon, { IconSize, IconName } from '../../../../Icons/Icon';
 import Text, { TextVariant } from '../../../../Texts/Text';
 import { DEFAULT_ACCORDION_EXPANDDURATION } from '../../Accordion.constants';
 
 // Internal dependencies.
-import styleSheet from './AccordionHeader.styles';
-import { AccordionHeaderProps } from './AccordionHeader.types';
+import {
+  AccordionHeaderProps,
+  AccordionHeaderHorizontalAlignment,
+} from './AccordionHeader.types';
 import {
   TESTID_ACCORDIONHEADER,
   TESTID_ACCORDIONHEADER_TITLE,
@@ -34,8 +36,35 @@ const AccordionHeader = ({
   onPress,
   horizontalAlignment = DEFAULT_ACCORDIONHEADER_HORIZONTALALIGNMENT,
 }: AccordionHeaderProps) => {
-  const { styles } = useStyles(styleSheet, { style, horizontalAlignment });
+  const tw = useTw();
   const rotation = useSharedValue(isExpanded ? 180 : 0);
+
+  // Modern styling with Tailwind utilities
+  const getHeaderStyles = () => {
+    const baseClasses = 'flex-row items-center p-4 bg-background-default';
+
+    let alignmentClasses = '';
+    switch (horizontalAlignment) {
+      case AccordionHeaderHorizontalAlignment.Start:
+        alignmentClasses = 'justify-start';
+        break;
+      case AccordionHeaderHorizontalAlignment.Center:
+        alignmentClasses = 'justify-center';
+        break;
+      case AccordionHeaderHorizontalAlignment.End:
+        alignmentClasses = 'justify-end';
+        break;
+      default:
+        alignmentClasses = 'justify-between';
+    }
+
+    return [tw`${baseClasses} ${alignmentClasses}`, style];
+  };
+
+  const getTitleStyles = () => tw`flex-1 text-text-default font-medium`;
+
+  const getArrowContainerStyles = () => tw`ml-3 items-center justify-center`;
+
   const animatedStyles = useAnimatedStyle(
     () => ({
       transform: [
@@ -59,24 +88,24 @@ const AccordionHeader = ({
     <TouchableOpacity
       activeOpacity={0.5}
       onPress={onHeaderPressed}
-      style={styles.base}
+      style={getHeaderStyles()}
       testID={TESTID_ACCORDIONHEADER}
     >
       <Text
         variant={TextVariant.BodyMD}
-        style={styles.title}
+        style={getTitleStyles()}
         testID={TESTID_ACCORDIONHEADER_TITLE}
       >
         {title}
       </Text>
       <Animated.View
-        style={[styles.arrowContainer, animatedStyles]}
+        style={[getArrowContainerStyles(), animatedStyles]}
         testID={TESTID_ACCORDIONHEADER_ARROWICON_ANIMATION}
       >
         <Icon
           name={IconName.ArrowDown}
           size={IconSize.Sm}
-          color={styles.title.color}
+          color={tw.color('text-default')}
           testID={TESTID_ACCORDIONHEADER_ARROWICON}
         />
       </Animated.View>

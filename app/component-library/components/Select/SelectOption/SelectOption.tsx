@@ -4,12 +4,11 @@
 import React from 'react';
 
 // External dependencies.
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 import ListItemSelect from '../../List/ListItemSelect/ListItemSelect';
 import SelectValue from '../SelectValue/SelectValue';
 
 // Internal dependencies.
-import styleSheet from './SelectOption.styles';
 import { SelectOptionProps } from './SelectOption.types';
 
 const SelectOption: React.FC<SelectOptionProps> = ({
@@ -21,13 +20,18 @@ const SelectOption: React.FC<SelectOptionProps> = ({
   hitSlop,
   ...props
 }) => {
-  const { styles } = useStyles(styleSheet, {
-    style,
-  });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getSelectOptionStyles = () => {
+    const baseClasses = 'bg-background-default';
+
+    return [tw`${baseClasses}`, style];
+  };
 
   return (
     <ListItemSelect
-      style={styles.base}
+      style={getSelectOptionStyles()}
       gap={gap}
       verticalAlignment={verticalAlignment}
       isSelected={isSelected}

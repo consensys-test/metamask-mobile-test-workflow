@@ -5,12 +5,11 @@ import React, { useCallback, useState } from 'react';
 import { TextInput, View } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 import Input from './foundation/Input';
 
 // Internal dependencies.
-import styleSheet from './TextField.styles';
-import { TextFieldProps } from './TextField.types';
+import { TextFieldProps, TextFieldSize } from './TextField.types';
 import {
   DEFAULT_TEXTFIELD_SIZE,
   TOKEN_TEXTFIELD_INPUT_TEXT_VARIANT,
@@ -37,15 +36,40 @@ const TextField = React.forwardRef<TextInput, TextFieldProps>(
     },
     ref,
   ) => {
+    const tw = useTw();
     const [isFocused, setIsFocused] = useState(autoFocus);
 
-    const { styles } = useStyles(styleSheet, {
-      style,
-      size,
-      isError,
-      isDisabled,
-      isFocused,
-    });
+    // Modern styling with Tailwind utilities
+    const getTextFieldStyles = () => {
+      const baseClasses = 'flex-row items-center border rounded-lg px-3';
+      const errorClasses = isError
+        ? 'border-error-default'
+        : 'border-border-default';
+      const focusClasses = isFocused ? 'border-primary-default' : '';
+      const disabledClasses = isDisabled
+        ? 'opacity-50 bg-background-alternative'
+        : 'bg-background-default';
+
+      let sizeClasses = '';
+      switch (size) {
+        case TextFieldSize.SM:
+          sizeClasses = 'h-8';
+          break;
+        case TextFieldSize.MD:
+          sizeClasses = 'h-10';
+          break;
+        case TextFieldSize.LG:
+          sizeClasses = 'h-12';
+          break;
+        default:
+          sizeClasses = 'h-10';
+      }
+
+      return [
+        tw`${baseClasses} ${sizeClasses} ${errorClasses} ${focusClasses} ${disabledClasses}`,
+        style,
+      ];
+    };
 
     const onBlurHandler = useCallback(
       // TODO: Replace "any" with type
@@ -72,16 +96,13 @@ const TextField = React.forwardRef<TextInput, TextFieldProps>(
     );
 
     return (
-      <View style={styles.base} testID={TEXTFIELD_TEST_ID}>
+      <View style={getTextFieldStyles()} testID={TEXTFIELD_TEST_ID}>
         {startAccessory && (
-          <View
-            style={styles.startAccessory}
-            testID={TEXTFIELD_STARTACCESSORY_TEST_ID}
-          >
+          <View style={tw`mr-2`} testID={TEXTFIELD_STARTACCESSORY_TEST_ID}>
             {startAccessory}
           </View>
         )}
-        <View style={styles.input}>
+        <View style={tw`flex-1`}>
           {inputElement ?? (
             <Input
               textVariant={TOKEN_TEXTFIELD_INPUT_TEXT_VARIANT}
@@ -97,10 +118,7 @@ const TextField = React.forwardRef<TextInput, TextFieldProps>(
           )}
         </View>
         {endAccessory && (
-          <View
-            style={styles.endAccessory}
-            testID={TEXTFIELD_ENDACCESSORY_TEST_ID}
-          >
+          <View style={tw`ml-2`} testID={TEXTFIELD_ENDACCESSORY_TEST_ID}>
             {endAccessory}
           </View>
         )}

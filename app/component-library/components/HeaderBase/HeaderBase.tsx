@@ -6,11 +6,11 @@ import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // External dependencies.
-import { useComponentSize, useStyles } from '../../hooks';
+import { useComponentSize } from '../../hooks';
+import { useTw } from '../../../hooks/useTwrncTheme';
 import Text from '../Texts/Text';
 
 // Internal dependencies.
-import styleSheet from './HeaderBase.styles';
 import { HeaderBaseProps } from './HeaderBase.types';
 import {
   DEFAULT_HEADERBASE_TITLE_TEXTVARIANT,
@@ -25,31 +25,45 @@ const HeaderBase: React.FC<HeaderBaseProps> = ({
   endAccessory,
   includesTopInset = false,
 }) => {
+  const tw = useTw();
   const { size: startAccessorySize, onLayout: startAccessoryOnLayout } =
     useComponentSize();
   const { size: endAccessorySize, onLayout: endAccessoryOnLayout } =
     useComponentSize();
   const insets = useSafeAreaInsets();
 
-  const { styles } = useStyles(styleSheet, {
-    style,
-    startAccessorySize,
-    endAccessorySize,
-  });
+  // Modern styling with Tailwind utilities
+  const getHeaderStyles = () => {
+    const baseClasses =
+      'flex-row items-center justify-between px-4 py-3 bg-background-default';
+
+    return [
+      tw`${baseClasses}`,
+      includesTopInset && { marginTop: insets.top },
+      style,
+    ];
+  };
+
+  const getAccessoryWrapperStyles = () => tw`w-16 items-center`;
+
+  const getTitleWrapperStyles = () => {
+    const flexClasses = 'flex-1 items-center mx-4';
+
+    return tw`${flexClasses}`;
+  };
+
+  const getTitleStyles = () => tw`text-center font-medium text-text-default`;
 
   return (
-    <View
-      style={[styles.base, includesTopInset && { marginTop: insets.top }]}
-      testID={HEADERBASE_TEST_ID}
-    >
-      <View style={styles.accessoryWrapper}>
+    <View style={getHeaderStyles()} testID={HEADERBASE_TEST_ID}>
+      <View style={getAccessoryWrapperStyles()}>
         <View onLayout={startAccessoryOnLayout}>{startAccessory}</View>
       </View>
-      <View style={styles.titleWrapper}>
+      <View style={getTitleWrapperStyles()}>
         {typeof children === 'string' ? (
           <Text
             variant={DEFAULT_HEADERBASE_TITLE_TEXTVARIANT}
-            style={styles.title}
+            style={getTitleStyles()}
             testID={HEADERBASE_TITLE_TEST_ID}
           >
             {children}
@@ -58,7 +72,7 @@ const HeaderBase: React.FC<HeaderBaseProps> = ({
           children
         )}
       </View>
-      <View style={styles.accessoryWrapper}>
+      <View style={getAccessoryWrapperStyles()}>
         <View onLayout={endAccessoryOnLayout}>{endAccessory}</View>
       </View>
     </View>

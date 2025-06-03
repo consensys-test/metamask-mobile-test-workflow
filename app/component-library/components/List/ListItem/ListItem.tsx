@@ -5,11 +5,10 @@ import React from 'react';
 import { DimensionValue, View } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 
 // Internal dependencies.
-import styleSheet from './ListItem.styles';
-import { ListItemProps } from './ListItem.types';
+import { ListItemProps, VerticalAlignment } from './ListItem.types';
 import {
   DEFAULT_LISTITEM_GAP,
   DEFAULT_LISTITEM_VERTICALALIGNMENT,
@@ -27,17 +26,48 @@ const ListItem: React.FC<ListItemProps> = ({
   verticalAlignment = DEFAULT_LISTITEM_VERTICALALIGNMENT,
   ...props
 }) => {
-  const { styles } = useStyles(styleSheet, {
-    style,
-    verticalAlignment,
-    topAccessoryGap,
-    bottomAccessoryGap,
-  });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getListItemStyles = () => {
+    const baseClasses = 'flex';
+
+    let alignmentClasses = '';
+    switch (verticalAlignment) {
+      case VerticalAlignment.Top:
+        alignmentClasses = 'items-start';
+        break;
+      case VerticalAlignment.Center:
+        alignmentClasses = 'items-center';
+        break;
+      case VerticalAlignment.Bottom:
+        alignmentClasses = 'items-end';
+        break;
+      default:
+        alignmentClasses = 'items-center';
+    }
+
+    return [tw`${baseClasses} ${alignmentClasses}`, style];
+  };
+
+  const getItemContainerStyles = () => tw`flex-row flex-1 items-center`;
+
+  const getAccessoryStyles = (accessoryGap?: number) => {
+    const marginStyle = accessoryGap ? { marginVertical: accessoryGap } : {};
+    return [tw``, marginStyle];
+  };
 
   return (
-    <View style={styles.base} accessible accessibilityRole="none" {...props}>
-      {topAccessory && <View style={styles.topAccessory}>{topAccessory}</View>}
-      <View style={styles.item}>
+    <View
+      style={getListItemStyles()}
+      accessible
+      accessibilityRole="none"
+      {...props}
+    >
+      {topAccessory && (
+        <View style={getAccessoryStyles(topAccessoryGap)}>{topAccessory}</View>
+      )}
+      <View style={getItemContainerStyles()}>
         {React.Children.toArray(children)
           .filter((child) => !!child)
           .map((child, index) => (
@@ -54,7 +84,9 @@ const ListItem: React.FC<ListItemProps> = ({
           ))}
       </View>
       {bottomAccessory && (
-        <View style={styles.bottomAccessory}>{bottomAccessory}</View>
+        <View style={getAccessoryStyles(bottomAccessoryGap)}>
+          {bottomAccessory}
+        </View>
       )}
     </View>
   );

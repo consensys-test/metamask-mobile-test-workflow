@@ -4,14 +4,13 @@
 import React from 'react';
 
 // External dependencies.
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../hooks/useTwrncTheme';
 import Button from '../../../components/Buttons/Button/foundation/ButtonBase';
-import Text from '../../../components/Texts/Text/Text';
+import TextComponent from '../../../components/Texts/Text/Text';
 import { ButtonSize } from '../../../components/Buttons/Button';
 
 // Internal dependencies.
 import { ButtonToggleProps } from './ButtonToggle.types';
-import styleSheet from './ButtonToggle.styles';
 import {
   DEFAULT_BUTTONTOGGLE_LABEL_TEXTVARIANT,
   DEFAULT_BUTTONTOGGLE_LABEL_COLOR,
@@ -25,11 +24,34 @@ const ButtonToggle = ({
   label,
   ...props
 }: ButtonToggleProps) => {
-  const { styles } = useStyles(styleSheet, {
-    style,
-    isActive,
-    size,
-  });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getBaseStyles = () => {
+    let sizeClasses = '';
+    let activeClasses = '';
+
+    switch (size) {
+      case ButtonSize.Sm:
+        sizeClasses = 'px-3 py-1.5';
+        break;
+      case ButtonSize.Lg:
+        sizeClasses = 'px-6 py-3';
+        break;
+      default:
+        sizeClasses = 'px-4 py-2';
+    }
+
+    if (isActive) {
+      activeClasses = 'bg-primary-default border-primary-default';
+    } else {
+      activeClasses = 'bg-background-alternative border-border-muted';
+    }
+
+    const baseClasses = `rounded-lg border ${sizeClasses} ${activeClasses}`;
+
+    return [tw`${baseClasses}`, style];
+  };
 
   const getLabelColor = () =>
     isActive
@@ -38,19 +60,19 @@ const ButtonToggle = ({
 
   const renderLabel = () =>
     typeof label === 'string' ? (
-      <Text
+      <TextComponent
         variant={DEFAULT_BUTTONTOGGLE_LABEL_TEXTVARIANT}
         color={getLabelColor()}
       >
         {label}
-      </Text>
+      </TextComponent>
     ) : (
       label
     );
 
   return (
     <Button
-      style={styles.base}
+      style={getBaseStyles()}
       label={renderLabel()}
       labelColor={getLabelColor()}
       {...props}

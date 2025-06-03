@@ -7,11 +7,10 @@ import { TouchableOpacity } from 'react-native';
 // External dependencies.
 import Text from '../../../../Texts/Text';
 import Icon from '../../../../Icons/Icon';
-import { useStyles } from '../../../../../hooks';
+import { useTw } from '../../../../../../hooks/useTwrncTheme';
 
 // Internal dependencies.
 import { ButtonBaseProps } from './ButtonBase.types';
-import styleSheet from './ButtonBase.styles';
 import {
   DEFAULT_BUTTONBASE_LABEL_COLOR,
   DEFAULT_BUTTONBASE_SIZE,
@@ -19,6 +18,7 @@ import {
   DEFAULT_BUTTONBASE_ICON_SIZE,
   DEFAULT_BUTTONBASE_LABEL_TEXTVARIANT,
 } from './ButtonBase.constants';
+import { ButtonSize, ButtonWidthTypes } from '../../Button.types';
 
 const ButtonBase = ({
   label,
@@ -33,19 +33,44 @@ const ButtonBase = ({
   isDisabled,
   ...props
 }: ButtonBaseProps) => {
-  const { styles } = useStyles(styleSheet, {
-    style,
-    size,
-    width,
-    isDisabled,
-  });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getButtonStyles = () => {
+    const baseClasses = 'flex-row items-center justify-center rounded-xl px-4';
+    const disabledClasses = isDisabled ? 'opacity-50' : '';
+
+    // Size-based styling
+    let sizeClasses = '';
+    if (size !== ButtonSize.Auto) {
+      sizeClasses = `h-[${size}px]`;
+    }
+
+    // Width-based styling
+    let widthClasses = '';
+    switch (width) {
+      case ButtonWidthTypes.Auto:
+        widthClasses = 'self-start';
+        break;
+      case ButtonWidthTypes.Full:
+        widthClasses = 'self-stretch';
+        break;
+      default:
+        widthClasses = `w-[${width}px]`;
+    }
+
+    return [
+      tw`${baseClasses} ${sizeClasses} ${widthClasses} ${disabledClasses}`,
+      style,
+    ];
+  };
 
   return (
     <TouchableOpacity
       disabled={isDisabled}
       activeOpacity={1}
       onPress={onPress}
-      style={styles.base}
+      style={getButtonStyles()}
       accessibilityRole="button"
       accessible
       {...props}
@@ -55,13 +80,13 @@ const ButtonBase = ({
           color={labelColor.toString()}
           name={startIconName}
           size={DEFAULT_BUTTONBASE_ICON_SIZE}
-          style={styles.startIcon}
+          style={tw`mr-2`}
         />
       )}
       {typeof label === 'string' ? (
         <Text
           variant={labelTextVariant}
-          style={styles.label}
+          style={tw`text-text-default`}
           accessibilityRole="none"
         >
           {label}
@@ -74,7 +99,7 @@ const ButtonBase = ({
           color={labelColor.toString()}
           name={endIconName}
           size={DEFAULT_BUTTONBASE_ICON_SIZE}
-          style={styles.endIcon}
+          style={tw`ml-2`}
         />
       )}
     </TouchableOpacity>

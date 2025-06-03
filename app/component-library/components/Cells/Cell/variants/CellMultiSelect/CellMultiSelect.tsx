@@ -4,13 +4,12 @@
 import React from 'react';
 
 // External dependencies.
-import { useStyles } from '../../../../../hooks';
+import { useTw } from '../../../../../../hooks/useTwrncTheme';
 import ListItemMultiSelect from '../../../../List/ListItemMultiSelect';
 import CellBase from '../../foundation/CellBase';
 import { CellComponentSelectorsIDs } from '../../../../../../../e2e/selectors/wallet/CellComponent.selectors';
 
 // Internal dependencies.
-import styleSheet from './CellMultiSelect.styles';
 import { CellMultiSelectProps } from './CellMultiSelect.types';
 
 const CellMultiSelect = ({
@@ -24,12 +23,21 @@ const CellMultiSelect = ({
   children,
   ...props
 }: CellMultiSelectProps) => {
-  const { styles } = useStyles(styleSheet, { style });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getBaseStyles = () => {
+    const baseClasses = 'bg-background-default';
+
+    return [tw`${baseClasses}`, style];
+  };
+
+  const getCellStyles = () => tw`flex-1`;
 
   return (
     <ListItemMultiSelect
       isSelected={isSelected}
-      style={styles.base}
+      style={getBaseStyles()}
       testID={CellComponentSelectorsIDs.MULTISELECT}
       {...props}
     >
@@ -39,7 +47,7 @@ const CellMultiSelect = ({
         secondaryText={secondaryText}
         tertiaryText={tertiaryText}
         tagLabel={tagLabel}
-        style={styles.cell}
+        style={getCellStyles()}
       >
         {children}
       </CellBase>

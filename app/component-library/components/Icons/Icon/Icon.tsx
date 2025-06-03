@@ -4,11 +4,10 @@
 import React from 'react';
 
 // External dependencies.
-import { useStyles } from '../../../hooks/useStyles';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 
 // Internal dependencies.
 import { IconProps, IconColor } from './Icon.types';
-import styleSheet from './Icon.styles';
 import { assetByIconName } from './Icon.assets';
 import { DEFAULT_ICON_SIZE, DEFAULT_ICON_COLOR } from './Icon.constants';
 
@@ -19,56 +18,45 @@ const Icon = ({
   color = DEFAULT_ICON_COLOR,
   ...props
 }: IconProps) => {
-  const { styles, theme } = useStyles(styleSheet, {
-    size,
-    style,
-    color,
-  });
+  const tw = useTw();
   const SVG = assetByIconName[name];
   const sizeAsNum = Number(size);
-  let iconColor;
-  switch (color) {
-    case IconColor.Default:
-      iconColor = theme.colors.icon.default;
-      break;
-    case IconColor.Inverse:
-      iconColor = theme.colors.primary.inverse;
-      break;
-    case IconColor.Alternative:
-      iconColor = theme.colors.icon.alternative;
-      break;
-    case IconColor.Muted:
-      iconColor = theme.colors.icon.muted;
-      break;
-    case IconColor.Primary:
-      iconColor = theme.colors.primary.default;
-      break;
-    case IconColor.PrimaryAlternative:
-      iconColor = theme.colors.primary.alternative;
-      break;
-    case IconColor.Success:
-      iconColor = theme.colors.success.default;
-      break;
-    case IconColor.Error:
-      iconColor = theme.colors.error.default;
-      break;
-    case IconColor.ErrorAlternative:
-      iconColor = theme.colors.error.alternative;
-      break;
-    case IconColor.Warning:
-      iconColor = theme.colors.warning.default;
-      break;
-    case IconColor.Info:
-      iconColor = theme.colors.info.default;
-      break;
-    default:
-      iconColor = color;
-  }
+
+  // Modern color handling with Tailwind
+  const getIconColor = () => {
+    switch (color) {
+      case IconColor.Default:
+        return tw.color('icon-default');
+      case IconColor.Inverse:
+        return tw.color('primary-inverse');
+      case IconColor.Alternative:
+        return tw.color('icon-alternative');
+      case IconColor.Muted:
+        return tw.color('icon-muted');
+      case IconColor.Primary:
+        return tw.color('primary-default');
+      case IconColor.PrimaryAlternative:
+        return tw.color('primary-alternative');
+      case IconColor.Success:
+        return tw.color('success-default');
+      case IconColor.Error:
+        return tw.color('error-default');
+      case IconColor.ErrorAlternative:
+        return tw.color('error-alternative');
+      case IconColor.Warning:
+        return tw.color('warning-default');
+      case IconColor.Info:
+        return tw.color('info-default');
+      default:
+        return color;
+    }
+  };
+
   return (
     <SVG
       fill="currentColor"
-      color={iconColor}
-      style={styles.icon}
+      color={getIconColor()}
+      style={style}
       width={sizeAsNum}
       height={sizeAsNum}
       // This prop it's for testing purposes

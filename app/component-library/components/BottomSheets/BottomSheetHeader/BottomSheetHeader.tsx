@@ -4,13 +4,12 @@
 import React from 'react';
 
 // External dependencies.
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 import HeaderBase from '../../HeaderBase';
 import ButtonIcon from '../../Buttons/ButtonIcon';
 import { IconName, IconColor } from '../../Icons/Icon';
 
 // Internal dependencies.
-import styleSheet from './BottomSheetHeader.styles';
 import { BottomSheetHeaderProps } from './BottomSheetHeader.types';
 
 const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
@@ -20,7 +19,15 @@ const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
   onClose,
   ...props
 }) => {
-  const { styles } = useStyles(styleSheet, { style });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getHeaderStyles = () => {
+    const baseClasses = 'px-4 py-3 border-b border-border-muted';
+
+    return [tw`${baseClasses}`, style];
+  };
+
   const startAccessory = onBack && (
     <ButtonIcon
       iconName={IconName.ArrowLeft}
@@ -39,7 +46,7 @@ const BottomSheetHeader: React.FC<BottomSheetHeaderProps> = ({
 
   return (
     <HeaderBase
-      style={styles.base}
+      style={getHeaderStyles()}
       startAccessory={startAccessory}
       endAccessory={endAccessory}
       {...props}

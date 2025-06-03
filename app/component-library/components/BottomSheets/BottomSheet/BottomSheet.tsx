@@ -16,10 +16,9 @@ import {
 } from 'react-native-safe-area-context';
 
 // External dependencies.
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 
 // Internal dependencies.
-import styleSheet from './BottomSheet.styles';
 import {
   BottomSheetProps,
   BottomSheetRef,
@@ -44,14 +43,18 @@ const BottomSheet = forwardRef<BottomSheetRef, BottomSheetProps>(
     },
     ref,
   ) => {
+    const tw = useTw();
     const postCallback = useRef<BottomSheetPostCallback>();
     const bottomSheetDialogRef = useRef<BottomSheetDialogRef>(null);
     const { bottom: screenBottomPadding } = useSafeAreaInsets();
-    const { styles } = useStyles(styleSheet, {
-      screenBottomPadding,
-    });
     const { y: frameY } = useSafeAreaFrame();
     const navigation = useNavigation();
+
+    // Modern styling with Tailwind utilities
+    const bottomSheetStyles = [
+      tw`flex-1`,
+      { paddingBottom: screenBottomPadding },
+    ];
 
     const onOpenCB = useCallback(() => {
       onOpen?.(!!postCallback.current);
@@ -93,7 +96,7 @@ const BottomSheet = forwardRef<BottomSheetRef, BottomSheetProps>(
         keyboardVerticalOffset={
           Platform.OS === 'ios' ? -screenBottomPadding : frameY
         }
-        style={styles.base}
+        style={bottomSheetStyles}
         {...props}
       >
         <BottomSheetOverlay

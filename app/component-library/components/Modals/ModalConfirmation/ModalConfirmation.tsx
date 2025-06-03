@@ -9,11 +9,10 @@ import ReusableModal, {
 import Button, { ButtonSize, ButtonVariants } from '../../Buttons/Button';
 import Text, { TextVariant } from '../../Texts/Text';
 import { strings } from '../../../../../locales/i18n';
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 
 // Internal dependencies.
 import { ModalConfirmationProps } from './ModalConfirmation.types';
-import stylesheet from './ModalConfirmation.styles';
 import {
   MODAL_CONFIRMATION_DANGER_BUTTON_ID,
   MODAL_CONFIRMATION_NORMAL_BUTTON_ID,
@@ -30,7 +29,26 @@ const ModalConfirmation = ({ route }: ModalConfirmationProps) => {
     isDanger = false,
   } = route.params;
   const modalRef = useRef<ReusableModalRef>(null);
-  const { styles } = useStyles(stylesheet, {});
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getScreenStyles = () =>
+    tw`flex-1 items-center justify-center bg-overlay-default`;
+
+  const getModalStyles = () =>
+    tw`bg-background-default rounded-lg mx-4 max-w-md w-full`;
+
+  const getBodyContainerStyles = () => tw`p-6`;
+
+  const getHeaderLabelStyles = () => tw`mb-4 text-center`;
+
+  const getDividerStyles = () => tw`h-px bg-border-muted`;
+
+  const getButtonsContainerStyles = () => tw`flex-row`;
+
+  const getButtonStyles = () => tw`flex-1`;
+
+  const getButtonDividerStyles = () => tw`w-px bg-border-muted`;
 
   const triggerCancel = () => modalRef.current?.dismissModal(onCancel);
 
@@ -42,7 +60,7 @@ const ModalConfirmation = ({ route }: ModalConfirmationProps) => {
     !hasPendingAction && onCancel?.();
 
   const renderHeader = () => (
-    <Text style={styles.headerLabel} variant={TextVariant.HeadingMD}>
+    <Text style={getHeaderLabelStyles()} variant={TextVariant.HeadingMD}>
       {title}
     </Text>
   );
@@ -56,15 +74,15 @@ const ModalConfirmation = ({ route }: ModalConfirmationProps) => {
     : MODAL_CONFIRMATION_NORMAL_BUTTON_ID;
 
   const renderButtons = () => (
-    <View style={styles.buttonsContainer}>
+    <View style={getButtonsContainerStyles()}>
       <Button
         variant={ButtonVariants.Secondary}
         onPress={triggerCancel}
         label={cancelLabel || strings('confirmation_modal.cancel_cta')}
         size={ButtonSize.Lg}
-        style={styles.button}
+        style={getButtonStyles()}
       />
-      <View style={styles.buttonDivider} />
+      <View style={getButtonDividerStyles()} />
       <Button
         variant={ButtonVariants.Primary}
         testID={buttonTestID}
@@ -72,7 +90,7 @@ const ModalConfirmation = ({ route }: ModalConfirmationProps) => {
         onPress={triggerConfirm}
         label={confirmLabel || strings('confirmation_modal.confirm_cta')}
         size={ButtonSize.Lg}
-        style={styles.button}
+        style={getButtonStyles()}
       />
     </View>
   );
@@ -80,15 +98,15 @@ const ModalConfirmation = ({ route }: ModalConfirmationProps) => {
   return (
     <ReusableModal
       ref={modalRef}
-      style={styles.screen}
+      style={getScreenStyles()}
       onDismiss={handleModalDismiss}
     >
-      <View style={styles.modal}>
-        <View style={styles.bodyContainer}>
+      <View style={getModalStyles()}>
+        <View style={getBodyContainerStyles()}>
           {renderHeader()}
           {renderDescription()}
         </View>
-        <View style={styles.divider} />
+        <View style={getDividerStyles()} />
         {renderButtons()}
       </View>
     </ReusableModal>

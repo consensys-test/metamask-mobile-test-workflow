@@ -5,11 +5,10 @@ import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../hooks';
+import { useTw } from '../../../hooks/useTwrncTheme';
 import ListItem from '../../../component-library/components/List/ListItem/ListItem';
 
 // Internal dependencies.
-import styleSheet from './ListItemMultiSelectButton.styles';
 import { ListItemMultiSelectButtonProps } from './ListItemMultiSelectButton.types';
 import {
   BUTTON_TEST_ID,
@@ -38,33 +37,60 @@ const ListItemMultiSelectButton: React.FC<ListItemMultiSelectButtonProps> = ({
   buttonProps,
   ...props
 }) => {
-  const { styles } = useStyles(styleSheet, {
-    style,
-    gap,
-    isDisabled,
-    isSelected,
-  });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getContainerStyles = () =>
+    tw`flex-row items-center bg-background-default`;
+
+  const getBaseStyles = () => {
+    let stateClasses = '';
+
+    if (isDisabled) {
+      stateClasses = 'opacity-50';
+    } else if (isSelected) {
+      stateClasses = 'bg-background-alternative';
+    }
+
+    const baseClasses = `flex-1 relative ${stateClasses}`;
+
+    return [tw`${baseClasses}`, style];
+  };
+
+  const getContainerColumnStyles = () => tw`flex-1`;
+
+  const getUnderlayStyles = () =>
+    tw`absolute inset-0 bg-primary-muted opacity-20`;
+
+  const getUnderlayBarStyles = () =>
+    tw`absolute left-0 top-0 bottom-0 w-1 bg-primary-default`;
+
+  const getButtonIconStyles = () => tw`ml-2 p-2`;
 
   return (
-    <View style={styles.container}>
+    <View style={getContainerStyles()}>
       <TouchableOpacity
-        style={styles.base}
+        style={getBaseStyles()}
         disabled={isDisabled}
         onPress={props.onPress}
         onLongPress={props.onPress}
         {...props}
       >
-        <ListItem gap={gap} style={styles.containerColumn}>
+        <ListItem gap={gap} style={getContainerColumnStyles()}>
           {children}
         </ListItem>
         {isSelected && (
-          <View style={styles.underlay} accessibilityRole="checkbox" accessible>
-            <View style={styles.underlayBar} />
+          <View
+            style={getUnderlayStyles()}
+            accessibilityRole="checkbox"
+            accessible
+          >
+            <View style={getUnderlayBarStyles()} />
           </View>
         )}
       </TouchableOpacity>
       {showButtonIcon ? (
-        <View style={styles.buttonIcon}>
+        <View style={getButtonIconStyles()}>
           <ButtonIcon
             iconName={buttonIcon}
             iconColor={IconColor.Default}

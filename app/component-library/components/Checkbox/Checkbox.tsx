@@ -6,12 +6,11 @@ import { TouchableOpacity, View } from 'react-native';
 
 // External dependencies.
 import Icon from '../Icons/Icon';
-import { useStyles } from '../../hooks';
+import { useTw } from '../../../hooks/useTwrncTheme';
 import Text from '../Texts/Text/Text';
 
 // Internal dependencies.
 import { CheckboxProps } from './Checkbox.types';
-import styleSheet from './Checkbox.styles';
 import {
   CHECKBOX_ICON_TESTID,
   DEFAULT_CHECKBOX_LABEL_TEXTVARIANT,
@@ -32,16 +31,43 @@ const Checkbox = ({
   checkboxStyle,
   ...props
 }: CheckboxProps) => {
+  const tw = useTw();
   const { hitSlop, ...iconProps } = props;
-  const { styles } = useStyles(styleSheet, {
-    style,
-    checkboxStyle,
-    isChecked,
-    isIndeterminate,
-    isDisabled,
-    isReadOnly,
-    isDanger,
-  });
+
+  // Modern styling with Tailwind utilities
+  const getCheckboxStyles = () => {
+    const baseClasses = 'flex-row items-center';
+    const disabledClasses = isDisabled ? 'opacity-50' : '';
+
+    return [tw`${baseClasses} ${disabledClasses}`, style];
+  };
+
+  const getCheckboxBoxStyles = () => {
+    const baseClasses =
+      'w-6 h-6 border-2 rounded items-center justify-center mr-3';
+    let stateClasses = '';
+
+    if (isDanger) {
+      stateClasses =
+        isChecked || isIndeterminate
+          ? 'border-error-default bg-error-default'
+          : 'border-error-default bg-transparent';
+    } else {
+      stateClasses =
+        isChecked || isIndeterminate
+          ? 'border-primary-default bg-primary-default'
+          : 'border-border-default bg-transparent';
+    }
+
+    return [tw`${baseClasses} ${stateClasses}`, checkboxStyle];
+  };
+
+  const getIconColor = () => {
+    if (isChecked || isIndeterminate) {
+      return tw.color('primary-inverse');
+    }
+    return undefined;
+  };
 
   let iconName;
   if (isIndeterminate) {
@@ -52,23 +78,23 @@ const Checkbox = ({
 
   return (
     <TouchableOpacity
-      style={styles.base}
+      style={getCheckboxStyles()}
       {...props}
       disabled={isDisabled || isReadOnly}
     >
-      <View style={styles.checkbox} accessibilityRole="checkbox">
+      <View style={getCheckboxBoxStyles()} accessibilityRole="checkbox">
         {iconName && (
           <Icon
             testID={CHECKBOX_ICON_TESTID}
             name={iconName}
             size={DEFAULT_CHECKBOX_ICONSIZE}
-            color={styles.icon.color}
+            color={getIconColor()}
             {...iconProps}
           />
         )}
       </View>
       {label && (
-        <View style={styles.label}>
+        <View style={tw`flex-1`}>
           {typeof label === 'string' ? (
             <Text
               variant={DEFAULT_CHECKBOX_LABEL_TEXTVARIANT}

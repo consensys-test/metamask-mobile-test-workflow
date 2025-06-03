@@ -5,13 +5,12 @@ import React from 'react';
 import { View } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 import Icon from '../../Icons/Icon';
 import Text from '../Text/Text';
 
 // Internal dependencies.
 import { TextWithPrefixIconProps } from './TextWithPrefixIcon.types';
-import styleSheet from './TextWithPrefixIcon.styles';
 import {
   DEFAULT_TEXTWITHPREFIXICON_COLOR,
   TEXT_WITH_PREFIX_ICON_TEST_ID,
@@ -26,17 +25,31 @@ const TextWithPrefixIcon: React.FC<TextWithPrefixIconProps> = ({
   color = DEFAULT_TEXTWITHPREFIXICON_COLOR,
   ...props
 }) => {
-  const { styles } = useStyles(styleSheet, { style, color });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getContainerStyles = () => {
+    const baseClasses = 'flex-row items-center';
+
+    return [tw`${baseClasses}`, style];
+  };
+
+  const getIconColor = () =>
+    color === DEFAULT_TEXTWITHPREFIXICON_COLOR
+      ? tw.color('text-default')
+      : color;
+
   return (
-    <View style={styles.base} testID={TEXT_WITH_PREFIX_ICON_TEST_ID}>
+    <View style={getContainerStyles()} testID={TEXT_WITH_PREFIX_ICON_TEST_ID}>
       <Icon
-        color={styles.icon.color as string}
+        color={getIconColor()}
         testID={TEXT_WITH_PREFIX_ICON_ICON_TEST_ID}
         {...iconProps}
       />
       <Text
         testID={TEXT_WITH_PREFIX_ICON_TEXT_TEST_ID}
         color={color}
+        style={tw`ml-2`}
         {...props}
       >
         {children}

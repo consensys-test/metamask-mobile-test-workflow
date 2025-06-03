@@ -4,12 +4,11 @@
 import React from 'react';
 
 // External dependencies.
-import { useStyles } from '../../../../../hooks';
+import { useTw } from '../../../../../../hooks/useTwrncTheme';
 import ListItemSelect from '../../../../List/ListItemSelect';
 import CellBase from '../../foundation/CellBase';
 
 // Internal dependencies.
-import styleSheet from './CellSelect.styles';
 import { CellSelectProps } from './CellSelect.types';
 import { CellComponentSelectorsIDs } from '../../../../../../../e2e/selectors/wallet/CellComponent.selectors';
 
@@ -24,12 +23,15 @@ const CellSelect = ({
   children,
   ...props
 }: CellSelectProps) => {
-  const { styles } = useStyles(styleSheet, { style });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getCellStyles = () => [tw``, style];
 
   return (
     <ListItemSelect
       isSelected={isSelected}
-      style={styles.base}
+      style={getCellStyles()}
       testID={CellComponentSelectorsIDs.SELECT}
       {...props}
     >

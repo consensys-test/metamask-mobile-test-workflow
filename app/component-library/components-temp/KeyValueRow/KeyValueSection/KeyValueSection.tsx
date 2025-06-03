@@ -1,11 +1,10 @@
 import React from 'react';
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../hooks/useTwrncTheme';
 import { View } from 'react-native';
 import {
   KeyValueRowSectionAlignments,
   KeyValueSectionProps,
 } from '../KeyValueRow.types';
-import stylesSheet from './KeyValueSection.styles';
 
 /**
  * A container representing either the left or right side of the KeyValueRow.
@@ -22,13 +21,29 @@ const KeyValueSection = ({
   children,
   align = KeyValueRowSectionAlignments.LEFT,
 }: KeyValueSectionProps) => {
-  const { styles } = useStyles(stylesSheet, {});
+  const tw = useTw();
 
-  return (
-    <View style={{ ...styles.keyValueSectionContainer, alignItems: align }}>
-      {children}
-    </View>
-  );
+  // Modern styling with Tailwind utilities
+  const getContainerStyles = () => {
+    let alignClasses = '';
+
+    switch (align) {
+      case KeyValueRowSectionAlignments.RIGHT:
+        alignClasses = 'items-end';
+        break;
+      case KeyValueRowSectionAlignments.CENTER:
+        alignClasses = 'items-center';
+        break;
+      default:
+        alignClasses = 'items-start';
+    }
+
+    const baseClasses = `flex-1 ${alignClasses}`;
+
+    return tw`${baseClasses}`;
+  };
+
+  return <View style={getContainerStyles()}>{children}</View>;
 };
 
 export default KeyValueSection;

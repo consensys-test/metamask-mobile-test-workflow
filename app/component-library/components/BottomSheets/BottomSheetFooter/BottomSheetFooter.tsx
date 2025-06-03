@@ -5,12 +5,14 @@ import React from 'react';
 import { View } from 'react-native';
 
 // External dependencies.
-import { useStyles } from '../../../hooks';
+import { useTw } from '../../../../hooks/useTwrncTheme';
 import Button from '../../Buttons/Button';
 
 // Internal dependencies.
-import styleSheet from './BottomSheetFooter.styles';
-import { BottomSheetFooterProps } from './BottomSheetFooter.types';
+import {
+  BottomSheetFooterProps,
+  BottomSheetFooterButtonsAlignment,
+} from './BottomSheetFooter.types';
 import {
   DEFAULT_BOTTOMSHEETFOOTER_BUTTONSALIGNMENT,
   TESTID_BOTTOMSHEETFOOTER,
@@ -23,14 +25,40 @@ const BottomSheetFooter: React.FC<BottomSheetFooterProps> = ({
   buttonsAlignment = DEFAULT_BOTTOMSHEETFOOTER_BUTTONSALIGNMENT,
   buttonPropsArray,
 }) => {
-  const { styles } = useStyles(styleSheet, { style, buttonsAlignment });
+  const tw = useTw();
+
+  // Modern styling with Tailwind utilities
+  const getFooterStyles = () => {
+    const baseClasses = 'p-4';
+
+    let alignmentClasses = '';
+    switch (buttonsAlignment) {
+      case BottomSheetFooterButtonsAlignment.Horizontal:
+        alignmentClasses = 'flex-row space-x-4';
+        break;
+      case BottomSheetFooterButtonsAlignment.Vertical:
+        alignmentClasses = 'flex-col space-y-4';
+        break;
+      default:
+        alignmentClasses = 'flex-col space-y-4';
+    }
+
+    return [tw`${baseClasses} ${alignmentClasses}`, style];
+  };
+
+  const getButtonStyles = () => tw``;
+
+  const getSubsequentButtonStyles = () =>
+    buttonsAlignment === BottomSheetFooterButtonsAlignment.Horizontal
+      ? tw``
+      : tw`mt-3`;
 
   return (
-    <View style={styles.base} testID={TESTID_BOTTOMSHEETFOOTER}>
+    <View style={getFooterStyles()} testID={TESTID_BOTTOMSHEETFOOTER}>
       {buttonPropsArray.map((buttonProp, index) => (
         <Button
           key={index}
-          style={index > 0 ? styles.subsequentButton : styles.button}
+          style={index > 0 ? getSubsequentButtonStyles() : getButtonStyles()}
           testID={
             index > 0
               ? TESTID_BOTTOMSHEETFOOTER_BUTTON_SUBSEQUENT
