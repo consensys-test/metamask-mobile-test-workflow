@@ -924,7 +924,9 @@
     "supply": "Supplied",
     "stake": "Staked",
     "borrow": "Borrowed",
-    "reward": "Rewards"
+    "reward": "Rewards",
+    "toast_message": "Can't find what you're looking for? We may not support your protocol yet.",
+    "toast_close_button": "Close"
   },
   "terms_and_conditions": {
     "title": "Terms and Conditions",

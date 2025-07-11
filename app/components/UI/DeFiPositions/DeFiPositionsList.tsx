@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { View, FlatList } from 'react-native';
 import { strings } from '../../../../locales/i18n';
 import { useSelector } from 'react-redux';
@@ -29,6 +29,11 @@ import Icon, {
 } from '../../../component-library/components/Icons/Icon';
 import { useStyles } from '../../hooks/useStyles';
 import { WalletViewSelectorsIDs } from '../../../../e2e/selectors/wallet/WalletView.selectors';
+import {
+  ToastContext,
+  ToastVariants,
+} from '../../../component-library/components/Toast';
+import { ButtonVariants } from '../../../component-library/components/Buttons/Button';
 export interface DeFiPositionsListProps {
   tabLabel: string;
 }
@@ -41,6 +46,7 @@ const DeFiPositionsList: React.FC<DeFiPositionsListProps> = () => {
   const tokenSortConfig = useSelector(selectTokenSortConfig);
   const defiPositions = useSelector(selectDeFiPositionsByAddress);
   const privacyMode = useSelector(selectPrivacyMode);
+  const { toastRef } = useContext(ToastContext);
 
   const formattedDeFiPositions = useMemo(() => {
     if (!defiPositions) {
@@ -84,6 +90,21 @@ const DeFiPositionsList: React.FC<DeFiPositionsListProps> = () => {
 
     return sortAssets(defiPositionsList, defiSortConfig);
   }, [defiPositions, isAllNetworks, currentChainId, tokenSortConfig]);
+
+  useEffect(() => {
+    toastRef?.current?.showToast({
+      variant: ToastVariants.Plain,
+      labelOptions: [{ label: strings('defi_positions.toast_message') }],
+      hasNoTimeout: false,
+      closeButtonOptions: {
+        label: strings(`defi_positions.toast_close_button`),
+        variant: ButtonVariants.Primary,
+        onPress: () => {
+          toastRef?.current?.closeToast();
+        },
+      },
+    });
+  }, [toastRef]);
 
   if (!formattedDeFiPositions) {
     if (formattedDeFiPositions === undefined) {
