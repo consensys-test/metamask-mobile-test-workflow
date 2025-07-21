@@ -773,6 +773,7 @@ const Wallet = ({
           </View>
         ) : null}
         <>
+          {/* <Text>EAS UPDATED TEST 1</Text> */}
           <Text>{runTypeMessage}</Text>
           {error && <Text>{error}</Text>}
           {isUpdateAvailable && <Text>Update available</Text>}
