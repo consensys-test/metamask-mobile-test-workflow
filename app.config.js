@@ -15,7 +15,9 @@ module.exports = {
             '../../node_modules/@notifee/react-native/android/libs',
           ],
         },
-        ios: {},
+        ios: {
+          jsEngine: "hermes"
+        },
       },
     ],
     [
@@ -29,6 +31,7 @@ module.exports = {
   ],
   ios: {
     usesAppleSignIn: true,
+    jsEngine: "hermes"
   },
   expo: {
     runtimeVersion: '1.0.0',
