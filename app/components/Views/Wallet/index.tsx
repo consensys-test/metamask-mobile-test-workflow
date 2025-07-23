@@ -238,15 +238,11 @@ const Wallet = ({
   const { trackEvent, createEventBuilder, addTraitsToUser } = useMetrics();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
-  const {
-    currentlyRunning,
-    isUpdateAvailable,
-    isUpdatePending,
-    checkError,
-  } = Updates.useUpdates();
+  const { currentlyRunning, isUpdateAvailable, isUpdatePending, checkError } =
+    Updates.useUpdates();
   const runTypeMessage = currentlyRunning.isEmbeddedLaunch
-  ? 'This app is running from built-in code'
-  : 'This app is running an update';
+    ? 'This app is running from built-in code'
+    : 'This app is running an update';
   const error = checkError?.message;
 
   const networkConfigurations = useSelector(selectNetworkConfigurations);
