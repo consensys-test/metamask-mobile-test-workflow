@@ -107,6 +107,7 @@ import DeFiProtocolPositionDetails from '../../UI/DeFiPositions/DeFiProtocolPosi
 import UnmountOnBlur from '../../Views/UnmountOnBlur';
 import WalletRecovery from '../../Views/WalletRecovery';
 import Send from '../../Views/confirmations/components/send';
+import CardRoutes from '../../UI/Card/routes';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -944,6 +945,7 @@ const MainNavigator = () => {
           headerShown: true,
         }}
       />
+      <Stack.Screen name={Routes.CARD.ROOT} component={CardRoutes} />
     </Stack.Navigator>
   );
 };

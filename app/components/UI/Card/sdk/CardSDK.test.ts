@@ -3,7 +3,7 @@ import { CardSDK } from './CardSDK';
 import {
   CardFeatureFlag,
   SupportedToken,
-} from '../../../../selectors/featureFlagController/card';
+} from '../../../../selectors/featureFlagController/card/index';
 import { CardToken } from '../types';
 import Logger from '../../../../util/Logger';
 
@@ -270,6 +270,30 @@ describe('CardSDK', () => {
         'Balance scanner address is not defined for the current chain',
       );
     });
+
+    it('should handle error when accountsApiUrl is missing in isCardHolder', async () => {
+      const missingAccountsApiFeatureFlag: CardFeatureFlag = {
+        chains: {
+          'eip155:59144': {
+            enabled: true,
+            tokens: mockSupportedTokens,
+            // accountsApiUrl is missing from constants
+          },
+        },
+      };
+
+      const missingAccountsApiSDK = new CardSDK({
+        cardFeatureFlag: missingAccountsApiFeatureFlag,
+        rawChainId: '0xe708',
+      });
+
+      // This should handle the error gracefully and return false
+      const result = await missingAccountsApiSDK.isCardHolder([
+        mockTestAddress,
+      ]);
+      expect(result).toBe(false);
+      expect(Logger.error).toHaveBeenCalled();
+    });
   });
 
   describe('supportedTokensAddresses', () => {
@@ -292,7 +316,7 @@ describe('CardSDK', () => {
   });
 
   describe('isCardHolder', () => {
-    it('should return empty array when card is not enabled', async () => {
+    it('should return false when card is not enabled', async () => {
       const disabledCardFeatureFlag: CardFeatureFlag = {
         chains: {
           'eip155:59144': {
@@ -310,120 +334,35 @@ describe('CardSDK', () => {
       const result = await disabledCardholderSDK.isCardHolder([
         mockTestAddress,
       ]);
-      expect(result).toEqual({
-        cardholderAccounts: [],
-      });
+      expect(result).toBe(false);
     });
 
-    it('should return empty array when no accounts provided', async () => {
+    it('should return false when no accounts provided', async () => {
       const result = await cardSDK.isCardHolder([]);
-      expect(result).toEqual({
-        cardholderAccounts: [],
-      });
+      expect(result).toBe(false);
     });
 
-    it('should return empty array when accounts array is null or undefined', async () => {
-      const result = await cardSDK.isCardHolder(
-        undefined as unknown as `eip155:${string}:0x${string}`[],
-      );
-      expect(result).toEqual({
-        cardholderAccounts: [],
-      });
-    });
-
-    it('should handle single batch (≤50 accounts) correctly', async () => {
-      const singleBatchAccounts = Array(30).fill(
+    it('should return false when more than 50 accounts provided', async () => {
+      const manyAccounts = Array(51).fill(
         mockTestAddress,
       ) as `eip155:${string}:0x${string}`[];
-
-      (global.fetch as jest.Mock).mockResolvedValue({
-        ok: true,
-        json: jest.fn().mockResolvedValue({
-          is: [mockTestAddress.toLowerCase()],
-        }),
-      });
-
-      const result = await cardSDK.isCardHolder(singleBatchAccounts);
-      expect(result).toEqual({
-        cardholderAccounts: [mockTestAddress.toLowerCase()],
-      });
-
-      // Should call fetch only once for single batch
-      expect(global.fetch).toHaveBeenCalledTimes(1);
-    });
-
-    it('should handle multiple batches (up to 150 accounts)', async () => {
-      const multiBatchAccounts = Array(100).fill(
-        mockTestAddress,
-      ) as `eip155:${string}:0x${string}`[];
-
-      (global.fetch as jest.Mock).mockResolvedValue({
-        ok: true,
-        json: jest.fn().mockResolvedValue({
-          is: [mockTestAddress.toLowerCase()],
-        }),
-      });
-
-      const result = await cardSDK.isCardHolder(multiBatchAccounts);
-      expect(result).toEqual({
-        cardholderAccounts: [
-          mockTestAddress.toLowerCase(),
-          mockTestAddress.toLowerCase(),
-        ],
-      });
-
-      // Should call fetch twice for 100 accounts (2 batches of 50)
-      expect(global.fetch).toHaveBeenCalledTimes(2);
-    });
-
-    it('should limit processing to maximum 3 batches (150 accounts)', async () => {
-      const manyAccounts = Array(200).fill(
-        mockTestAddress,
-      ) as `eip155:${string}:0x${string}`[];
-
-      (global.fetch as jest.Mock).mockResolvedValue({
-        ok: true,
-        json: jest.fn().mockResolvedValue({
-          is: [mockTestAddress.toLowerCase()],
-        }),
-      });
-
       const result = await cardSDK.isCardHolder(manyAccounts);
-      expect(result).toEqual({
-        cardholderAccounts: [
-          mockTestAddress.toLowerCase(),
-          mockTestAddress.toLowerCase(),
-          mockTestAddress.toLowerCase(),
-        ],
-      });
-
-      // Should call fetch only 3 times maximum, even with 200 accounts
-      expect(global.fetch).toHaveBeenCalledTimes(3);
+      expect(result).toBe(false);
+      expect(Logger.log).toHaveBeenCalledWith(
+        'isCardHolder called with more than 50 accounts',
+      );
     });
 
-    it('should return cardholder accounts when API returns accounts in is array', async () => {
-      const multipleAccounts = [
-        'eip155:59144:0x1111111111111111111111111111111111111111',
-        'eip155:59144:0x2222222222222222222222222222222222222222',
-      ] as `eip155:${string}:0x${string}`[];
-
+    it('should return true when API returns account in is array', async () => {
       (global.fetch as jest.Mock).mockResolvedValue({
         ok: true,
         json: jest.fn().mockResolvedValue({
-          is: [
-            multipleAccounts[0].toLowerCase(),
-            multipleAccounts[1].toLowerCase(),
-          ],
+          is: [mockTestAddress.toLowerCase()],
         }),
       });
 
-      const result = await cardSDK.isCardHolder(multipleAccounts);
-      expect(result).toEqual({
-        cardholderAccounts: [
-          multipleAccounts[0].toLowerCase(),
-          multipleAccounts[1].toLowerCase(),
-        ],
-      });
+      const result = await cardSDK.isCardHolder([mockTestAddress]);
+      expect(result).toBe(true);
 
       expect(global.fetch).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -432,7 +371,7 @@ describe('CardSDK', () => {
       );
     });
 
-    it('should return empty array when API returns empty is array', async () => {
+    it('should return false when API returns account not in is array', async () => {
       (global.fetch as jest.Mock).mockResolvedValue({
         ok: true,
         json: jest.fn().mockResolvedValue({
@@ -441,35 +380,15 @@ describe('CardSDK', () => {
       });
 
       const result = await cardSDK.isCardHolder([mockTestAddress]);
-      expect(result).toEqual({
-        cardholderAccounts: [],
-      });
+      expect(result).toBe(false);
     });
 
-    it('should handle API error responses with status code', async () => {
-      (global.fetch as jest.Mock).mockResolvedValue({
-        ok: false,
-        status: 404,
-      });
-
-      const result = await cardSDK.isCardHolder([mockTestAddress]);
-      expect(result).toEqual({
-        cardholderAccounts: [],
-      });
-      expect(Logger.error).toHaveBeenCalledWith(
-        expect.any(Error),
-        'Failed to check if address is a card holder',
-      );
-    });
-
-    it('should handle network errors and return empty array', async () => {
-      const error = new Error('Network error');
+    it('should handle API call errors and return false', async () => {
+      const error = new Error('API call failed');
       (global.fetch as jest.Mock).mockRejectedValue(error);
 
       const result = await cardSDK.isCardHolder([mockTestAddress]);
-      expect(result).toEqual({
-        cardholderAccounts: [],
-      });
+      expect(result).toBe(false);
       expect(Logger.error).toHaveBeenCalledWith(
         error,
         'Failed to check if address is a card holder',

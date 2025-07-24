@@ -290,6 +290,11 @@ const Routes = {
   SEND: {
     ROOT: 'Send',
   },
+  CARD: {
+    ROOT: 'CardScreens',
+    HOME: 'CardHome',
+    SPENDING_LIMIT: 'CardSpendingLimit',
+  },
 };
 
 export default Routes;
