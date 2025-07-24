@@ -90,6 +90,7 @@ export const useAssetBalance = (
       balanceFiat: '0',
       logo: iconUrl,
       isETH: false,
+      chainId: token.chainId as Hex,
     } as TokenI;
     isMappedAsset = true;
   }

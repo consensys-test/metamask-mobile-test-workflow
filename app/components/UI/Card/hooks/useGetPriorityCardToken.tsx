@@ -6,8 +6,6 @@ import { Hex } from '@metamask/utils';
 import { renderFromTokenMinimalUnit } from '../../../../util/number';
 import Logger from '../../../../util/Logger';
 import { useGetAllowances } from './useGetAllowances';
-import { useSelector } from 'react-redux';
-import { selectChainId } from '../../../../selectors/networkController';
 import BigNumber from 'bignumber.js';
 import {
   endTrace,
@@ -15,6 +13,7 @@ import {
   TraceName,
   TraceOperation,
 } from '../../../../util/trace';
+import { LINEA_CHAIN_ID } from '@metamask/swaps-controller/dist/constants';
 
 /**
  * React hook to fetch and determine the priority card token for a given user address.
@@ -39,7 +38,6 @@ export const useGetPriorityCardToken = (selectedAddress?: string) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const { fetchAllowances } = useGetAllowances(selectedAddress);
-  const chainId = useSelector(selectChainId);
   const [priorityToken, setPriorityToken] = useState<CardTokenAllowance | null>(
     null,
   );
@@ -85,6 +83,11 @@ export const useGetPriorityCardToken = (selectedAddress?: string) => {
         return null;
       }
 
+      if (priorityToken) {
+        setIsLoading(false);
+        return priorityToken;
+      }
+
       try {
         trace({
           name: TraceName.Card,
@@ -103,7 +106,7 @@ export const useGetPriorityCardToken = (selectedAddress?: string) => {
               ...supportedTokens[0],
               allowanceState: AllowanceState.NotEnabled,
               isStaked: false,
-              chainId,
+              chainId: LINEA_CHAIN_ID,
             } as CardTokenAllowance;
           }
 
@@ -175,7 +178,13 @@ export const useGetPriorityCardToken = (selectedAddress?: string) => {
       } finally {
         setIsLoading(false);
       }
-    }, [sdk, selectedAddress, fetchAllowances, getBalancesForChain, chainId]);
+    }, [
+      sdk,
+      selectedAddress,
+      fetchAllowances,
+      getBalancesForChain,
+      priorityToken,
+    ]);
 
   useEffect(() => {
     if (selectedAddress) {

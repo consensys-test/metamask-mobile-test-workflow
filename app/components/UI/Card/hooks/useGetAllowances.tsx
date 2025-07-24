@@ -2,8 +2,6 @@ import { useCallback } from 'react';
 import { useCardSDK } from '../sdk';
 import { CardTokenAllowance, AllowanceState } from '../types';
 import { ARBITRARY_ALLOWANCE } from '../constants';
-import { useSelector } from 'react-redux';
-import { selectChainId } from '../../../../selectors/networkController';
 import Logger from '../../../../util/Logger';
 import {
   endTrace,
@@ -11,13 +9,13 @@ import {
   TraceName,
   TraceOperation,
 } from '../../../../util/trace';
+import { LINEA_CHAIN_ID } from '@metamask/swaps-controller/dist/constants';
 
 /**
  * Hook to retrieve allowances for supported tokens.
  */
 export const useGetAllowances = (selectedAddress?: string) => {
   const { sdk } = useCardSDK();
-  const chainId = useSelector(selectChainId);
 
   const fetchAllowances = useCallback(async () => {
     if (sdk && selectedAddress) {
@@ -61,7 +59,7 @@ export const useGetAllowances = (selectedAddress?: string) => {
             name: tokenInfo.name ?? null,
             symbol: tokenInfo.symbol ?? null,
             allowance,
-            chainId,
+            chainId: LINEA_CHAIN_ID,
           };
         });
 
@@ -82,7 +80,7 @@ export const useGetAllowances = (selectedAddress?: string) => {
         throw new Error('Failed to fetch token allowances');
       }
     }
-  }, [sdk, selectedAddress, chainId]);
+  }, [sdk, selectedAddress]);
 
   return { fetchAllowances };
 };

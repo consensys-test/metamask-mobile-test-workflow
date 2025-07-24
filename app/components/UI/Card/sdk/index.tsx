@@ -7,10 +7,9 @@ import React, {
 } from 'react';
 import { useSelector } from 'react-redux';
 
-import { selectChainId } from '../../../../selectors/networkController';
-
 import { CardSDK } from './CardSDK';
 import { selectCardFeatureFlag } from '../../../../selectors/featureFlagController/card';
+import { LINEA_CHAIN_ID } from '@metamask/swaps-controller/dist/constants';
 
 export interface ICardSDK {
   sdk: CardSDK | null;
@@ -27,23 +26,22 @@ export const CardSDKProvider = ({
   value,
   ...props
 }: ProviderProps<ICardSDK>) => {
-  const selectedChainId = useSelector(selectChainId);
   const cardFeatureFlag = useSelector(selectCardFeatureFlag);
 
   const [sdk, setSdk] = useState<CardSDK | null>(null);
 
   // Initialize CardholderSDK if card feature flag is enabled and chain ID is selected
   useEffect(() => {
-    if (cardFeatureFlag && selectedChainId) {
+    if (cardFeatureFlag) {
       const cardSDK = new CardSDK({
         cardFeatureFlag,
-        rawChainId: selectedChainId,
+        rawChainId: LINEA_CHAIN_ID,
       });
       setSdk(cardSDK);
     } else {
       setSdk(null);
     }
-  }, [cardFeatureFlag, selectedChainId]);
+  }, [cardFeatureFlag]);
 
   const contextValue = useMemo(
     (): ICardSDK => ({

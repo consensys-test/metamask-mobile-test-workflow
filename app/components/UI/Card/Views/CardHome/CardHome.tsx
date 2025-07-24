@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   ActivityIndicator,
   ScrollView,
@@ -36,7 +36,6 @@ import Button, {
   ButtonWidthTypes,
 } from '../../../../../component-library/components/Buttons/Button';
 import { useGetPriorityCardToken } from '../../hooks/useGetPriorityCardToken';
-import { selectSelectedInternalAccountFormattedAddress } from '../../../../../selectors/accountsController';
 import { strings } from '../../../../../../locales/i18n';
 import { useAssetBalance } from '../../hooks/useAssetBalance';
 import { useNavigateToCardPage } from '../../hooks/useNavigateToCardPage';
@@ -50,6 +49,8 @@ import {
 import { BridgeToken } from '../../../Bridge/types';
 import Routes from '../../../../../constants/navigation/Routes';
 import CardImage from '../../components/CardImage';
+import { selectCardholderAccounts } from '../../../../../selectors/card';
+import { LINEA_CHAIN_ID } from '@metamask/swaps-controller/dist/constants';
 
 /**
  * CardHome Component
@@ -70,18 +71,31 @@ const CardHome = () => {
 
   const styles = createStyles(theme);
 
-  const currentAddress = useSelector(
-    selectSelectedInternalAccountFormattedAddress,
-  );
   const privacyMode = useSelector(selectPrivacyMode);
-  const { PreferencesController } = Engine.context;
+  const { PreferencesController, NetworkController } = Engine.context;
+  const cardholderAddresses = useSelector(selectCardholderAccounts);
+
+  useEffect(() => {
+    const switchNetwork = async () => {
+      const networkClientId =
+        NetworkController.findNetworkClientIdByChainId(LINEA_CHAIN_ID);
+
+      if (!networkClientId) return;
+
+      await NetworkController.setActiveNetwork(networkClientId);
+    };
+
+    if (NetworkController.getSelectedChainId() !== LINEA_CHAIN_ID) {
+      switchNetwork();
+    }
+  }, [NetworkController]);
 
   const {
     priorityToken,
     fetchPriorityToken,
     isLoading: isLoadingPriorityToken,
     error: errorPriorityToken,
-  } = useGetPriorityCardToken(currentAddress);
+  } = useGetPriorityCardToken(cardholderAddresses[0]);
   const { balanceFiat, asset } = useAssetBalance(priorityToken);
   const { navigateToCardPage } = useNavigateToCardPage(navigation);
   const { goToBridge } = useSwapBridgeNavigation({

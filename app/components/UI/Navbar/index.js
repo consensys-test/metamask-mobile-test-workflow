@@ -1026,15 +1026,14 @@ export function getWalletNavbarOptions(
   };
 
   function openQRScanner() {
-    navigation.navigate(Routes.CARD.ROOT);
-    // navigation.navigate(Routes.QR_TAB_SWITCHER, {
-    //   onScanSuccess,
-    // });
-    // trackEvent(
-    //   MetricsEventBuilder.createEventBuilder(
-    //     MetaMetricsEvents.WALLET_QR_SCANNER,
-    //   ).build(),
-    // );
+    navigation.navigate(Routes.QR_TAB_SWITCHER, {
+      onScanSuccess,
+    });
+    trackEvent(
+      MetricsEventBuilder.createEventBuilder(
+        MetaMetricsEvents.WALLET_QR_SCANNER,
+      ).build(),
+    );
   }
 
   function handleNotificationOnPress() {
@@ -1144,7 +1143,10 @@ export function getWalletNavbarOptions(
         {isCardholderEnabled && (
           <ButtonIcon
             iconColor={IconColor.Default}
-            onPress={openQRScanner}
+            style={styles.addressCopyWrapper}
+            onPress={() => {
+              navigation.navigate(Routes.CARD.ROOT);
+            }}
             iconName={IconName.Card}
             size={IconSize.Xl}
             testID={WalletViewSelectorsIDs.WALLET_SCAN_BUTTON}
