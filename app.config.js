@@ -16,7 +16,7 @@ module.exports = {
           ],
         },
         ios: {
-          jsEngine: "hermes"
+          jsEngine: 'hermes',
         },
       },
     ],
@@ -31,7 +31,7 @@ module.exports = {
   ],
   ios: {
     usesAppleSignIn: true,
-    jsEngine: "hermes"
+    jsEngine: 'hermes',
   },
   expo: {
     runtimeVersion: '1.0.0',
@@ -49,6 +49,9 @@ module.exports = {
     },
     android: {
       package: 'io.metamask',
+    },
+    ios: {
+      bundleIdentifier: 'io.metamask.MetaMask',
     },
   },
 };
