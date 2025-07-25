@@ -106,8 +106,9 @@ import TurnOnBackupAndSync from '../../Views/Identity/TurnOnBackupAndSync/TurnOn
 import DeFiProtocolPositionDetails from '../../UI/DeFiPositions/DeFiProtocolPositionDetails';
 import UnmountOnBlur from '../../Views/UnmountOnBlur';
 import WalletRecovery from '../../Views/WalletRecovery';
-import Send from '../../Views/confirmations/components/send';
 import CardRoutes from '../../UI/Card/routes';
+import { Send } from '../../Views/confirmations/components/send';
+import { isSendRedesignEnabled } from '../../Views/confirmations/utils/confirm';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -623,7 +624,11 @@ const SendView = () => (
 
 const SendComponent = () => (
   <Stack.Navigator headerMode="screen">
-    <Stack.Screen name="Send" component={Send} />
+    <Stack.Screen name={Routes.SEND.ROOT} component={Send} />
+    <Stack.Screen
+      name={Routes.FULL_SCREEN_CONFIRMATIONS.REDESIGNED_CONFIRMATIONS}
+      component={RedesignedConfirm}
+    />
   </Stack.Navigator>
 );
 
@@ -849,11 +854,7 @@ const MainNavigator = () => {
       />
       <Stack.Screen
         name="SendFlowView"
-        component={
-          process.env.MM_SEND_REDESIGNS_ENABLED === 'true'
-            ? SendComponent
-            : SendFlowView
-        }
+        component={isSendRedesignEnabled() ? SendComponent : SendFlowView}
         //Disabling swipe down on IOS
         options={{ gestureEnabled: false }}
       />
