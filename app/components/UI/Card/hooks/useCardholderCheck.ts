@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { selectIsCardDataLoaded } from '../../../../selectors/card';
 import { ThunkAction } from 'redux-thunk';
 import useThunkDispatch from '../../../hooks/useThunkDispatch';
 import { selectCardFeatureFlag } from '../../../../selectors/featureFlagController/card';
@@ -15,6 +13,11 @@ import { CardAction } from '../../../../actions/card/types';
 import { CardSDK } from '../sdk/CardSDK';
 import { LINEA_CHAIN_ID } from '@metamask/swaps-controller/dist/constants';
 import Logger from '../../../../util/Logger';
+import {
+  selectAppServicesReady,
+  selectUserLoggedIn,
+} from '../../../../reducers/user';
+import { selectInternalAccountsWithCaipAccountId } from '../../../../selectors/accountsController';
 
 /**
  * Hook that automatically checks for cardholder accounts when conditions are met
@@ -22,54 +25,45 @@ import Logger from '../../../../util/Logger';
  */
 export const useCardholderCheck = () => {
   const dispatchThunk = useThunkDispatch();
-  const isDataLoaded = useSelector(selectIsCardDataLoaded);
-
-  // Get app readiness states
-  const userLoggedIn = useSelector((state: any) => state.user.userLoggedIn);
-  const appServicesReady = useSelector(
-    (state: any) => state.user.appServicesReady,
-  );
+  const userLoggedIn = useSelector(selectUserLoggedIn);
+  const appServicesReady = useSelector(selectAppServicesReady);
   const cardFeatureFlag = useSelector(selectCardFeatureFlag);
+  const accounts = useSelector(selectInternalAccountsWithCaipAccountId);
 
   /**
    * Get accounts from the engine state
    */
-  const getAccountsFromEngine = (
-    state: RootState,
-  ): `eip155:${string}:0x${string}`[] => {
-    const accounts =
-      state.engine.backgroundState.AccountsController.internalAccounts.accounts;
+  const getAccountsFromEngine =
+    useCallback((): `${string}:${string}:${string}`[] => {
+      if (!accounts) {
+        return [];
+      }
 
-    if (!accounts) {
-      return [];
-    }
+      const supportedAccounts = Object.values(accounts).filter(
+        (account) => account.type === 'eip155:eoa',
+      );
 
-    const supportedAccounts = Object.values(accounts).filter(
-      (account) => account.type === 'eip155:eoa',
-    );
-
-    // Extract account addresses and format them as required by CardSDK
-    return Object.values(supportedAccounts).map(
-      (account) =>
-        `eip155:0:${account.address}` as `eip155:${string}:0x${string}`,
-    );
-  };
+      // Extract account addresses and format them as required by CardSDK
+      return Object.values(supportedAccounts).map(
+        (account) => account.caipAccountId,
+      );
+    }, [accounts]);
 
   const checkCardholderAccounts = useCallback(
     (): ThunkAction<Promise<void>, RootState, unknown, CardAction> =>
-      async (dispatch, getState) => {
+      async (dispatch) => {
         try {
-          // Early return if card feature is not enabled
           if (!cardFeatureFlag) {
             return;
           }
 
           dispatch(loadCardholderAccountsRequest());
 
-          const state = getState();
-          const accounts = getAccountsFromEngine(state);
+          const formattedAccounts = getAccountsFromEngine();
 
-          if (!accounts.length) {
+          Logger.log('formattedAccounts', formattedAccounts);
+
+          if (!formattedAccounts.length) {
             dispatch(loadCardholderAccountsSuccess([]));
             return;
           }
@@ -80,7 +74,9 @@ export const useCardholderCheck = () => {
           });
 
           // Call isCardHolder method
-          const result = await cardSDK.isCardHolder(accounts);
+          const result = await cardSDK.isCardHolder(
+            formattedAccounts as `eip155:${string}:0x${string}`[],
+          );
 
           // Extract just the addresses for storage
           const cardholderAddresses = result.cardholderAccounts.map(
@@ -100,20 +96,19 @@ export const useCardholderCheck = () => {
           dispatch(loadCardholderAccountsFailure(errorMessage));
         }
       },
-    [cardFeatureFlag],
+    [cardFeatureFlag, getAccountsFromEngine],
   );
 
   useEffect(() => {
-    // Only check if user is logged in, services are ready, and data hasn't been loaded yet
-    if (userLoggedIn && appServicesReady && !isDataLoaded) {
+    if (userLoggedIn && appServicesReady) {
       dispatchThunk(checkCardholderAccounts());
     }
   }, [
     userLoggedIn,
     appServicesReady,
     cardFeatureFlag,
-    isDataLoaded,
     dispatchThunk,
     checkCardholderAccounts,
+    accounts,
   ]);
 };

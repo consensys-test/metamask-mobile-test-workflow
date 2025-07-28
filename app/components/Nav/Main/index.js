@@ -26,6 +26,7 @@ import FadeOutOverlay from '../../UI/FadeOutOverlay';
 import BackupAlert from '../../UI/BackupAlert';
 import Notification from '../../UI/Notification';
 import RampOrders from '../../UI/Ramp';
+import { CardVerification } from '../../UI/Card/sdk';
 import {
   showTransactionNotification,
   hideCurrentNotification,
@@ -468,6 +469,7 @@ const Main = (props) => {
         <GlobalAlert />
         <FadeOutOverlay />
         <Notification navigation={props.navigation} />
+        <CardVerification />
         <RampOrders />
         <SwapsLiveness />
         <BackupAlert
