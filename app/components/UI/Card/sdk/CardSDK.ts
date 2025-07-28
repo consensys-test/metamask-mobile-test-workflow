@@ -75,7 +75,10 @@ export class CardSDK {
 
   private get ethersProvider() {
     // Default RPC URL for LINEA mainnet
-    return new ethers.providers.JsonRpcProvider(LINEA_DEFAULT_RPC_URL);
+    return new ethers.providers.JsonRpcProvider({
+      url: LINEA_DEFAULT_RPC_URL,
+      skipFetchSetup: true,
+    });
   }
 
   private get balanceScannerInstance() {
