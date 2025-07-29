@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import {
   ActivityIndicator,
   ScrollView,
@@ -17,6 +17,7 @@ import Text, {
 import {
   NavigationProp,
   ParamListBase,
+  useFocusEffect,
   useNavigation,
 } from '@react-navigation/native';
 import ButtonIcon, {
@@ -75,20 +76,20 @@ const CardHome = () => {
   const { PreferencesController, NetworkController } = Engine.context;
   const cardholderAddresses = useSelector(selectCardholderAccounts);
 
-  useEffect(() => {
-    const switchNetwork = async () => {
-      const networkClientId =
-        NetworkController.findNetworkClientIdByChainId(LINEA_CHAIN_ID);
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        if (NetworkController.getSelectedChainId() !== LINEA_CHAIN_ID) {
+          const id =
+            NetworkController.findNetworkClientIdByChainId(LINEA_CHAIN_ID);
 
-      if (!networkClientId) return;
-
-      await NetworkController.setActiveNetwork(networkClientId);
-    };
-
-    if (NetworkController.getSelectedChainId() !== LINEA_CHAIN_ID) {
-      switchNetwork();
-    }
-  }, [NetworkController]);
+          if (id) {
+            await NetworkController.setActiveNetwork(id);
+          }
+        }
+      })();
+    }, [NetworkController]),
+  );
 
   const {
     priorityToken,
