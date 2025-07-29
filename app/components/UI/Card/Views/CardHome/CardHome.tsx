@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   ScrollView,
@@ -52,6 +52,8 @@ import Routes from '../../../../../constants/navigation/Routes';
 import CardImage from '../../components/CardImage';
 import { LINEA_CHAIN_ID } from '@metamask/swaps-controller/dist/constants';
 import { selectCardholderAccounts } from '../../../../../core/redux/slices/card';
+import Logger from '../../../../../util/Logger';
+import { selectChainId } from '../../../../../selectors/networkController';
 
 /**
  * CardHome Component
@@ -65,7 +67,10 @@ import { selectCardholderAccounts } from '../../../../../core/redux/slices/card'
  * @returns JSX element representing the card home screen
  */
 const CardHome = () => {
-  const [retries, setRetries] = React.useState(0);
+  const { PreferencesController, NetworkController } = Engine.context;
+  const [error, setError] = useState<boolean>(false);
+  const [isLoadingNetworkChange, setIsLoadingNetworkChange] = useState(false);
+  const [retries, setRetries] = useState(0);
 
   const navigation = useNavigation();
   const theme = useTheme();
@@ -73,22 +78,32 @@ const CardHome = () => {
   const styles = createStyles(theme);
 
   const privacyMode = useSelector(selectPrivacyMode);
-  const { PreferencesController, NetworkController } = Engine.context;
+  const selectedChainId = useSelector(selectChainId);
   const cardholderAddresses = useSelector(selectCardholderAccounts);
 
   useFocusEffect(
     useCallback(() => {
       (async () => {
-        if (NetworkController.getSelectedChainId() !== LINEA_CHAIN_ID) {
+        if (selectedChainId !== LINEA_CHAIN_ID) {
           const id =
             NetworkController.findNetworkClientIdByChainId(LINEA_CHAIN_ID);
 
-          if (id) {
-            await NetworkController.setActiveNetwork(id);
+          try {
+            if (id) {
+              setIsLoadingNetworkChange(true);
+              await NetworkController.setActiveNetwork(id);
+            }
+          } catch (err) {
+            const mappedError =
+              err instanceof Error ? err : new Error(String(err));
+            Logger.error(mappedError, 'CardHome::Error setting active network');
+            setError(true);
+          } finally {
+            setIsLoadingNetworkChange(false);
           }
         }
       })();
-    }, [NetworkController]),
+    }, [NetworkController, selectedChainId]),
   );
 
   const {
@@ -96,10 +111,10 @@ const CardHome = () => {
     fetchPriorityToken,
     isLoading: isLoadingPriorityToken,
     error: errorPriorityToken,
-  } = useGetPriorityCardToken(cardholderAddresses[0]);
+  } = useGetPriorityCardToken(cardholderAddresses?.[0]);
   const { balanceFiat, asset } = useAssetBalance(priorityToken);
   const { navigateToCardPage } = useNavigateToCardPage(navigation);
-  const { goToBridge } = useSwapBridgeNavigation({
+  const { goToSwaps } = useSwapBridgeNavigation({
     location: SwapBridgeNavigationLocation.TokenDetails,
     sourcePage: Routes.CARD.HOME,
     token: {
@@ -115,10 +130,17 @@ const CardHome = () => {
     [PreferencesController],
   );
 
-  const isAllowanceLimited =
-    priorityToken?.allowanceState === AllowanceState.Limited;
+  const isAllowanceLimited = useMemo(
+    () => priorityToken?.allowanceState === AllowanceState.Limited,
+    [priorityToken],
+  );
 
-  if (errorPriorityToken) {
+  const isLoading = useMemo(
+    () => isLoadingPriorityToken || isLoadingNetworkChange,
+    [isLoadingPriorityToken, isLoadingNetworkChange],
+  );
+
+  if (errorPriorityToken || error || (!isLoading && !priorityToken)) {
     return (
       <View style={styles.errorContainer}>
         <Icon
@@ -157,7 +179,7 @@ const CardHome = () => {
     );
   }
 
-  if (isLoadingPriorityToken) {
+  if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator
@@ -258,7 +280,7 @@ const CardHome = () => {
               variant={ButtonVariants.Primary}
               label={strings('card.card_home.add_funds')}
               size={ButtonSize.Sm}
-              onPress={goToBridge}
+              onPress={goToSwaps}
               width={ButtonWidthTypes.Full}
               testID="add-funds-button"
             />
