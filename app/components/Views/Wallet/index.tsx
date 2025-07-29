@@ -118,11 +118,11 @@ import { cloneDeep } from 'lodash';
 import { prepareNftDetectionEvents } from '../../../util/assets';
 import DeFiPositionsList from '../../UI/DeFiPositions/DeFiPositionsList';
 import { selectAssetsDefiPositionsEnabled } from '../../../selectors/featureFlagController/assetsDefiPositions';
-import { toFormattedAddress } from '../../../util/address';
+import { toChecksumAddress, toFormattedAddress } from '../../../util/address';
 import { selectHDKeyrings } from '../../../selectors/keyringController';
 import { UserProfileProperty } from '../../../util/metrics/UserSettingsAnalyticsMetaData/UserProfileAnalyticsMetaData.types';
 import { endTrace, trace, TraceName } from '../../../util/trace';
-import { selectHasCardholderAccounts } from '../../../selectors/card';
+import { selectCardholderAccounts } from '../../../core/redux/slices/card';
 import { selectPerpsEnabledFlag } from '../../UI/Perps';
 import PerpsTabView from '../../UI/Perps/Views/PerpsTabView';
 
@@ -274,7 +274,7 @@ const Wallet = ({
     selectEvmNetworkConfigurationsByChainId,
   );
 
-  const isCardholder = useSelector(selectHasCardholderAccounts);
+  const cardholderAccounts = useSelector(selectCardholderAccounts);
 
   /**
    * Object containing the balance of the current selected account
@@ -545,6 +545,16 @@ const Wallet = ({
     // TODO: [SOLANA] Check if this logic supports non evm networks before shipping Solana
     [navigation, chainId, evmNetworkConfigurations],
   );
+
+  const isCardholder = useMemo(() => {
+    if (!selectedInternalAccount?.address || !cardholderAccounts?.length) {
+      return false;
+    }
+
+    return cardholderAccounts.includes(
+      toChecksumAddress(selectedInternalAccount.address),
+    );
+  }, [cardholderAccounts, selectedInternalAccount]);
 
   useEffect(() => {
     if (!selectedInternalAccount) return;

@@ -49,8 +49,8 @@ import {
 import { BridgeToken } from '../../../Bridge/types';
 import Routes from '../../../../../constants/navigation/Routes';
 import CardImage from '../../components/CardImage';
-import { selectCardholderAccounts } from '../../../../../selectors/card';
 import { LINEA_CHAIN_ID } from '@metamask/swaps-controller/dist/constants';
+import { selectCardholderAccounts } from '../../../../../core/redux/slices/card';
 
 /**
  * CardHome Component

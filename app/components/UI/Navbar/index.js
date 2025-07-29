@@ -939,6 +939,7 @@ export function getOfflineModalNavbar() {
  * @param {number} unreadNotificationCount - The number of unread notifications
  * @param {number} readNotificationCount - The number of read notifications
  * @param {boolean} isNonEvmSelected - Whether a non evm network is selected
+ * @param {boolean} isCardholderEnabled - Whether cardholder feature is enabled
  * @returns {Object} An object containing the navbar options for the wallet screen
  */
 export function getWalletNavbarOptions(
@@ -1110,7 +1111,18 @@ export function getWalletNavbarOptions(
           testID={WalletViewSelectorsIDs.NAVBAR_ADDRESS_COPY_BUTTON}
           style={styles.addressCopyWrapper}
         >
-          <AddressCopy account={selectedInternalAccount} />
+          {isCardholderEnabled ? (
+            // This will be replaced with a Cardholder button in the future
+            <ButtonIcon
+              iconColor={IconColor.Default}
+              onPress={() => navigation.navigate(Routes.CARD.ROOT)}
+              iconName={IconName.Card}
+              size={IconSize.Xl}
+              testID={WalletViewSelectorsIDs.WALLET_SCAN_BUTTON}
+            />
+          ) : (
+            <AddressCopy account={selectedInternalAccount} />
+          )}
         </View>
         {isNotificationsFeatureEnabled() && (
           <View>
@@ -1138,19 +1150,6 @@ export function getWalletNavbarOptions(
               />
             )}
           </View>
-        )}
-
-        {isCardholderEnabled && (
-          <ButtonIcon
-            iconColor={IconColor.Default}
-            style={styles.addressCopyWrapper}
-            onPress={() => {
-              navigation.navigate(Routes.CARD.ROOT);
-            }}
-            iconName={IconName.Card}
-            size={IconSize.Xl}
-            testID={WalletViewSelectorsIDs.WALLET_SCAN_BUTTON}
-          />
         )}
 
         <ButtonIcon
