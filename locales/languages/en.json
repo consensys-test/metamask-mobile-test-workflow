@@ -5038,7 +5038,7 @@
     "title": "Select payment method"
   },
   "card": {
-    "card": "Card",
+    "card": "MetaMask Card",
     "allowance_states": {
       "enabled": "Enabled",
       "limited": "Limited",
