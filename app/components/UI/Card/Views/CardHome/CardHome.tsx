@@ -286,33 +286,31 @@ const CardHome = () => {
             </TouchableOpacity>
           </View>
           {isAllowanceLimited && (
-            <>
-              <View
-                style={[
-                  styles.limitedAllowanceWarningContainer,
-                  styles.defaultHorizontalPadding,
-                ]}
-              >
-                <Text>
-                  <Text
-                    variant={TextVariant.BodySM}
-                    color={theme.colors.text.alternative}
-                  >
-                    {strings('card.card_home.limited_spending_warning', {
-                      manageCard: '',
-                    })}
-                  </Text>
-                  <Text
-                    variant={TextVariant.BodySM}
-                    color={theme.colors.text.alternative}
-                    style={styles.limitedAllowanceManageCardText}
-                  >
-                    {strings('card.card_home.manage_card_options.manage_card')}
-                    {'.'}
-                  </Text>
+            <View
+              style={[
+                styles.limitedAllowanceWarningContainer,
+                styles.defaultHorizontalPadding,
+              ]}
+            >
+              <Text>
+                <Text
+                  variant={TextVariant.BodySM}
+                  color={theme.colors.text.alternative}
+                >
+                  {strings('card.card_home.limited_spending_warning', {
+                    manageCard: '',
+                  })}
                 </Text>
-              </View>
-            </>
+                <Text
+                  variant={TextVariant.BodySM}
+                  color={theme.colors.text.alternative}
+                  style={styles.limitedAllowanceManageCardText}
+                >
+                  {strings('card.card_home.manage_card_options.manage_card')}
+                  {'.'}
+                </Text>
+              </Text>
+            </View>
           )}
           <View
             style={[
