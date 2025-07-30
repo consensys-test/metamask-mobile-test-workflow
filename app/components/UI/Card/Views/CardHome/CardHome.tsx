@@ -53,11 +53,18 @@ import { LINEA_CHAIN_ID } from '@metamask/swaps-controller/dist/constants';
 import { selectCardholderAccounts } from '../../../../../core/redux/slices/card';
 import Logger from '../../../../../util/Logger';
 import { selectChainId } from '../../../../../selectors/networkController';
-import { setDestToken } from '../../../../../core/redux/slices/bridge';
+import {
+  setDestToken,
+  setSourceToken,
+} from '../../../../../core/redux/slices/bridge';
 import { BridgeToken } from '../../../Bridge/types';
 import { selectAllTokenBalances } from '../../../../../selectors/tokenBalancesController';
-import { pickSourceSwapToken } from '../../util/pickSourceSwapToken';
+import { pickSourceSwapTokenForChain } from '../../util/pickSourceSwapToken';
 import { Hex } from '@metamask/utils';
+import { makeSelectAssetByAddressAndChainId } from '../../../../../selectors/multichain';
+import { RootState } from '../../../../../reducers';
+import { toChecksumAddress } from '../../../../../util/address';
+import { selectTokenListArray } from '../../../../../selectors/tokenListController';
 
 /**
  * CardHome Component
@@ -86,6 +93,12 @@ const CardHome = () => {
   const selectedChainId = useSelector(selectChainId);
   const cardholderAddresses = useSelector(selectCardholderAccounts);
   const allTokenBalances = useSelector(selectAllTokenBalances);
+  const tokenList = useSelector(selectTokenListArray);
+
+  const selectEvmAsset = useMemo(
+    () => makeSelectAssetByAddressAndChainId(),
+    [],
+  );
 
   useFocusEffect(
     useCallback(() => {
@@ -135,34 +148,59 @@ const CardHome = () => {
 
   const swapSourceToken = useMemo(() => {
     if (cardholderAddresses?.[0] && priorityToken) {
-      const topToken = pickSourceSwapToken(
-        allTokenBalances,
-        cardholderAddresses?.[0] as Hex,
-        priorityToken?.address,
-      );
+      const topToken = pickSourceSwapTokenForChain({
+        priorityToken: toChecksumAddress(priorityToken.address),
+        tokenBalances: allTokenBalances,
+        userAddress: cardholderAddresses[0].toLowerCase() as Hex,
+        targetChainId: LINEA_CHAIN_ID,
+        tokenList,
+      });
 
       return {
         address: topToken.token ?? priorityToken.address,
         chainId: topToken.chainId ?? selectedChainId,
-        image: asset?.image,
-      } as BridgeToken;
+      };
     }
   }, [
     cardholderAddresses,
     priorityToken,
     allTokenBalances,
     selectedChainId,
-    asset?.image,
+    tokenList,
   ]);
 
-  Logger.log(swapSourceToken);
+  const swapSourceTokenInfo = useSelector((state: RootState) =>
+    swapSourceToken
+      ? selectEvmAsset(state, {
+          address: swapSourceToken.address,
+          isStaked: false,
+          chainId: swapSourceToken.chainId,
+        })
+      : undefined,
+  );
 
   const openSwaps = useCallback(() => {
     if (swapDestinationToken) {
       dispatch(setDestToken(swapDestinationToken));
-      goToSwaps(swapSourceToken);
+
+      if (swapSourceTokenInfo) {
+        dispatch(
+          setSourceToken({
+            chainId: swapSourceTokenInfo.chainId as Hex,
+            address: swapSourceTokenInfo.address,
+            decimals: swapSourceTokenInfo.decimals,
+            symbol: swapSourceTokenInfo.symbol,
+            balance: swapSourceTokenInfo.balance,
+            image: swapSourceTokenInfo.image,
+            balanceFiat: swapSourceTokenInfo.balanceFiat,
+            name: swapSourceTokenInfo.name,
+          }),
+        );
+      }
+
+      goToSwaps();
     }
-  }, [goToSwaps, dispatch, swapDestinationToken, swapSourceToken]);
+  }, [goToSwaps, dispatch, swapDestinationToken, swapSourceTokenInfo]);
 
   const toggleIsBalanceAndAssetsHidden = useCallback(
     (value: boolean) => {

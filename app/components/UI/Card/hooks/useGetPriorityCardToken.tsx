@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useCardSDK } from '../sdk';
 import { AllowanceState, CardTokenAllowance } from '../types';
-import Engine from '../../../../core/Engine';
 import { Hex } from '@metamask/utils';
 import { renderFromTokenMinimalUnit } from '../../../../util/number';
 import Logger from '../../../../util/Logger';
@@ -14,6 +13,8 @@ import {
   TraceOperation,
 } from '../../../../util/trace';
 import { LINEA_CHAIN_ID } from '@metamask/swaps-controller/dist/constants';
+import { useSelector } from 'react-redux';
+import { selectAllTokenBalances } from '../../../../selectors/tokenBalancesController';
 
 /**
  * React hook to fetch and determine the priority card token for a given user address.
@@ -43,9 +44,7 @@ export const useGetPriorityCardToken = (selectedAddress?: string) => {
   );
 
   // Extract controller state
-  const {
-    state: { tokenBalances: allTokenBalances },
-  } = Engine.context.TokenBalancesController;
+  const allTokenBalances = useSelector(selectAllTokenBalances);
 
   // Helpers
   const filterNonZeroAllowances = (
