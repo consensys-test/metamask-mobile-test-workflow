@@ -58,13 +58,12 @@ import {
   setSourceToken,
 } from '../../../../../core/redux/slices/bridge';
 import { BridgeToken } from '../../../Bridge/types';
-import { selectAllTokenBalances } from '../../../../../selectors/tokenBalancesController';
-import { pickSourceSwapTokenForChain } from '../../util/pickSourceSwapToken';
+import { getHighestFiatToken } from '../../util/getHighestFiatToken';
 import { Hex } from '@metamask/utils';
-import { makeSelectAssetByAddressAndChainId } from '../../../../../selectors/multichain';
-import { RootState } from '../../../../../reducers';
-import { toChecksumAddress } from '../../../../../util/address';
-import { selectTokenListArray } from '../../../../../selectors/tokenListController';
+import {
+  selectEvmTokenFiatBalances,
+  selectEvmTokens,
+} from '../../../../../selectors/multichain';
 
 /**
  * CardHome Component
@@ -92,12 +91,16 @@ const CardHome = () => {
   const privacyMode = useSelector(selectPrivacyMode);
   const selectedChainId = useSelector(selectChainId);
   const cardholderAddresses = useSelector(selectCardholderAccounts);
-  const allTokenBalances = useSelector(selectAllTokenBalances);
-  const tokenList = useSelector(selectTokenListArray);
+  const evmTokens = useSelector(selectEvmTokens);
+  const tokenFiatBalances = useSelector(selectEvmTokenFiatBalances);
 
-  const selectEvmAsset = useMemo(
-    () => makeSelectAssetByAddressAndChainId(),
-    [],
+  const tokens = useMemo(
+    () =>
+      evmTokens.map((token, i) => ({
+        ...token,
+        tokenFiatAmount: tokenFiatBalances[i],
+      })),
+    [evmTokens, tokenFiatBalances],
   );
 
   useFocusEffect(
@@ -148,59 +151,37 @@ const CardHome = () => {
 
   const swapSourceToken = useMemo(() => {
     if (cardholderAddresses?.[0] && priorityToken) {
-      const topToken = pickSourceSwapTokenForChain({
-        priorityToken: toChecksumAddress(priorityToken.address),
-        tokenBalances: allTokenBalances,
-        userAddress: cardholderAddresses[0].toLowerCase() as Hex,
-        targetChainId: LINEA_CHAIN_ID,
-        tokenList,
-      });
+      const topToken = getHighestFiatToken(
+        tokens,
+        priorityToken.address as Hex,
+      );
 
-      return {
-        address: topToken.token ?? priorityToken.address,
-        chainId: topToken.chainId ?? selectedChainId,
-      };
+      return topToken;
     }
-  }, [
-    cardholderAddresses,
-    priorityToken,
-    allTokenBalances,
-    selectedChainId,
-    tokenList,
-  ]);
-
-  const swapSourceTokenInfo = useSelector((state: RootState) =>
-    swapSourceToken
-      ? selectEvmAsset(state, {
-          address: swapSourceToken.address,
-          isStaked: false,
-          chainId: swapSourceToken.chainId,
-        })
-      : undefined,
-  );
+  }, [cardholderAddresses, priorityToken, tokens]);
 
   const openSwaps = useCallback(() => {
     if (swapDestinationToken) {
       dispatch(setDestToken(swapDestinationToken));
 
-      if (swapSourceTokenInfo) {
+      if (swapSourceToken) {
         dispatch(
           setSourceToken({
-            chainId: swapSourceTokenInfo.chainId as Hex,
-            address: swapSourceTokenInfo.address,
-            decimals: swapSourceTokenInfo.decimals,
-            symbol: swapSourceTokenInfo.symbol,
-            balance: swapSourceTokenInfo.balance,
-            image: swapSourceTokenInfo.image,
-            balanceFiat: swapSourceTokenInfo.balanceFiat,
-            name: swapSourceTokenInfo.name,
+            chainId: swapSourceToken.chainId as Hex,
+            address: swapSourceToken.address,
+            decimals: swapSourceToken.decimals,
+            symbol: swapSourceToken.symbol,
+            balance: swapSourceToken.balance,
+            image: swapSourceToken.image,
+            balanceFiat: swapSourceToken.balanceFiat,
+            name: swapSourceToken.name,
           }),
         );
       }
 
       goToSwaps();
     }
-  }, [goToSwaps, dispatch, swapDestinationToken, swapSourceTokenInfo]);
+  }, [goToSwaps, dispatch, swapDestinationToken, swapSourceToken]);
 
   const toggleIsBalanceAndAssetsHidden = useCallback(
     (value: boolean) => {
