@@ -23,7 +23,7 @@ import {
 import ButtonIcon, {
   ButtonIconSizes,
 } from '../../../../../component-library/components/Buttons/ButtonIcon';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SensitiveText, {
   SensitiveTextLength,
 } from '../../../../../component-library/components/Texts/SensitiveText';
@@ -47,13 +47,17 @@ import {
   SwapBridgeNavigationLocation,
   useSwapBridgeNavigation,
 } from '../../../Bridge/hooks/useSwapBridgeNavigation';
-import { BridgeToken } from '../../../Bridge/types';
 import Routes from '../../../../../constants/navigation/Routes';
 import CardImage from '../../components/CardImage';
 import { LINEA_CHAIN_ID } from '@metamask/swaps-controller/dist/constants';
 import { selectCardholderAccounts } from '../../../../../core/redux/slices/card';
 import Logger from '../../../../../util/Logger';
 import { selectChainId } from '../../../../../selectors/networkController';
+import { setDestToken } from '../../../../../core/redux/slices/bridge';
+import { BridgeToken } from '../../../Bridge/types';
+import { selectAllTokenBalances } from '../../../../../selectors/tokenBalancesController';
+import { pickSourceSwapToken } from '../../util/pickSourceSwapToken';
+import { Hex } from '@metamask/utils';
 
 /**
  * CardHome Component
@@ -67,6 +71,7 @@ import { selectChainId } from '../../../../../selectors/networkController';
  * @returns JSX element representing the card home screen
  */
 const CardHome = () => {
+  const dispatch = useDispatch();
   const { PreferencesController, NetworkController } = Engine.context;
   const [error, setError] = useState<boolean>(false);
   const [isLoadingNetworkChange, setIsLoadingNetworkChange] = useState(false);
@@ -80,6 +85,7 @@ const CardHome = () => {
   const privacyMode = useSelector(selectPrivacyMode);
   const selectedChainId = useSelector(selectChainId);
   const cardholderAddresses = useSelector(selectCardholderAccounts);
+  const allTokenBalances = useSelector(selectAllTokenBalances);
 
   useFocusEffect(
     useCallback(() => {
@@ -117,11 +123,46 @@ const CardHome = () => {
   const { goToSwaps } = useSwapBridgeNavigation({
     location: SwapBridgeNavigationLocation.TokenDetails,
     sourcePage: Routes.CARD.HOME,
-    token: {
+  });
+
+  const swapDestinationToken = useMemo(() => {
+    if (!priorityToken) return undefined;
+    return {
       ...priorityToken,
       image: asset?.image,
-    } as BridgeToken,
-  });
+    } as BridgeToken;
+  }, [priorityToken, asset]);
+
+  const swapSourceToken = useMemo(() => {
+    if (cardholderAddresses?.[0] && priorityToken) {
+      const topToken = pickSourceSwapToken(
+        allTokenBalances,
+        cardholderAddresses?.[0] as Hex,
+        priorityToken?.address,
+      );
+
+      return {
+        address: topToken.token ?? priorityToken.address,
+        chainId: topToken.chainId ?? selectedChainId,
+        image: asset?.image,
+      } as BridgeToken;
+    }
+  }, [
+    cardholderAddresses,
+    priorityToken,
+    allTokenBalances,
+    selectedChainId,
+    asset?.image,
+  ]);
+
+  Logger.log(swapSourceToken);
+
+  const openSwaps = useCallback(() => {
+    if (swapDestinationToken) {
+      dispatch(setDestToken(swapDestinationToken));
+      goToSwaps(swapSourceToken);
+    }
+  }, [goToSwaps, dispatch, swapDestinationToken, swapSourceToken]);
 
   const toggleIsBalanceAndAssetsHidden = useCallback(
     (value: boolean) => {
@@ -280,7 +321,7 @@ const CardHome = () => {
               variant={ButtonVariants.Primary}
               label={strings('card.card_home.add_funds')}
               size={ButtonSize.Sm}
-              onPress={goToSwaps}
+              onPress={openSwaps}
               width={ButtonWidthTypes.Full}
               testID="add-funds-button"
             />
