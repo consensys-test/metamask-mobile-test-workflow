@@ -285,27 +285,8 @@ const CardHome = () => {
               />
             </TouchableOpacity>
           </View>
-          <View
-            style={[styles.cardImageContainer, styles.defaultHorizontalPadding]}
-          >
-            <CardImage />
-          </View>
-          <View
-            style={[
-              styles.cardAssetItemContainer,
-              styles.defaultHorizontalPadding,
-            ]}
-          >
-            <CardAssetItem
-              assetKey={priorityToken}
-              privacyMode={privacyMode}
-              shouldShowAllowance={false}
-              disabled
-            />
-          </View>
           {isAllowanceLimited && (
             <>
-              <View style={styles.divider} />
               <View
                 style={[
                   styles.limitedAllowanceWarningContainer,
@@ -335,9 +316,31 @@ const CardHome = () => {
           )}
           <View
             style={[
-              styles.addFundsButtonContainer,
+              styles.cardImageContainer,
               styles.defaultHorizontalPadding,
               isAllowanceLimited && styles.defaultMarginTop,
+            ]}
+          >
+            <CardImage />
+          </View>
+          <View
+            style={[
+              styles.cardAssetItemContainer,
+              styles.defaultHorizontalPadding,
+            ]}
+          >
+            <CardAssetItem
+              assetKey={priorityToken}
+              privacyMode={privacyMode}
+              shouldShowAllowance={false}
+              disabled
+            />
+          </View>
+
+          <View
+            style={[
+              styles.addFundsButtonContainer,
+              styles.defaultHorizontalPadding,
             ]}
           >
             <Button

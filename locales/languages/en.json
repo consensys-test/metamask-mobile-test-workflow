@@ -5113,7 +5113,7 @@
     },
     "card_home": {
       "spending_with": "Spending with",
-      "limited_spending_warning": "Your actual spending ability may be limited. To adjust your limit, go to {{manageCard}}",
+      "limited_spending_warning": "You have set a spend limit, so you may not be able to use all your balance. To adjust your limit, go to {{manageCard}}",
       "add_funds": "Add funds",
       "error_title": "Can’t fetch data", 
       "error_description": "It seems that there is an issue preventing you from viewing the content on this page. Please check your connection or try refreshing the page.",

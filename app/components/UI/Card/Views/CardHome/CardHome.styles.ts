@@ -58,7 +58,6 @@ const createStyles = (theme: Theme) =>
     },
     limitedAllowanceWarningContainer: {
       width: '100%',
-      marginTop: 12,
     },
     limitedAllowanceManageCardText: {
       fontWeight: 'bold',
