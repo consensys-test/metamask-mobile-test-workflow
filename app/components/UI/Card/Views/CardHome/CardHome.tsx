@@ -156,7 +156,9 @@ const CardHome = () => {
         priorityToken.address as Hex,
       );
 
-      return topToken;
+      if (!topToken?.isETH) {
+        return topToken;
+      }
     }
   }, [cardholderAddresses, priorityToken, tokens]);
 
