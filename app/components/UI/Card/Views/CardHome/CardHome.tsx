@@ -317,8 +317,10 @@ const CardHome = () => {
                     variant={TextVariant.BodySM}
                     color={theme.colors.text.alternative}
                   >
-                    {strings('card.card_home.limited_spending_warning')}
-                  </Text>{' '}
+                    {strings('card.card_home.limited_spending_warning', {
+                      manageCard: '',
+                    })}
+                  </Text>
                   <Text
                     variant={TextVariant.BodySM}
                     color={theme.colors.text.alternative}

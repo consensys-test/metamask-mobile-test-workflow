@@ -5095,9 +5095,9 @@
     },
     "card_home": {
       "spending_with": "Spending with",
-      "limited_spending_warning": "Your actual spending ability may be limited. To adjust your limit, go to",
+      "limited_spending_warning": "Your actual spending ability may be limited. To adjust your limit, go to {{manageCard}}",
       "add_funds": "Add funds",
-      "error_title": "Can’t fetch data",
+      "error_title": "Can’t fetch data", 
       "error_description": "It seems that there is an issue preventing you from viewing the content on this page. Please check your connection or try refreshing the page.",
       "try_again": "Try again",
       "manage_card_options": {
