@@ -430,6 +430,24 @@ export class CardSDK {
     return allLogs;
   }
 
+  private get baanxClientKey() {
+    if (!process.env.MM_CARD_BAANX_API_CLIENT_ID) {
+      throw new Error('BAANX API client ID is not set');
+    }
+
+    return process.env.MM_CARD_BAANX_API_CLIENT_ID;
+  }
+
+  private getBaanxUrl() {}
+
+  async generateAuthorizationLink(input?: {
+    redirectUrl?: string;
+    state?: string;
+  }) {
+    const { redirectUrl = 'https://example.com', state = '0' } = input || {};
+    // Implementation here
+  }
+
   private findLastNonZeroApprovalToken(
     logs: (ethers.providers.Log & { tokenAddress: string })[],
   ): string | null {

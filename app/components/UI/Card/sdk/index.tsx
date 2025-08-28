@@ -30,6 +30,13 @@ export const CardSDKProvider = ({
   const cardFeatureFlag = useSelector(selectCardFeatureFlag);
 
   const [sdk, setSdk] = useState<CardSDK | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isLoadingAuthentication, setIsLoadingAuthentication] =
+    useState<boolean>(false);
+  const [authenticationToken, setAuthenticationToken] = useState<string | null>(
+    null,
+  );
+  const [refreshToken, setRefreshToken] = useState<string | null>(null);
 
   // Initialize CardholderSDK if card feature flag is enabled and chain ID is selected
   useEffect(() => {
@@ -43,6 +50,15 @@ export const CardSDKProvider = ({
       setSdk(null);
     }
   }, [cardFeatureFlag]);
+
+  useEffect(() => {
+    if (sdk && authenticationToken) {
+      sdk.setAuthenticationToken(authenticationToken);
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, [sdk]);
 
   const contextValue = useMemo(
     (): ICardSDK => ({
