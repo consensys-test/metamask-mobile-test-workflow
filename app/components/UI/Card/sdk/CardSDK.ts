@@ -438,14 +438,40 @@ export class CardSDK {
     return process.env.MM_CARD_BAANX_API_CLIENT_ID;
   }
 
-  private getBaanxUrl() {}
+  private getBaanxUrl() {
+    const url = new URL('', 'https://foxdev2-ag.foxcard.io');
+    const clientKey = this.baanxClientKey;
+    return {
+      url,
+      headers: {
+        'x-client-key': clientKey,
+      },
+    };
+  }
 
-  async generateAuthorizationLink(input?: {
+  private async generateAuthorizationLink(input?: {
     redirectUrl?: string;
     state?: string;
   }) {
-    const { redirectUrl = 'https://example.com', state = '0' } = input || {};
-    // Implementation here
+    const { redirectUrl = 'https://example.com', state = '-' } = input || {};
+    const { url, headers } = this.getBaanxUrl();
+    url.pathname = '/v1/auth/oauth/authorize/initiate';
+
+    const response = await fetch(url.toString(), {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        redirect_uri: redirectUrl,
+        state,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to generate authorization link');
+    }
+
+    const data = await response.json();
+    return data.hostedPageUrl as string;
   }
 
   private findLastNonZeroApprovalToken(
