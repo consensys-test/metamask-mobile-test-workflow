@@ -460,6 +460,7 @@ export class CardSDK {
     redirectUrl?: string;
     state?: string;
   }): Promise<string> => {
+    Logger.log('Generating card authorization link');
     const { redirectUrl = 'https://example.com', state = '-' } = input || {};
     const { url, headers } = this.getBaanxUrl();
     url.pathname = '/v1/auth/oauth/authorize/initiate';
@@ -485,14 +486,6 @@ export class CardSDK {
     }
 
     const data = await response.json();
-
-    this.logDebugInfo('generateAuthorizationLink', {
-      redirectUrl,
-      state,
-      responseData: data,
-      statusCode: response.status,
-      url: url.toString(),
-    });
 
     if (!data.hostedPageUrl) {
       throw new Error('No hostedPageUrl in response');

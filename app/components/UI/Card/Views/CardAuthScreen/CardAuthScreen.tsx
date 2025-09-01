@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Text, {
@@ -15,14 +15,17 @@ import { getCardNavbarOptions } from '../../../Navbar';
 import { strings } from '../../../../../../locales/i18n';
 import Logger from '../../../../../util/Logger';
 import WebView, { WebViewNavigation } from '@metamask/react-native-webview';
+import Loader from '../../../../../component-library/components-temp/Loader';
+import { createStyle } from './CardAuthScreen.styles';
 
 const CardAuthScreen: React.FC = () => {
   const navigation = useNavigation();
-  const { colors } = useTheme();
+  const theme = useTheme();
   const { generateAuthorizationLink, setAuthToken } = useCardSDK();
 
   const [authUrl, setAuthUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isWebviewLoading, setWebviewLoading] = useState(false);
 
   useEffect(() => {
     navigation.setOptions(
@@ -33,39 +36,12 @@ const CardAuthScreen: React.FC = () => {
           showBack: false,
           showClose: true,
         },
-        { colors },
+        theme,
       ),
     );
-  }, [navigation, colors]);
+  }, [navigation, theme]);
 
-  const styles = useMemo(
-    () => ({
-      container: {
-        flex: 1,
-        justifyContent: 'center' as const,
-        alignItems: 'center' as const,
-        padding: 20,
-        backgroundColor: colors.background.default,
-      },
-      content: {
-        width: '100%' as const,
-        maxWidth: 400,
-        alignItems: 'center' as const,
-      },
-      title: {
-        marginBottom: 16,
-        textAlign: 'center' as const,
-      },
-      description: {
-        marginBottom: 32,
-        textAlign: 'center' as const,
-      },
-      webView: {
-        flex: 1,
-      },
-    }),
-    [colors.background.default],
-  );
+  const styles = createStyle(theme);
 
   const handleGenerateAuthLink = async () => {
     setIsLoading(true);
@@ -132,12 +108,21 @@ const CardAuthScreen: React.FC = () => {
 
   if (authUrl) {
     return (
-      <WebView
-        key={authUrl}
-        source={{ uri: authUrl }}
-        style={styles.webView}
-        onNavigationStateChange={handleWebViewNavigationStateChange}
-      />
+      <>
+        <WebView
+          key={authUrl}
+          source={{ uri: authUrl }}
+          style={styles.webView}
+          onLoadStart={() => setWebviewLoading(true)}
+          onLoadEnd={() => setWebviewLoading(false)}
+          onNavigationStateChange={handleWebViewNavigationStateChange}
+        />
+        {isWebviewLoading && (
+          <View style={styles.loaderContainer}>
+            <Loader size="large" color={theme.colors.primary.default} />
+          </View>
+        )}
+      </>
     );
   }
 
