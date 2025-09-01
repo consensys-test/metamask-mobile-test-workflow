@@ -301,6 +301,7 @@ const Routes = {
   EDIT_ACCOUNT_NAME: 'EditAccountName',
   CARD: {
     ROOT: 'CardScreens',
+    AUTH_GUARD: 'CardAuthGuard',
     HOME: 'CardHome',
   },
   SEND: {

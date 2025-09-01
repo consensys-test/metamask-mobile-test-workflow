@@ -18,6 +18,7 @@ export class CardSDK {
   private cardFeatureFlag: CardFeatureFlag;
   private chainId: string | number;
   private enableLogs: boolean;
+  private authenticationToken: string | null = null;
 
   constructor({
     cardFeatureFlag,
@@ -32,6 +33,12 @@ export class CardSDK {
     this.chainId = getDecimalChainId(rawChainId);
     this.enableLogs = enableLogs;
   }
+
+  setAuthenticationToken = (token: string): void => {
+    this.authenticationToken = token;
+  };
+
+  getAuthenticationToken = (): string | null => this.authenticationToken;
 
   get isCardEnabled(): boolean {
     return (
@@ -449,30 +456,76 @@ export class CardSDK {
     };
   }
 
-  private async generateAuthorizationLink(input?: {
+  generateAuthorizationLink = async (input?: {
     redirectUrl?: string;
     state?: string;
-  }) {
+  }): Promise<string> => {
     const { redirectUrl = 'https://example.com', state = '-' } = input || {};
     const { url, headers } = this.getBaanxUrl();
     url.pathname = '/v1/auth/oauth/authorize/initiate';
 
     const response = await fetch(url.toString(), {
       method: 'POST',
-      headers,
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
-        redirect_uri: redirectUrl,
+        redirectUrl,
         state,
       }),
     });
 
     if (!response.ok) {
+      Logger.error(
+        new Error(`HTTP ${response.status}: ${response.statusText}`),
+        'Failed to generate authorization link',
+      );
       throw new Error('Failed to generate authorization link');
     }
 
     const data = await response.json();
+
+    this.logDebugInfo('generateAuthorizationLink', {
+      redirectUrl,
+      state,
+      responseData: data,
+      statusCode: response.status,
+      url: url.toString(),
+    });
+
+    if (!data.hostedPageUrl) {
+      throw new Error('No hostedPageUrl in response');
+    }
+
     return data.hostedPageUrl as string;
-  }
+  };
+
+  /**
+   * Makes an authenticated API request with automatic 401 error detection
+   */
+  authenticatedRequest = async (
+    url: string,
+    options: RequestInit = {},
+  ): Promise<Response> => {
+    if (!this.authenticationToken) {
+      throw new Error('No authentication token available');
+    }
+
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+        Authorization: `Bearer ${this.authenticationToken}`,
+      },
+    });
+
+    if (response.status === 401) {
+      throw new Error('Authentication token expired or invalid');
+    }
+
+    return response;
+  };
 
   private findLastNonZeroApprovalToken(
     logs: (ethers.providers.Log & { tokenAddress: string })[],

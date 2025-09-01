@@ -2088,6 +2088,60 @@ export function getDepositNavbarOptions(
   };
 }
 
+export function getCardNavbarOptions(
+  navigation,
+  { title, showBack = true, showClose = true },
+  theme,
+  onClose = undefined,
+) {
+  const leftAction = () => navigation.pop();
+
+  return {
+    title,
+    headerStyle: {
+      backgroundColor: theme.colors.background.default,
+      elevation: 0,
+      shadowOpacity: 0,
+    },
+    headerTitleStyle: {
+      fontWeight: '600',
+      fontSize: 18,
+      color: theme.colors.text.default,
+    },
+    headerTitle: () => (
+      <NavbarTitle
+        title={title}
+        disableNetwork
+        showSelectedNetwork={false}
+        translate={false}
+      />
+    ),
+    headerLeft: showBack
+      ? () => (
+          <ButtonIcon
+            onPress={leftAction}
+            iconName={IconName.ArrowLeft}
+            size={ButtonIconSize.Lg}
+            style={styles.headerLeftButton}
+          />
+        )
+      : null,
+    headerRight: showClose
+      ? () => (
+          <ButtonIcon
+            style={styles.headerRightButton}
+            iconName={IconName.Close}
+            size={ButtonIconSize.Lg}
+            onPress={() => {
+              navigation.dangerouslyGetParent()?.pop();
+              onClose?.();
+            }}
+          />
+        )
+      : null,
+  };
+}
+
 export function getFiatOnRampAggNavbar(
   navigation,
   { title = 'Buy', showBack = true, showCancel = true } = {},
