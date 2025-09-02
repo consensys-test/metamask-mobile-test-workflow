@@ -8,7 +8,7 @@ import { getDecimalChainId } from '../../../../util/networks';
 import { LINEA_DEFAULT_RPC_URL } from '../../../../constants/urls';
 import { BALANCE_SCANNER_ABI } from '../constants';
 import Logger from '../../../../util/Logger';
-import { CardToken } from '../types';
+import { BaanxUser, CardToken } from '../types';
 
 // The CardSDK class provides methods to interact with the Card feature
 // and check if an address is a card holder, get supported tokens, and more.
@@ -445,8 +445,8 @@ export class CardSDK {
     return process.env.MM_CARD_BAANX_API_CLIENT_ID;
   }
 
-  private getBaanxUrl() {
-    const url = new URL('', 'https://foxdev2-ag.foxcard.io');
+  private getBaanxUrl(path: string = '') {
+    const url = new URL(path, 'https://foxdev2-ag.foxcard.io');
     const clientKey = this.baanxClientKey;
     return {
       url,
@@ -462,8 +462,9 @@ export class CardSDK {
   }): Promise<string> => {
     Logger.log('Generating card authorization link');
     const { redirectUrl = 'https://example.com', state = '-' } = input || {};
-    const { url, headers } = this.getBaanxUrl();
-    url.pathname = '/v1/auth/oauth/authorize/initiate';
+    const { url, headers } = this.getBaanxUrl(
+      '/v1/auth/oauth/authorize/initiate',
+    );
 
     const response = await fetch(url.toString(), {
       method: 'POST',
@@ -509,6 +510,8 @@ export class CardSDK {
       ...options,
       headers: {
         ...options.headers,
+        'x-client-key': this.baanxClientKey,
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${this.authenticationToken}`,
       },
     });
@@ -518,6 +521,40 @@ export class CardSDK {
     }
 
     return response;
+  };
+
+  getUser = async (): Promise<BaanxUser> => {
+    Logger.log('Fetching user information');
+    const { url } = this.getBaanxUrl('/v1/user');
+    const response = await this.authenticatedRequest(url.toString());
+
+    if (!response.ok) {
+      Logger.error(
+        new Error(`HTTP ${response.status}: ${response.statusText}`),
+        'Failed to fetch user information',
+      );
+      throw new Error('Failed to fetch user information');
+    }
+
+    const data = await response.json();
+    return data as BaanxUser;
+  };
+
+  getExternalWallet = async (): Promise<any> => {
+    Logger.log('Fetching external wallet information');
+    const { url } = this.getBaanxUrl('/v1/wallet/external/priority');
+    const response = await this.authenticatedRequest(url.toString());
+
+    if (!response.ok) {
+      Logger.error(
+        new Error(`HTTP ${response.status}: ${response.statusText}`),
+        'Failed to fetch external wallet information',
+      );
+      throw new Error('Failed to fetch external wallet information');
+    }
+
+    const data = await response.json();
+    return data as any;
   };
 
   private findLastNonZeroApprovalToken(

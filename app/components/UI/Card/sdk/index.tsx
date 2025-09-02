@@ -18,6 +18,7 @@ import {
   storeCardToken,
 } from '../utils/CardTokenVault';
 import Logger from '../../../../util/Logger';
+import { BaanxUser } from '../types';
 
 export interface ICardSDK {
   sdk: CardSDK | null;
@@ -31,6 +32,8 @@ export interface ICardSDK {
     redirectUrl?: string;
     state?: string;
   }) => Promise<string | null>;
+  getUser: () => Promise<BaanxUser | null>;
+  getExternalWallet: () => Promise<any>;
 }
 
 interface ProviderProps<T> {
@@ -99,7 +102,6 @@ export const CardSDKProvider = ({
         const storeResult = await storeCardToken(token);
         if (storeResult.success) {
           setAuthToken(token);
-          // Authentication state will be updated by useEffect
           return true;
         }
         return false;
@@ -114,7 +116,6 @@ export const CardSDKProvider = ({
   const logoutFromCard = useCallback(async () => {
     await resetCardToken();
     setAuthToken(undefined);
-    // Authentication state will be updated by useEffect
   }, []);
 
   const generateAuthorizationLink = useCallback(
@@ -143,6 +144,43 @@ export const CardSDKProvider = ({
     [sdk],
   );
 
+  const getUser = useCallback(async () => {
+    if (!sdk) {
+      Logger.error(
+        new Error('SDK not initialized'),
+        'Card SDK not initialized for user retrieval',
+      );
+      return null;
+    }
+
+    try {
+      return await sdk.getUser();
+    } catch (error) {
+      Logger.error(error as Error, 'Error retrieving card user info');
+      return null;
+    }
+  }, [sdk]);
+
+  const getExternalWallet = useCallback(async () => {
+    if (!sdk) {
+      Logger.error(
+        new Error('SDK not initialized'),
+        'Card SDK not initialized for external wallet retrieval',
+      );
+      return null;
+    }
+
+    try {
+      return await sdk.getExternalWallet();
+    } catch (error) {
+      Logger.error(
+        error as Error,
+        'Error retrieving card external wallet info',
+      );
+      return null;
+    }
+  }, [sdk]);
+
   const contextValue = useMemo(
     (): ICardSDK => ({
       sdk,
@@ -153,6 +191,8 @@ export const CardSDKProvider = ({
       logoutFromCard,
       checkExistingToken,
       generateAuthorizationLink,
+      getUser,
+      getExternalWallet,
     }),
     [
       sdk,
@@ -163,6 +203,8 @@ export const CardSDKProvider = ({
       logoutFromCard,
       checkExistingToken,
       generateAuthorizationLink,
+      getUser,
+      getExternalWallet,
     ],
   );
 

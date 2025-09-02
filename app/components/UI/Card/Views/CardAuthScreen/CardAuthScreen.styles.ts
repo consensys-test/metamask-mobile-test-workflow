@@ -5,23 +5,23 @@ export const createStyle = (theme: Theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center' as const,
-      alignItems: 'center' as const,
-      padding: 20,
+      justifyContent: 'center',
+      alignItems: 'center',
       backgroundColor: theme.colors.background.default,
     },
     content: {
-      width: '100%' as const,
+      width: '100%',
       maxWidth: 400,
-      alignItems: 'center' as const,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     title: {
       marginBottom: 16,
-      textAlign: 'center' as const,
+      textAlign: 'center',
     },
     description: {
       marginBottom: 32,
-      textAlign: 'center' as const,
+      textAlign: 'center',
     },
     webView: {
       flex: 1,
@@ -32,5 +32,11 @@ export const createStyle = (theme: Theme) =>
       right: 0,
       bottom: 0,
       top: 0,
+    },
+    buttonContainer: {
+      marginTop: 20,
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   });

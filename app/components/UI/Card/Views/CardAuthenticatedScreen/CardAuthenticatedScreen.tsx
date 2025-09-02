@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Text, {
@@ -14,11 +14,15 @@ import { useCardSDK } from '../../sdk';
 import { getCardNavbarOptions } from '../../../Navbar';
 import { strings } from '../../../../../../locales/i18n';
 import Logger from '../../../../../util/Logger';
+import { createStyle } from './CardAuthenticatedScreen.styles';
+import { BaanxUser } from '../../types';
 
 const CardAuthenticatedScreen: React.FC = () => {
   const navigation = useNavigation();
-  const { colors } = useTheme();
-  const { authToken, logoutFromCard } = useCardSDK();
+  const theme = useTheme();
+  const styles = createStyle(theme);
+  const { logoutFromCard, getUser, authToken } = useCardSDK();
+  const [userInfo, setUserInfo] = useState<BaanxUser | null>(null);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
@@ -30,66 +34,10 @@ const CardAuthenticatedScreen: React.FC = () => {
           showBack: false,
           showClose: true,
         },
-        { colors },
+        theme,
       ),
     );
-  }, [navigation, colors]);
-
-  const styles = useMemo(
-    () => ({
-      container: {
-        flex: 1,
-        justifyContent: 'center' as const,
-        alignItems: 'center' as const,
-        padding: 20,
-        backgroundColor: colors.background.default,
-      },
-      content: {
-        width: '100%' as const,
-        maxWidth: 400,
-        alignItems: 'center' as const,
-      },
-      title: {
-        marginBottom: 16,
-        textAlign: 'center' as const,
-      },
-      description: {
-        marginBottom: 32,
-        textAlign: 'center' as const,
-      },
-      tokenContainer: {
-        marginBottom: 24,
-        padding: 16,
-        backgroundColor: colors.background.alternative,
-        borderRadius: 8,
-        width: '100%' as const,
-      },
-      tokenLabel: {
-        marginBottom: 8,
-        textAlign: 'center' as const,
-      },
-      tokenText: {
-        textAlign: 'center' as const,
-        fontFamily: 'monospace',
-      },
-      debugSection: {
-        marginTop: 32,
-        padding: 16,
-        backgroundColor: colors.background.alternative,
-        borderRadius: 8,
-        width: '100%' as const,
-      },
-      debugTitle: {
-        marginBottom: 12,
-        textAlign: 'center' as const,
-      },
-      debugDescription: {
-        marginBottom: 16,
-        textAlign: 'center' as const,
-      },
-    }),
-    [colors.background.default, colors.background.alternative],
-  );
+  }, [navigation, theme]);
 
   const handleLogout = async () => {
     Alert.alert(
@@ -107,8 +55,6 @@ const CardAuthenticatedScreen: React.FC = () => {
             setIsLoggingOut(true);
             try {
               await logoutFromCard();
-              Logger.log('Card authentication token cleared successfully');
-              // Authentication state change will trigger re-render in CardAuthGuard
             } catch (error) {
               Logger.error(
                 error as Error,
@@ -127,12 +73,15 @@ const CardAuthenticatedScreen: React.FC = () => {
     );
   };
 
-  const truncateToken = (token: string, maxLength: number = 20): string => {
-    if (token.length <= maxLength) return token;
-    const start = token.slice(0, maxLength / 2);
-    const end = token.slice(-maxLength / 2);
-    return `${start}...${end}`;
-  };
+  useEffect(() => {
+    const fetchUser = async () => {
+      Logger.log(authToken);
+      const user = await getUser();
+      setUserInfo(user);
+    };
+
+    fetchUser();
+  }, [getUser, authToken]);
 
   return (
     <View style={styles.container}>
@@ -153,22 +102,29 @@ const CardAuthenticatedScreen: React.FC = () => {
           You are successfully authenticated and ready to use Card features.
         </Text>
 
-        {authToken && (
+        {userInfo && (
           <View style={styles.tokenContainer}>
             <Text
               variant={TextVariant.BodySM}
               color={TextColor.Alternative}
               style={styles.tokenLabel}
             >
-              Authentication Token:
+              User Information:
             </Text>
-            <Text
-              variant={TextVariant.BodyXS}
-              color={TextColor.Default}
-              style={styles.tokenText}
-            >
-              {truncateToken(authToken, 40)}
-            </Text>
+            {/* Display user information in this format label: value. iterate using Object.entries */}
+            {userInfo && (
+              <View>
+                {Object.entries(userInfo).map(([label, value]) => (
+                  <Text
+                    key={label}
+                    variant={TextVariant.BodySM}
+                    color={TextColor.Alternative}
+                  >
+                    {label}: {value}
+                  </Text>
+                ))}
+              </View>
+            )}
           </View>
         )}
 

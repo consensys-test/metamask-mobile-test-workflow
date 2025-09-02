@@ -100,6 +100,8 @@ const CardAuthScreen: React.FC = () => {
       const sampleURL = new URL(event.url);
       const token = sampleURL.searchParams.get('token');
 
+      Logger.log('Extracted Token', { token });
+
       if (token) {
         handleTokenReceived(token);
       }
@@ -145,13 +147,15 @@ const CardAuthScreen: React.FC = () => {
           To continue, please authenticate your account to access Card features.
         </Text>
 
-        <Button
-          variant={ButtonVariants.Primary}
-          size={ButtonSize.Lg}
-          label={isLoading ? 'Generating...' : 'Start Authentication'}
-          onPress={handleGenerateAuthLink}
-          loading={isLoading}
-        />
+        <View style={styles.buttonContainer}>
+          <Button
+            variant={ButtonVariants.Primary}
+            size={ButtonSize.Lg}
+            label={isLoading ? 'Generating...' : 'Start Authentication'}
+            onPress={handleGenerateAuthLink}
+            loading={isLoading}
+          />
+        </View>
       </View>
     </View>
   );

@@ -23,3 +23,13 @@ export type CardTokenAllowance = {
   allowance: ethers.BigNumber;
 } & FlashListAssetKey &
   CardToken;
+
+export interface BaanxUser {
+  id: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: Date;
+  email: string;
+  verificationState: string;
+  createdAt: string;
+}
