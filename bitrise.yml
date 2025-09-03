@@ -250,6 +250,7 @@ stages:
       - build_ios_qa_flask: {}
   create_build_qa:
     workflows:
+      - set_e2e_target_workflow: {}
       - build_android_qa: {}
       - build_ios_qa: {}
   create_prod_builds:
@@ -3600,7 +3601,13 @@ workflows:
           inputs:
             - variables: |-
                 METAMASK_BUILD_TYPE=flask
-
+  set_e2e_target_workflow:
+    steps:
+      - share-pipeline-variable@1:
+          title: Persist IS_TEST across all stages and workflows
+          inputs:
+            - variables: |-
+                IS_TEST=true
 app:
   envs:
     - opts:
