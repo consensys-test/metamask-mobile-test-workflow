@@ -305,6 +305,7 @@ const Routes = {
     ROOT: 'CardScreens',
     AUTH_GUARD: 'CardAuthGuard',
     HOME: 'CardHome',
+    OPTIONS: 'CardOptions',
   },
   SEND: {
     RECIPIENT: 'Recipient',

@@ -16,9 +16,15 @@ import {
   getCardToken,
   resetCardToken,
   storeCardToken,
-} from '../utils/CardTokenVault';
+} from '../util/CardTokenVault';
 import Logger from '../../../../util/Logger';
-import { BaanxUser } from '../types';
+import {
+  BaanxCardDetails,
+  BaanxCardStatus,
+  BaanxExternalWallet,
+  BaanxExternalWalletPriority,
+  BaanxUser,
+} from '../types';
 
 export interface ICardSDK {
   sdk: CardSDK | null;
@@ -33,7 +39,12 @@ export interface ICardSDK {
     state?: string;
   }) => Promise<string | null>;
   getUser: () => Promise<BaanxUser | null>;
-  getExternalWallet: () => Promise<any>;
+  getExternalWallets: () => Promise<BaanxExternalWallet[] | null>;
+  getExternalWalletPriority: () => Promise<
+    BaanxExternalWalletPriority[] | null
+  >;
+  getCardStatus: () => Promise<BaanxCardStatus | null>;
+  getCardDetails: (isMetal: boolean) => Promise<BaanxCardDetails | null>;
 }
 
 interface ProviderProps<T> {
@@ -161,7 +172,7 @@ export const CardSDKProvider = ({
     }
   }, [sdk]);
 
-  const getExternalWallet = useCallback(async () => {
+  const getExternalWallets = useCallback(async () => {
     if (!sdk) {
       Logger.error(
         new Error('SDK not initialized'),
@@ -181,6 +192,63 @@ export const CardSDKProvider = ({
     }
   }, [sdk]);
 
+  const getExternalWalletPriority = useCallback(async () => {
+    if (!sdk) {
+      Logger.error(
+        new Error('SDK not initialized'),
+        'Card SDK not initialized for external wallet priority retrieval',
+      );
+      return null;
+    }
+
+    try {
+      return await sdk.getExternalWalletPriority();
+    } catch (error) {
+      Logger.error(
+        error as Error,
+        'Error retrieving card external wallet priority info',
+      );
+      return null;
+    }
+  }, [sdk]);
+
+  const getCardStatus = useCallback(async () => {
+    if (!sdk) {
+      Logger.error(
+        new Error('SDK not initialized'),
+        'Card SDK not initialized for card status retrieval',
+      );
+      return null;
+    }
+
+    try {
+      return await sdk.getCardStatus();
+    } catch (error) {
+      Logger.error(error as Error, 'Error retrieving card status');
+      return null;
+    }
+  }, [sdk]);
+
+  const getCardDetails = useCallback(
+    async (isMetal: boolean = false) => {
+      if (!sdk) {
+        Logger.error(
+          new Error('SDK not initialized'),
+          'Card SDK not initialized for card details retrieval',
+        );
+        return null;
+      }
+
+      try {
+        return await sdk.getCardDetails(isMetal);
+      } catch (error) {
+        Logger.error(error as Error, 'Error retrieving card details');
+        return null;
+      }
+    },
+    [sdk],
+  );
+
   const contextValue = useMemo(
     (): ICardSDK => ({
       sdk,
@@ -192,7 +260,10 @@ export const CardSDKProvider = ({
       checkExistingToken,
       generateAuthorizationLink,
       getUser,
-      getExternalWallet,
+      getExternalWallets,
+      getCardStatus,
+      getExternalWalletPriority,
+      getCardDetails,
     }),
     [
       sdk,
@@ -204,7 +275,10 @@ export const CardSDKProvider = ({
       checkExistingToken,
       generateAuthorizationLink,
       getUser,
-      getExternalWallet,
+      getExternalWallets,
+      getCardStatus,
+      getExternalWalletPriority,
+      getCardDetails,
     ],
   );
 

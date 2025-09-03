@@ -21,7 +21,7 @@ import { createStyle } from './CardAuthScreen.styles';
 const CardAuthScreen: React.FC = () => {
   const navigation = useNavigation();
   const theme = useTheme();
-  const { generateAuthorizationLink, setAuthToken } = useCardSDK();
+  const { generateAuthorizationLink, setAuthToken, sdk } = useCardSDK();
 
   const [authUrl, setAuthUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +33,7 @@ const CardAuthScreen: React.FC = () => {
         navigation,
         {
           title: strings('card.card') || 'MetaMask Card',
-          showBack: false,
+          showDevOptions: false,
           showClose: true,
         },
         theme,
@@ -73,10 +73,18 @@ const CardAuthScreen: React.FC = () => {
     }
   };
 
-  const handleTokenReceived = async (token: string) => {
+  const handleTokenReceived = async (initialToken: string) => {
     setIsLoading(true);
     try {
-      const success = await setAuthToken(token);
+      if (!sdk) {
+        throw new Error('Card SDK not initialized');
+      }
+
+      // Exchange the initial token for an access token
+      const { accessToken } = await sdk.generateAccessToken(initialToken);
+
+      // Store the access token to be used as Bearer for subsequent requests
+      const success = await setAuthToken(accessToken);
       if (success) {
         Logger.log('Card authentication successful');
         setAuthUrl(null);

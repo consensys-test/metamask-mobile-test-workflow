@@ -5,52 +5,29 @@ export const createStyle = (theme: Theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center' as const,
-      alignItems: 'center' as const,
-      padding: 20,
+      paddingHorizontal: 16,
       backgroundColor: theme.colors.background.default,
     },
-    content: {
-      width: '100%' as const,
-      maxWidth: 400,
-      alignItems: 'center' as const,
+    seeCardDetailsContainer: {
+      width: '100%',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginTop: 12,
     },
-    title: {
-      marginBottom: 16,
-      textAlign: 'center' as const,
+    divider: {
+      height: 1,
+      backgroundColor: theme.colors.border.default,
+      marginVertical: 12,
     },
-    description: {
-      marginBottom: 32,
-      textAlign: 'center' as const,
+    cardDetailsImage: {
+      width: '100%',
+      height: 232,
+      borderRadius: 12,
+      overflow: 'hidden',
     },
-    tokenContainer: {
-      marginBottom: 24,
-      padding: 16,
-      backgroundColor: theme.colors.background.alternative,
-      borderRadius: 8,
-      width: '100%' as const,
-    },
-    tokenLabel: {
-      marginBottom: 8,
-      textAlign: 'center' as const,
-    },
-    tokenText: {
-      textAlign: 'center' as const,
-      fontFamily: 'monospace',
-    },
-    debugSection: {
-      marginTop: 32,
-      padding: 16,
-      backgroundColor: theme.colors.background.alternative,
-      borderRadius: 8,
-      width: '100%' as const,
-    },
-    debugTitle: {
-      marginBottom: 12,
-      textAlign: 'center' as const,
-    },
-    debugDescription: {
-      marginBottom: 16,
-      textAlign: 'center' as const,
+    cardImageContainer: {
+      width: '100%',
+      marginTop: 8,
     },
   });

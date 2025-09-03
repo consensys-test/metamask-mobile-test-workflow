@@ -33,3 +33,43 @@ export interface BaanxUser {
   verificationState: string;
   createdAt: string;
 }
+
+export interface BaanxExternalWallet {
+  address: string;
+  currency: string;
+  balance: string;
+  allowance: string;
+  chain: string;
+}
+
+export interface BaanxExternalWalletPriority {
+  address: string;
+  chain: string;
+  currency: string;
+  id: number;
+  priority: number;
+}
+
+export interface BaanxCardStatus {
+  id: string;
+  holderName: string;
+  expiryDate: string;
+  panLast4: string;
+  status: string;
+  type: string;
+  orderedAt: string;
+}
+
+export interface BaanxCardDetails {
+  token: string;
+  hostedPageUrl: string;
+  imageUrl: string;
+}
+
+export interface BaanxExternalWalletWithPriority
+  extends BaanxExternalWallet,
+    BaanxExternalWalletPriority {
+  tokenAddress?: string | null;
+  decimals?: number | null;
+  name?: string | null;
+}

@@ -1,29 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import { View, Alert } from 'react-native';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+} from 'react';
+import { View, Image, Switch } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Text, {
   TextVariant,
   TextColor,
 } from '../../../../../component-library/components/Texts/Text';
-import Button, {
-  ButtonVariants,
-  ButtonSize,
-} from '../../../../../component-library/components/Buttons/Button';
 import { useTheme } from '../../../../../util/theme';
 import { useCardSDK } from '../../sdk';
 import { getCardNavbarOptions } from '../../../Navbar';
 import { strings } from '../../../../../../locales/i18n';
-import Logger from '../../../../../util/Logger';
 import { createStyle } from './CardAuthenticatedScreen.styles';
-import { BaanxUser } from '../../types';
+import {
+  BaanxCardDetails,
+  BaanxCardStatus,
+  BaanxExternalWalletWithPriority,
+} from '../../types';
+import CardImage from '../../components/CardImage';
+import Loader from '../../../../../component-library/components-temp/Loader';
+import Logger from '../../../../../util/Logger';
+import SpendPriorityBottomSheet from '../../components/SpendPriorityBottomSheet';
+import { BottomSheetRef } from '../../../../../component-library/components/BottomSheets/BottomSheet';
+import { Button, ButtonVariant } from '@metamask/design-system-react-native';
 
 const CardAuthenticatedScreen: React.FC = () => {
   const navigation = useNavigation();
   const theme = useTheme();
   const styles = createStyle(theme);
-  const { logoutFromCard, getUser, authToken } = useCardSDK();
-  const [userInfo, setUserInfo] = useState<BaanxUser | null>(null);
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const {
+    getExternalWallets,
+    getUser,
+    authToken,
+    getCardStatus,
+    getExternalWalletPriority,
+    getCardDetails,
+    sdk,
+  } = useCardSDK();
+  const [loading, setLoading] = useState(true);
+  const [isSwitchEnabled, setIsSwitchEnabled] = useState(false);
+  const [error, setError] = useState(false);
+  const [externalWallets, setExternalWallets] = useState<
+    BaanxExternalWalletWithPriority[] | null
+  >(null);
+  const [openSpendPriorityBottomSheet, setOpenSpendPriorityBottomSheet] =
+    useState(false);
+  const [cardDetailsImage, setCardDetailsImage] =
+    useState<BaanxCardDetails | null>(null);
+  const [cardStatus, setCardStatus] = useState<BaanxCardStatus | null>(null);
+  const sheetRef = useRef<BottomSheetRef>(null);
 
   useEffect(() => {
     navigation.setOptions(
@@ -31,129 +60,164 @@ const CardAuthenticatedScreen: React.FC = () => {
         navigation,
         {
           title: strings('card.card') || 'MetaMask Card',
-          showBack: false,
           showClose: true,
+          showDevOptions: true,
         },
         theme,
       ),
     );
   }, [navigation, theme]);
 
-  const handleLogout = async () => {
-    Alert.alert(
-      'Clear Authentication Token',
-      'This will clear your authentication token and you will need to log in again. This is for debugging purposes only.',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Clear Token',
-          style: 'destructive',
-          onPress: async () => {
-            setIsLoggingOut(true);
-            try {
-              await logoutFromCard();
-            } catch (error) {
-              Logger.error(
-                error as Error,
-                'Failed to clear card authentication token',
-              );
-              Alert.alert(
-                'Error',
-                'Failed to clear authentication token. Please try again.',
-              );
-            } finally {
-              setIsLoggingOut(false);
-            }
-          },
-        },
-      ],
-    );
-  };
-
   useEffect(() => {
     const fetchUser = async () => {
-      Logger.log(authToken);
-      const user = await getUser();
-      setUserInfo(user);
+      try {
+        const [wallets, walletsPriority, status] = await Promise.all([
+          getExternalWallets(),
+          getExternalWalletPriority(),
+          getCardStatus(),
+        ]);
+        setCardStatus(status);
+
+        if (wallets?.length && walletsPriority?.length) {
+          const walletsWithPriority = wallets.map((wallet) => {
+            const priority = walletsPriority.find(
+              (p) => p.currency.toLowerCase() === wallet.currency.toLowerCase(),
+            );
+            const sdkSupportedTokens = sdk?.supportedTokens;
+            Logger.log('sdkSupportedTokens', sdkSupportedTokens);
+            const supportedToken = sdkSupportedTokens?.find(
+              (token) =>
+                token?.symbol?.toLowerCase() === wallet.currency.toLowerCase(),
+            );
+            Logger.log('supportedToken', supportedToken);
+            if (!priority) {
+              return {
+                ...wallet,
+                id: 0,
+                priority: 0,
+              };
+            }
+
+            const aggregatedWallet: BaanxExternalWalletWithPriority = {
+              ...wallet,
+              ...priority,
+            };
+
+            if (supportedToken) {
+              aggregatedWallet.tokenAddress = supportedToken.address;
+              aggregatedWallet.decimals = supportedToken.decimals;
+              aggregatedWallet.name = supportedToken.name;
+            }
+
+            return aggregatedWallet;
+          });
+          // sort to the highest priority first
+          walletsWithPriority.sort((a, b) => b.priority - a.priority);
+          setExternalWallets(walletsWithPriority);
+        }
+      } catch (err) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchUser();
-  }, [getUser, authToken]);
+  }, [
+    getUser,
+    authToken,
+    getExternalWallets,
+    getCardStatus,
+    getExternalWalletPriority,
+    sdk?.supportedTokens,
+  ]);
+
+  const isMetal = useMemo(() => cardStatus?.type === 'METAL', [cardStatus]);
+
+  const fetchCardDetails = async () => {
+    if (!authToken) {
+      Logger.error(new Error('No auth token'), 'Card details fetch failed');
+      return;
+    }
+
+    try {
+      const cardDetails = await getCardDetails(isMetal);
+      if (cardDetails) {
+        setCardDetailsImage(cardDetails);
+      }
+    } catch (err) {
+      Logger.error(err as Error, 'Error fetching card details');
+    }
+  };
+
+  const changeSwitch = (value: boolean) => {
+    setIsSwitchEnabled(value);
+    if (value) {
+      fetchCardDetails();
+    } else {
+      setCardDetailsImage(null);
+    }
+  };
+
+  const renderSpendPriorityBottomSheet = useCallback(
+    () => (
+      <SpendPriorityBottomSheet
+        sheetRef={sheetRef}
+        setOpenSpendPriorityBottomSheet={setOpenSpendPriorityBottomSheet}
+        tokens={externalWallets ?? []}
+      />
+    ),
+    [sheetRef, setOpenSpendPriorityBottomSheet, externalWallets],
+  );
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
-        <Text
-          variant={TextVariant.HeadingLG}
-          color={TextColor.Default}
-          style={styles.title}
-        >
-          MetaMask Card
+      {error ? (
+        <Text variant={TextVariant.BodySM} color={TextColor.Error}>
+          Error loading Card information
         </Text>
-
-        <Text
-          variant={TextVariant.BodyMD}
-          color={TextColor.Alternative}
-          style={styles.description}
-        >
-          You are successfully authenticated and ready to use Card features.
-        </Text>
-
-        {userInfo && (
-          <View style={styles.tokenContainer}>
-            <Text
-              variant={TextVariant.BodySM}
-              color={TextColor.Alternative}
-              style={styles.tokenLabel}
-            >
-              User Information:
-            </Text>
-            {/* Display user information in this format label: value. iterate using Object.entries */}
-            {userInfo && (
-              <View>
-                {Object.entries(userInfo).map(([label, value]) => (
-                  <Text
-                    key={label}
-                    variant={TextVariant.BodySM}
-                    color={TextColor.Alternative}
-                  >
-                    {label}: {value}
-                  </Text>
-                ))}
-              </View>
-            )}
-          </View>
-        )}
-
-        <View style={styles.debugSection}>
-          <Text
-            variant={TextVariant.BodyMD}
-            color={TextColor.Alternative}
-            style={styles.debugTitle}
-          >
-            Debug Options
-          </Text>
-
-          <Text
-            variant={TextVariant.BodySM}
-            color={TextColor.Alternative}
-            style={styles.debugDescription}
-          >
-            Clear your authentication token to test the login flow again.
-          </Text>
-
-          <Button
-            variant={ButtonVariants.Secondary}
-            size={ButtonSize.Lg}
-            label={isLoggingOut ? 'Clearing Token...' : 'Clear Auth Token'}
-            onPress={handleLogout}
-            loading={isLoggingOut}
-          />
+      ) : (
+        <View style={styles.cardImageContainer}>
+          {cardDetailsImage ? (
+            <Image
+              source={{ uri: cardDetailsImage.imageUrl }}
+              style={styles.cardDetailsImage}
+            />
+          ) : (
+            <CardImage
+              isMetal={isMetal}
+              allowance={externalWallets?.[0]?.allowance}
+              currency={externalWallets?.[0]?.currency}
+              address={externalWallets?.[0]?.address}
+            />
+          )}
         </View>
+      )}
+
+      <View style={styles.seeCardDetailsContainer}>
+        <Text variant={TextVariant.HeadingSM}>View credit card details</Text>
+        <Switch
+          value={isSwitchEnabled}
+          onValueChange={changeSwitch}
+          disabled={!cardStatus}
+        />
       </View>
+
+      <View style={styles.divider} />
+
+      <Button
+        variant={ButtonVariant.Primary}
+        onPress={() => setOpenSpendPriorityBottomSheet(true)}
+        isFullWidth
+      >
+        Spend Priority
+      </Button>
+
+      {openSpendPriorityBottomSheet && renderSpendPriorityBottomSheet()}
     </View>
   );
 };

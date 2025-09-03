@@ -2090,11 +2090,12 @@ export function getDepositNavbarOptions(
 
 export function getCardNavbarOptions(
   navigation,
-  { title, showBack = true, showClose = true },
+  { title, showDevOptions = true, showGoBack = false, showClose = true },
   theme,
   onClose = undefined,
 ) {
-  const leftAction = () => navigation.pop();
+  const goBackAction = () => navigation.pop();
+  const openDevOptions = () => navigation.navigate(Routes.CARD.OPTIONS);
 
   return {
     title,
@@ -2116,11 +2117,20 @@ export function getCardNavbarOptions(
         translate={false}
       />
     ),
-    headerLeft: showBack
+    headerLeft: showGoBack
       ? () => (
           <ButtonIcon
-            onPress={leftAction}
+            onPress={goBackAction}
             iconName={IconName.ArrowLeft}
+            size={ButtonIconSize.Lg}
+            style={styles.headerLeftButton}
+          />
+        )
+      : showDevOptions
+      ? () => (
+          <ButtonIcon
+            onPress={openDevOptions}
+            iconName={IconName.Menu}
             size={ButtonIconSize.Lg}
             style={styles.headerLeftButton}
           />

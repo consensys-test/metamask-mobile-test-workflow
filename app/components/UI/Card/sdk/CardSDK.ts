@@ -1,3 +1,4 @@
+/* eslint-disable @metamask/design-tokens/color-no-hex */
 import { ethers } from 'ethers';
 import {
   CardFeatureFlag,
@@ -8,7 +9,14 @@ import { getDecimalChainId } from '../../../../util/networks';
 import { LINEA_DEFAULT_RPC_URL } from '../../../../constants/urls';
 import { BALANCE_SCANNER_ABI } from '../constants';
 import Logger from '../../../../util/Logger';
-import { BaanxUser, CardToken } from '../types';
+import {
+  BaanxCardDetails,
+  BaanxCardStatus,
+  BaanxExternalWallet,
+  BaanxExternalWalletPriority,
+  BaanxUser,
+  CardToken,
+} from '../types';
 
 // The CardSDK class provides methods to interact with the Card feature
 // and check if an address is a card holder, get supported tokens, and more.
@@ -452,6 +460,7 @@ export class CardSDK {
       url,
       headers: {
         'x-client-key': clientKey,
+        'Content-Type': 'application/json',
       },
     };
   }
@@ -468,10 +477,7 @@ export class CardSDK {
 
     const response = await fetch(url.toString(), {
       method: 'POST',
-      headers: {
-        ...headers,
-        'Content-Type': 'application/json',
-      },
+      headers,
       body: JSON.stringify({
         redirectUrl,
         state,
@@ -493,6 +499,42 @@ export class CardSDK {
     }
 
     return data.hostedPageUrl as string;
+  };
+
+  generateAccessToken = async (
+    initialToken: string,
+  ): Promise<{
+    accessToken: string;
+    refreshToken: string;
+  }> => {
+    const { url, headers } = this.getBaanxUrl('/v1/auth/oauth/token');
+
+    const response = await fetch(url.toString(), {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        token: initialToken,
+      }),
+    });
+
+    if (!response.ok) {
+      Logger.error(
+        new Error(`HTTP ${response.status}: ${response.statusText}`),
+        'Failed to generate accessToken',
+      );
+      throw new Error('Failed to generate accessToken');
+    }
+
+    const data = await response.json();
+
+    if (!data.accessToken || !data.refreshToken) {
+      throw new Error('No accessToken or refreshToken in response');
+    }
+
+    return {
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
+    };
   };
 
   /**
@@ -524,7 +566,6 @@ export class CardSDK {
   };
 
   getUser = async (): Promise<BaanxUser> => {
-    Logger.log('Fetching user information');
     const { url } = this.getBaanxUrl('/v1/user');
     const response = await this.authenticatedRequest(url.toString());
 
@@ -540,9 +581,26 @@ export class CardSDK {
     return data as BaanxUser;
   };
 
-  getExternalWallet = async (): Promise<any> => {
-    Logger.log('Fetching external wallet information');
+  getExternalWalletPriority = async (): Promise<
+    BaanxExternalWalletPriority[]
+  > => {
     const { url } = this.getBaanxUrl('/v1/wallet/external/priority');
+    const response = await this.authenticatedRequest(url.toString());
+
+    if (!response.ok) {
+      Logger.error(
+        new Error(`HTTP ${response.status}: ${response.statusText}`),
+        'Failed to fetch external wallet priority information',
+      );
+      throw new Error('Failed to fetch external wallet priority information');
+    }
+
+    const data = await response.json();
+    return data as BaanxExternalWalletPriority[];
+  };
+
+  getExternalWallet = async (): Promise<BaanxExternalWallet[]> => {
+    const { url } = this.getBaanxUrl('/v1/wallet/external');
     const response = await this.authenticatedRequest(url.toString());
 
     if (!response.ok) {
@@ -554,7 +612,62 @@ export class CardSDK {
     }
 
     const data = await response.json();
-    return data as any;
+    return data as BaanxExternalWallet[];
+  };
+
+  getCardStatus = async (): Promise<BaanxCardStatus> => {
+    const { url } = this.getBaanxUrl('/v1/card/status');
+    const response = await this.authenticatedRequest(url.toString());
+
+    if (!response.ok) {
+      Logger.error(
+        new Error(`HTTP ${response.status}: ${response.statusText}`),
+        'Failed to fetch card status information',
+      );
+      throw new Error('Failed to fetch card status information');
+    }
+
+    const data = await response.json();
+    return data as BaanxCardStatus;
+  };
+
+  getCardDetails = async (
+    isMetal: boolean = false,
+  ): Promise<BaanxCardDetails> => {
+    const { url } = this.getBaanxUrl('/v1/card/details/token');
+    const customCss = {
+      metal: {
+        cardBackgroundColor: '#3D065F',
+        cardTextColor: '#FFF',
+        panBackgroundColor: '#696A70',
+        panTextColor: '#FFF',
+      },
+      default: {
+        cardBackgroundColor: '#FF5C16',
+        cardTextColor: '#FFF',
+        panBackgroundColor: '#FFF',
+        panTextColor: '#000',
+      },
+    };
+    const response = await this.authenticatedRequest(url.toString(), {
+      method: 'POST',
+      body: JSON.stringify({
+        redirectUrl: 'https://example.com',
+        isEmbedded: true,
+        customCss: isMetal ? customCss.metal : customCss.default,
+      }),
+    });
+
+    if (!response.ok) {
+      Logger.error(
+        new Error(`HTTP ${response.status}: ${response.statusText}`),
+        'Failed to fetch card details information',
+      );
+      throw new Error('Failed to fetch card details information');
+    }
+
+    const data = await response.json();
+    return data as BaanxCardDetails;
   };
 
   private findLastNonZeroApprovalToken(
