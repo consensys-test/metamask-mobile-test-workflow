@@ -34,7 +34,6 @@ const CardAuthenticatedScreen: React.FC = () => {
   const styles = createStyle(theme);
   const {
     getExternalWallets,
-    getUser,
     authToken,
     getCardStatus,
     getExternalWalletPriority,
@@ -68,14 +67,30 @@ const CardAuthenticatedScreen: React.FC = () => {
     );
   }, [navigation, theme]);
 
+  // Fetch card-related data once per authToken change to avoid re-fetch loops
+  const lastFetchedAuthToken = useRef<string | null>(null);
   useEffect(() => {
-    const fetchUser = async () => {
+    if (!authToken) {
+      return;
+    }
+
+    // Prevent repeated fetches for the same token
+    if (lastFetchedAuthToken.current === authToken) {
+      return;
+    }
+    lastFetchedAuthToken.current = authToken;
+
+    let isMounted = true;
+    const fetchData = async () => {
       try {
         const [wallets, walletsPriority, status] = await Promise.all([
           getExternalWallets(),
           getExternalWalletPriority(),
           getCardStatus(),
         ]);
+
+        if (!isMounted) return;
+
         setCardStatus(status);
 
         if (wallets?.length && walletsPriority?.length) {
@@ -116,20 +131,26 @@ const CardAuthenticatedScreen: React.FC = () => {
           setExternalWallets(walletsWithPriority);
         }
       } catch (err) {
+        if (!isMounted) return;
         setError(true);
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
-    fetchUser();
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [
-    getUser,
     authToken,
     getExternalWallets,
-    getCardStatus,
     getExternalWalletPriority,
-    sdk?.supportedTokens,
+    getCardStatus,
+    sdk,
   ]);
 
   const isMetal = useMemo(() => cardStatus?.type === 'METAL', [cardStatus]);
