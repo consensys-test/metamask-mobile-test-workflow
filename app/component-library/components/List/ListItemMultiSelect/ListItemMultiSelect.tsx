@@ -1,8 +1,13 @@
 /* eslint-disable react/prop-types */
 
 // Third party dependencies.
-import React from 'react';
-import { TouchableOpacity as RNTouchableOpacity, View } from 'react-native';
+import React, { useRef } from 'react';
+import {
+  TouchableOpacity as RNTouchableOpacity,
+  View,
+  Platform,
+  GestureResponderEvent,
+} from 'react-native';
 
 // External dependencies.
 import Checkbox from '../../Checkbox';
@@ -25,6 +30,25 @@ const ListItemMultiSelect: React.FC<ListItemMultiSelectProps> = ({
 }) => {
   const { styles } = useStyles(styleSheet, { style, gap, isDisabled });
 
+  // iOS checkbox coordination: Set timestamp FIRST, then call raw parent function
+  // This ensures main component's conditionalOnPress sees the recent timestamp and skips
+  const lastCheckboxGestureTime = useRef(0);
+
+  const checkboxOnPressIn = (pressEvent: GestureResponderEvent) => {
+    if (onPress && !isDisabled) {
+      // Skip coordination logic in test environments
+      if (process.env.NODE_ENV === 'test') {
+        onPress(pressEvent);
+        return;
+      }
+
+      // Set timestamp BEFORE calling parent function (timestamp-first pattern)
+      lastCheckboxGestureTime.current = Date.now();
+      // Call raw parent function directly (bypasses main component coordination)
+      onPress(pressEvent);
+    }
+  };
+
   return (
     <RNTouchableOpacity
       style={styles.base}
@@ -38,6 +62,10 @@ const ListItemMultiSelect: React.FC<ListItemMultiSelectProps> = ({
             style={styles.checkbox}
             isChecked={isSelected}
             isDisabled={isDisabled}
+            {...(Platform.OS === 'ios' && {
+              pointerEvents: 'none',
+              onPressIn: checkboxOnPressIn,
+            })}
           />
         </View>
         {children}

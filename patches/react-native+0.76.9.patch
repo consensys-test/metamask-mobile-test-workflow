@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native/Libraries/Components/Pressable/Pressable.js b/node_modules/react-native/Libraries/Components/Pressable/Pressable.js
-index bd0d6a4..9c0de95 100644
+index bd0d6a4..0bd3ecc 100644
 --- a/node_modules/react-native/Libraries/Components/Pressable/Pressable.js
 +++ b/node_modules/react-native/Libraries/Components/Pressable/Pressable.js
 @@ -31,6 +31,19 @@ import useAndroidRippleForView, {
@@ -31,7 +31,7 @@ index bd0d6a4..9c0de95 100644
    props: Props,
    forwardedRef: React.RefSetter<Instance>,
  ): React.Node {
-@@ -360,6 +373,99 @@ function usePressState(forcePressed: boolean): [boolean, (boolean) => void] {
+@@ -360,6 +373,121 @@ function usePressState(forcePressed: boolean): [boolean, (boolean) => void] {
    return [pressed || forcePressed, setPressed];
  }
  
@@ -63,9 +63,33 @@ index bd0d6a4..9c0de95 100644
 +    GestureDetector && 
 +    onPress;
 +
++  // Shared coordination system for maximum reliability
++  // Both gesture handler and accessibility handler use the same timestamp reference
++  const lastPressTimeRef = useRef(0);
++  const COORDINATION_WINDOW = 100; // 100ms window for TalkBack compatibility
++
++  // Conditional onPress with double-press prevention
++  const conditionalOnPress = useMemo(() => (pressEvent) => {
++    if (isDisabled || !onPress) return;
++
++    // Skip coordination logic in test environments
++    if (isUnitTest || isE2ETest) {
++      onPress(pressEvent);
++      return;
++    }
++
++    const now = Date.now();
++    const timeSinceLastPress = now - lastPressTimeRef.current;
++
++    if (timeSinceLastPress > COORDINATION_WINDOW) {
++      lastPressTimeRef.current = now;
++      onPress(pressEvent);
++    }
++  }, [onPress, isDisabled, isUnitTest, isE2ETest]);
++
 +  if (!shouldUseGestureWrapper) {
 +    // Use original Pressable for non-Android or test environments
-+    return <PressableInternal {...props} ref={forwardedRef} />;
++    return <PressableInternal {...props} onPress={conditionalOnPress} ref={forwardedRef} />;
 +  }
 +
 +  // Gesture detection for ScrollView compatibility on Android
@@ -96,15 +120,13 @@ index bd0d6a4..9c0de95 100644
 +          },
 +        };
 +
-+        onPress(syntheticEvent);
++        conditionalOnPress(syntheticEvent);
 +      }
 +    });
 +
-+  // Simple accessibility handler - preserves accessibility without ScrollView conflicts
++  // Simple accessibility handler with double-press prevention
 +  const accessibilityOnPress = (pressEvent) => {
-+    if (onPress && !isDisabled) {
-+      onPress(pressEvent);
-+    }
++    conditionalOnPress(pressEvent);
 +  };
 +
 +  return (
@@ -132,7 +154,7 @@ index bd0d6a4..9c0de95 100644
  MemoedPressable.displayName = 'Pressable';
  
 diff --git a/node_modules/react-native/Libraries/Components/Touchable/TouchableOpacity.js b/node_modules/react-native/Libraries/Components/Touchable/TouchableOpacity.js
-index 14ca87a..fb779ff 100644
+index 14ca87a..78ad6fe 100644
 --- a/node_modules/react-native/Libraries/Components/Touchable/TouchableOpacity.js
 +++ b/node_modules/react-native/Libraries/Components/Touchable/TouchableOpacity.js
 @@ -21,6 +21,18 @@ import flattenStyle from '../../StyleSheet/flattenStyle';
@@ -154,7 +176,7 @@ index 14ca87a..fb779ff 100644
  type TVProps = $ReadOnly<{|
    hasTVPreferredFocus?: ?boolean,
    nextFocusDown?: ?number,
-@@ -326,11 +338,95 @@ class TouchableOpacity extends React.Component<Props, State> {
+@@ -326,11 +338,117 @@ class TouchableOpacity extends React.Component<Props, State> {
    }
  }
  
@@ -183,9 +205,33 @@ index 14ca87a..fb779ff 100644
 +    GestureDetector && 
 +    onPress;
 +
++  // Shared coordination system for maximum reliability
++  // Both gesture handler and accessibility handler use the same timestamp reference
++  const lastPressTimeRef = React.useRef(0);
++  const COORDINATION_WINDOW = 100; // 100ms window for TalkBack compatibility
++
++  // Conditional onPress with double-press prevention
++  const conditionalOnPress = React.useCallback((pressEvent) => {
++    if (isDisabled || !onPress) return;
++
++    // Skip coordination logic in test environments
++    if (isUnitTest || isE2ETest) {
++      onPress(pressEvent);
++      return;
++    }
++
++    const now = Date.now();
++    const timeSinceLastPress = now - lastPressTimeRef.current;
++
++    if (timeSinceLastPress > COORDINATION_WINDOW) {
++      lastPressTimeRef.current = now;
++      onPress(pressEvent);
++    }
++  }, [onPress, isDisabled, isUnitTest, isE2ETest]);
++
 +  if (!shouldUseGestureWrapper) {
 +    // Use original TouchableOpacity for non-Android or test environments
-+    return <TouchableOpacity {...props} />;
++    return <TouchableOpacity {...props} onPress={conditionalOnPress} />;
 +  }
 +
 +  // Gesture detection for ScrollView compatibility on Android
@@ -216,15 +262,13 @@ index 14ca87a..fb779ff 100644
 +          },
 +        };
 +
-+        onPress(syntheticEvent);
++        conditionalOnPress(syntheticEvent);
 +      }
 +    });
 +
-+  // Simple accessibility handler - preserves accessibility without ScrollView conflicts
++  // Simple accessibility handler with double-press prevention
 +  const accessibilityOnPress = (pressEvent) => {
-+    if (onPress && !isDisabled) {
-+      onPress(pressEvent);
-+    }
++    conditionalOnPress(pressEvent);
 +  };
 +
 +  return (
@@ -251,3 +295,47 @@ index 14ca87a..fb779ff 100644
  ));
  
  Touchable.displayName = 'TouchableOpacity';
+diff --git a/node_modules/react-native/React/Views/RCTModalHostViewManager.m b/node_modules/react-native/React/Views/RCTModalHostViewManager.m
+index 8407662..8b90b68 100644
+--- a/node_modules/react-native/React/Views/RCTModalHostViewManager.m
++++ b/node_modules/react-native/React/Views/RCTModalHostViewManager.m
+@@ -64,9 +64,9 @@ - (void)presentModalHostView:(RCTModalHostView *)modalHostView
+     if (self->_presentationBlock) {
+       self->_presentationBlock([modalHostView reactViewController], viewController, animated, completionBlock);
+     } else {
+-      [[self _topMostViewControllerFrom:[modalHostView reactViewController]] presentViewController:viewController
+-                                                                                          animated:animated
+-                                                                                        completion:completionBlock];
++          [[modalHostView reactViewController] presentViewController:viewController
++                                                        animated:animated
++                                                      completion:completionBlock];
+     }
+   });
+ }
+@@ -107,26 +107,6 @@ - (void)invalidate
+   _hostViews = nil;
+ }
+ 
+-#pragma mark - Private
+-
+-- (UIViewController *)_topMostViewControllerFrom:(UIViewController *)rootViewController
+-{
+-  UIViewController *topController = rootViewController;
+-  while (topController.presentedViewController) {
+-    topController = topController.presentedViewController;
+-  }
+-  if ([topController isKindOfClass:[UINavigationController class]]) {
+-    UINavigationController *navigationController = (UINavigationController *)topController;
+-    topController = navigationController.visibleViewController;
+-    return [self _topMostViewControllerFrom:topController];
+-  } else if ([topController isKindOfClass:[UITabBarController class]]) {
+-    UITabBarController *tabBarController = (UITabBarController *)topController;
+-    topController = tabBarController.selectedViewController;
+-    return [self _topMostViewControllerFrom:topController];
+-  }
+-  return topController;
+-}
+-
+ RCT_EXPORT_VIEW_PROPERTY(animationType, NSString)
+ RCT_EXPORT_VIEW_PROPERTY(presentationStyle, UIModalPresentationStyle)
+ RCT_EXPORT_VIEW_PROPERTY(transparent, BOOL)
