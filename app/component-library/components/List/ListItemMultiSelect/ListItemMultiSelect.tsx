@@ -30,6 +30,10 @@ const ListItemMultiSelect: React.FC<ListItemMultiSelectProps> = ({
 }) => {
   const { styles } = useStyles(styleSheet, { style, gap, isDisabled });
 
+  const isE2ETest =
+    process.env.IS_TEST === 'true' ||
+    process.env.METAMASK_ENVIRONMENT === 'e2e';
+  const isUnitTest = process.env.NODE_ENV === 'test';
   // iOS checkbox coordination: Set timestamp FIRST, then call raw parent function
   // This ensures main component's conditionalOnPress sees the recent timestamp and skips
   const lastCheckboxGestureTime = useRef(0);
@@ -57,15 +61,24 @@ const ListItemMultiSelect: React.FC<ListItemMultiSelectProps> = ({
       {...props}
     >
       <ListItem gap={gap} style={styles.listItem}>
-        <View>
+        <View
+          pointerEvents={
+            Platform.OS === 'android' && !isE2ETest && !isUnitTest
+              ? 'none' // On Android, make checkbox non-interactive to prevent double firing
+              : 'auto' // On other platforms, allow normal interaction
+          }
+        >
           <Checkbox
             style={styles.checkbox}
             isChecked={isSelected}
             isDisabled={isDisabled}
-            {...(Platform.OS === 'ios' && {
-              pointerEvents: 'none',
-              onPressIn: checkboxOnPressIn,
-            })}
+            onPressIn={
+              Platform.OS === 'android'
+                ? undefined // Android uses main gesture handler only
+                : isDisabled
+                ? undefined
+                : checkboxOnPressIn // iOS/other platforms use checkbox onPressIn
+            }
           />
         </View>
         {children}
