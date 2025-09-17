@@ -37,6 +37,7 @@ import { strings } from '../../../../../../locales/i18n';
 import OnboardingStepComponent from './OnboardingStep';
 import { REWARDS_ONBOARD_OPTIN_LEGAL_LEARN_MORE_URL } from './constants';
 import { selectRewardsActiveAccountHasOptedIn } from '../../../../../selectors/rewards';
+import { useParams } from '../../../../../util/navigation/navUtils';
 
 const OnboardingStep4: React.FC = () => {
   const navigation = useNavigation();
@@ -44,12 +45,15 @@ const OnboardingStep4: React.FC = () => {
   const tw = useTailwind();
   const hasAccountedOptedIn = useSelector(selectRewardsActiveAccountHasOptedIn);
   const { optin, optinError, optinLoading } = useOptin();
+  const urlParams = useParams<{ isFromDeeplink: boolean; referral?: string }>();
   const {
     referralCode,
     setReferralCode: handleReferralCodeChange,
     isValidating: isValidatingReferralCode,
     isValid: referralCodeIsValid,
-  } = useValidateReferralCode();
+  } = useValidateReferralCode(
+    urlParams.isFromDeeplink ? urlParams?.referral : undefined,
+  );
 
   const handleNext = useCallback(() => {
     optin({ referralCode });

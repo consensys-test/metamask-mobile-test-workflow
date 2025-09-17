@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { setOnboardingActiveStep } from '../../../reducers/rewards';
 import { useGeoRewardsMetadata } from './hooks/useGeoRewardsMetadata';
 import { selectRewardsActiveAccountHasOptedIn } from '../../../selectors/rewards';
+import { useParams } from '../../../util/navigation/navUtils';
 
 const Stack = createStackNavigator();
 
@@ -25,7 +26,7 @@ const OnboardingNavigator: React.FC = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const optinAllowedForGeo = useSelector(selectOptinAllowedForGeo);
-
+  const urlParams = useParams<{ isFromDeeplink: boolean; referral?: string }>();
   useGeoRewardsMetadata();
 
   useEffect(() => {
@@ -80,6 +81,7 @@ const OnboardingNavigator: React.FC = () => {
         name={Routes.REWARDS_ONBOARDING_4}
         component={OnboardingStep4}
         options={{ headerShown: false }}
+        initialParams={{ ...urlParams }}
       />
     </Stack.Navigator>
   );

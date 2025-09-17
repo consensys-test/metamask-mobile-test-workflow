@@ -24,6 +24,7 @@ import {
   selectRewardsSubscriptionId,
 } from '../../../selectors/rewards';
 import { useCandidateSubscriptionId } from './hooks/useCandidateSubscriptionId';
+import { useParams } from '../../../util/navigation/navUtils';
 const Stack = createStackNavigator();
 
 interface RewardsNavigatorProps {
@@ -65,6 +66,7 @@ const RewardsNavigatorContent: React.FC = () => {
   const hasAccountedOptedIn = useSelector(selectRewardsActiveAccountHasOptedIn);
   const subscriptionId = useSelector(selectRewardsSubscriptionId);
   const dispatch = useDispatch();
+  const urlParams = useParams<{ isFromDeeplink: boolean; referral?: string }>();
 
   // Set candidate subscription ID in Redux state when component mounts and account changes
   useCandidateSubscriptionId();
@@ -108,6 +110,7 @@ const RewardsNavigatorContent: React.FC = () => {
         name={Routes.REWARDS_ONBOARDING_FLOW}
         component={OnboardingNavigator}
         options={{ headerShown: false }}
+        initialParams={{ ...urlParams }}
       />
       {hasAccountedOptedIn === true || isValidSubscriptionCandidateId ? (
         <>
