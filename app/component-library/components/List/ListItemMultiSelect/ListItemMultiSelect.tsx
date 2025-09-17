@@ -31,11 +31,33 @@ const TouchableOpacity = ({
 }) => {
   const isDisabled = disabled || (props as { isDisabled?: boolean }).isDisabled;
 
-  // Simple pass-through to main component coordination
-  // Main component handles ALL coordination logic
+  // Double-click prevention logic for Android (non-test environments only)
+  const lastPressTime = useRef(0);
+  const COORDINATION_WINDOW = 100; // 100ms window for TalkBack compatibility
+
+  const handlePress = (pressEvent?: GestureResponderEvent) => {
+    if (!onPress || isDisabled) return;
+
+    // Skip coordination logic in test environments
+    if (process.env.NODE_ENV === 'test') {
+      if (pressEvent) {
+        onPress(pressEvent);
+      }
+      return;
+    }
+
+    const now = Date.now();
+    const timeSinceLastPress = now - lastPressTime.current;
+
+    if (timeSinceLastPress > COORDINATION_WINDOW) {
+      lastPressTime.current = now;
+      if (pressEvent) {
+        onPress(pressEvent);
+      }
+    }
+  };
 
   // Gesture detection for ScrollView compatibility on Android
-  // Sets timestamp FIRST, then calls parent function
   const tap = Gesture.Tap()
     .runOnJS(true)
     .shouldCancelWhenOutside(false)
@@ -63,23 +85,15 @@ const TouchableOpacity = ({
           },
         } as GestureResponderEvent;
 
-        // Call main component function (handles coordination)
-        onPress(syntheticEvent);
+        handlePress(syntheticEvent);
       }
     });
-
-  // Simple accessibility handler - main component handles coordination
-  const accessibilityOnPress = (pressEvent: GestureResponderEvent) => {
-    if (onPress && !isDisabled) {
-      onPress(pressEvent);
-    }
-  };
 
   return (
     <GestureDetector gesture={tap}>
       <RNTouchableOpacity
         disabled={isDisabled}
-        onPress={accessibilityOnPress} // Restored for accessibility without ScrollView conflicts
+        onPress={handlePress} // Use our handlePress with double-click prevention
         {...props}
         // Ensure disabled prop is available to tests
         {...(process.env.NODE_ENV === 'test' && { disabled: isDisabled })}
@@ -116,24 +130,28 @@ const ListItemMultiSelect: React.FC<ListItemMultiSelectProps> = ({
       ? TouchableOpacity
       : RNTouchableOpacity;
 
-  // Both custom TouchableOpacity and main component use the same timestamp reference
-  const conditionalOnPress = isDisabled
-    ? undefined
-    : (pressEvent?: GestureResponderEvent) => {
-        // Skip coordination logic in test environments
-        if (process.env.NODE_ENV === 'test') {
-          onPress?.(pressEvent as GestureResponderEvent);
-          return;
-        }
+  // For iOS/other platforms: coordination logic to prevent double firing from checkbox
+  const conditionalOnPress =
+    Platform.OS === 'android' && !isE2ETest && !isUnitTest
+      ? onPress // Android: Custom TouchableOpacity handles all coordination, pass onPress directly
+      : isDisabled
+      ? undefined
+      : (pressEvent?: GestureResponderEvent) => {
+          // iOS/other platforms: coordinate with checkbox
+          // Skip coordination logic in test environments
+          if (process.env.NODE_ENV === 'test') {
+            onPress?.(pressEvent as GestureResponderEvent);
+            return;
+          }
 
-        const now = Date.now();
-        const timeSinceLastGesture = now - lastCheckboxGestureTime.current;
+          const now = Date.now();
+          const timeSinceLastGesture = now - lastCheckboxGestureTime.current;
 
-        if (onPress && timeSinceLastGesture > COORDINATION_WINDOW) {
-          lastCheckboxGestureTime.current = now;
-          onPress(pressEvent as GestureResponderEvent);
-        }
-      };
+          if (onPress && timeSinceLastGesture > COORDINATION_WINDOW) {
+            lastCheckboxGestureTime.current = now;
+            onPress(pressEvent as GestureResponderEvent);
+          }
+        };
 
   // iOS checkbox coordination: Set timestamp FIRST, then call raw parent function
   // This ensures main component's conditionalOnPress sees the recent timestamp and skips
