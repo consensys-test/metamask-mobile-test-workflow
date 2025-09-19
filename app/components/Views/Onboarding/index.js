@@ -65,6 +65,7 @@ import ErrorBoundary from '../ErrorBoundary';
 import Rive, { Fit, Alignment } from 'rive-react-native';
 import FoxAnimation from '../../../animations/fox_appear.riv';
 import MetaMaskWordmarkAnimation from '../../../animations/metamask_wordmark_animation_build-up.riv';
+import { isE2E } from '../../../util/test/utils';
 
 const getFoxAnimationHeight = (hasFooter) => {
   if (hasFooter) {
@@ -268,7 +269,7 @@ class Onboarding extends PureComponent {
   logoRef = React.createRef();
   foxRef = React.createRef();
   logoPosition = new Animated.Value(0);
-  buttonsOpacity = new Animated.Value(0);
+  buttonsOpacity = new Animated.Value(isE2E ? 1 : 0);
   foxOpacity = new Animated.Value(0);
   static propTypes = {
     disableNewPrivacyPolicyToast: PropTypes.func,
@@ -400,6 +401,12 @@ class Onboarding extends PureComponent {
   }
 
   startRiveAnimation = () => {
+    // Skip animations in E2E tests
+    if (isE2E) {
+      this.moveLogoUp();
+      return;
+    }
+
     try {
       if (this.logoRef.current && this.mounted) {
         this.logoRef.current.play();
@@ -416,6 +423,14 @@ class Onboarding extends PureComponent {
   };
 
   moveLogoUp = () => {
+    // Skip animations in E2E tests
+    if (isE2E) {
+      this.logoPosition.setValue(-180);
+      this.buttonsOpacity.setValue(1);
+      this.showFoxAnimation();
+      return;
+    }
+
     Animated.parallel([
       Animated.timing(this.logoPosition, {
         toValue: -180,
@@ -435,6 +450,12 @@ class Onboarding extends PureComponent {
   };
 
   showFoxAnimation = () => {
+    // Skip animations in E2E tests
+    if (isE2E) {
+      this.foxOpacity.setValue(1);
+      return;
+    }
+
     Animated.timing(this.foxOpacity, {
       toValue: 1,
       duration: 600,
