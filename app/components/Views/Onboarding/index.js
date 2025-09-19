@@ -63,6 +63,7 @@ import { withMetricsAwareness } from '../../hooks/useMetrics';
 import { setupSentry } from '../../../util/sentry/utils';
 import ErrorBoundary from '../ErrorBoundary';
 import Rive, { Fit, Alignment } from 'rive-react-native';
+
 import FoxAnimation from '../../../animations/fox_appear.riv';
 import MetaMaskWordmarkAnimation from '../../../animations/metamask_wordmark_animation_build-up.riv';
 import { isE2E } from '../../../util/test/utils';
@@ -401,7 +402,6 @@ class Onboarding extends PureComponent {
   }
 
   startRiveAnimation = () => {
-    // Skip animations in E2E tests
     if (isE2E) {
       this.moveLogoUp();
       return;
@@ -409,21 +409,26 @@ class Onboarding extends PureComponent {
 
     try {
       if (this.logoRef.current && this.mounted) {
-        this.logoRef.current.play();
-      } else {
+        const isDarkMode = this.context.themeAppearance === 'dark';
+
+        this.logoRef.current.setInputState(
+          'WordmarkBuildUp',
+          'Dark',
+          isDarkMode,
+        );
+        this.logoRef.current.fireState('WordmarkBuildUp', 'Start');
         setTimeout(() => {
-          if (this.logoRef.current && this.mounted) {
-            this.logoRef.current.play();
+          if (this.mounted) {
+            this.moveLogoUp();
           }
-        }, 500);
+        }, 1000);
       }
     } catch (error) {
-      Logger.error(error);
+      Logger.error(error, 'Error triggering Rive animation');
     }
   };
 
   moveLogoUp = () => {
-    // Skip animations in E2E tests
     if (isE2E) {
       this.logoPosition.setValue(-180);
       this.buttonsOpacity.setValue(1);
@@ -450,7 +455,6 @@ class Onboarding extends PureComponent {
   };
 
   showFoxAnimation = () => {
-    // Skip animations in E2E tests
     if (isE2E) {
       this.foxOpacity.setValue(1);
       return;
@@ -463,7 +467,11 @@ class Onboarding extends PureComponent {
       useNativeDriver: true,
     }).start(() => {
       if (this.foxRef.current && this.mounted) {
-        this.foxRef.current.play();
+        try {
+          this.foxRef.current.fireState('FoxRaiseUp', 'Start');
+        } catch (error) {
+          Logger.error(error, 'Error triggering Fox Rive animation');
+        }
       }
     });
   };
@@ -854,21 +862,8 @@ class Onboarding extends PureComponent {
               fit={Fit.Contain}
               alignment={Alignment.Center}
               autoplay={false}
+              stateMachine="WordmarkBuildUp"
               testID="metamask-wordmark-animation"
-              onLoad={() => {
-                if (this.logoRef.current && this.mounted) {
-                  setTimeout(() => {
-                    if (this.logoRef.current && this.mounted) {
-                      this.logoRef.current.play();
-                    }
-                  }, 100);
-                }
-              }}
-              onStop={() => {
-                if (this.mounted) {
-                  this.moveLogoUp();
-                }
-              }}
             />
           </Animated.View>
         </View>
@@ -1024,6 +1019,7 @@ class Onboarding extends PureComponent {
               fit={Fit.Contain}
               alignment={Alignment.Center}
               autoplay={false}
+              stateMachine="FoxRaiseUp"
               testID="fox-animation"
             />
           </Animated.View>
