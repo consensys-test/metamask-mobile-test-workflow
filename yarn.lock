@@ -6646,9 +6646,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metamask/account-tree-controller@npm:^0.18.1":
-  version: 0.18.1
-  resolution: "@metamask/account-tree-controller@npm:0.18.1"
+"@metamask/account-tree-controller@npm:@metamask-previews/account-tree-controller@0.18.0-preview-a7d366c":
+  version: 0.18.0-preview-a7d366c
+  resolution: "@metamask-previews/account-tree-controller@npm:0.18.0-preview-a7d366c"
   dependencies:
     "@metamask/base-controller": ^8.4.0
     "@metamask/snaps-sdk": ^9.0.0
@@ -6661,12 +6661,12 @@ __metadata:
     "@metamask/account-api": ^0.12.0
     "@metamask/accounts-controller": ^33.0.0
     "@metamask/keyring-controller": ^23.0.0
-    "@metamask/multichain-account-service": ^0.8.0
+    "@metamask/multichain-account-service": ^0.11.0
     "@metamask/profile-sync-controller": ^25.0.0
     "@metamask/providers": ^22.0.0
     "@metamask/snaps-controllers": ^14.0.0
     webextension-polyfill: ^0.10.0 || ^0.11.0 || ^0.12.0
-  checksum: 1347e50abac65318d9fc37cfe50427cae77f6937622249563093bb989f31575566a8abf6ef876c1b0fe17fc9f99c5b72a67b3a12bc050838b151ffb9c4161f28
+  checksum: f2f4e63ad50221572bc772bdd7c12c5fc9607bdf41241a8d54521facc9659b21ddc155e8005a2dcbbcba0fbda9319478624d2c545731172f5fa880f1d5858db2
   languageName: node
   linkType: hard
 
@@ -6738,9 +6738,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metamask/assets-controllers@npm:^75.2.0":
-  version: 75.2.0
-  resolution: "@metamask/assets-controllers@npm:75.2.0"
+"@metamask/assets-controllers@npm:@metamask-previews/assets-controllers@75.2.0-preview-a7d366c":
+  version: 75.2.0-preview-a7d366c
+  resolution: "@metamask-previews/assets-controllers@npm:75.2.0-preview-a7d366c"
   dependencies:
     "@ethereumjs/util": ^9.1.0
     "@ethersproject/abi": ^5.7.0
@@ -6772,7 +6772,7 @@ __metadata:
     single-call-balance-checker-abi: ^1.0.0
     uuid: ^8.3.2
   peerDependencies:
-    "@metamask/account-tree-controller": ^0.7.0
+    "@metamask/account-tree-controller": ^0.18.0
     "@metamask/accounts-controller": ^33.0.0
     "@metamask/approval-controller": ^7.0.0
     "@metamask/keyring-controller": ^23.0.0
@@ -6784,7 +6784,7 @@ __metadata:
     "@metamask/snaps-controllers": ^14.0.0
     "@metamask/transaction-controller": ^60.0.0
     webextension-polyfill: ^0.10.0 || ^0.11.0 || ^0.12.0
-  checksum: 610fe92e1d1b073f60da6ea17ad231c298eb0e7f20309c93d49222e2692f6b98c4edb33270e72c6101e5c6be4be21054a94cc04821f46b999cba0dc63c9e78c7
+  checksum: 4e916b77a5d96f1714a0f88f9dd1a91453d901b7e94691020f5f8ccbed11c1995c7aff12b72f6762fd21ba8361633ce64f5ae01a131d77f21531e8651e18c76e
   languageName: node
   linkType: hard
 
@@ -7813,19 +7813,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metamask/network-enablement-controller@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@metamask/network-enablement-controller@npm:1.2.0"
+"@metamask/network-enablement-controller@npm:@metamask-previews/network-enablement-controller@1.2.0-preview-a7d366c":
+  version: 1.2.0-preview-a7d366c
+  resolution: "@metamask-previews/network-enablement-controller@npm:1.2.0-preview-a7d366c"
   dependencies:
     "@metamask/base-controller": ^8.4.0
     "@metamask/controller-utils": ^11.14.0
     "@metamask/utils": ^11.8.0
     reselect: ^5.1.1
   peerDependencies:
-    "@metamask/multichain-network-controller": ^0.11.0
+    "@metamask/multichain-network-controller": ^0.12.0
     "@metamask/network-controller": ^24.0.0
     "@metamask/transaction-controller": ^60.0.0
-  checksum: da89146cadabb11a312561f6ac5f068220d567a6f21e1be51ded2750eb642b62a8f12659926168a254e9ffd8f3b26581d738730377ab3ac0c6bd05cd28809634
+  checksum: 38cfaafb12086ee04fd853c6fbdb5f1fa7180a2e20da034495f1086d9fb456a996f8244e3cc3ba499ce4e1e9a9f16f942f22a0c1831ad0939f6376e571cdc93c
   languageName: node
   linkType: hard
 
@@ -33674,12 +33674,12 @@ __metadata:
     "@ledgerhq/react-native-hw-transport-ble": ^6.34.1
     "@metamask/abi-utils": ^3.0.0
     "@metamask/account-api": ^0.12.0
-    "@metamask/account-tree-controller": ^0.18.1
+    "@metamask/account-tree-controller": "npm:@metamask-previews/account-tree-controller@0.18.0-preview-a7d366c"
     "@metamask/accounts-controller": ^33.1.0
     "@metamask/address-book-controller": ^6.1.0
     "@metamask/app-metadata-controller": ^1.0.0
     "@metamask/approval-controller": ^7.1.3
-    "@metamask/assets-controllers": ^75.2.0
+    "@metamask/assets-controllers": "npm:@metamask-previews/assets-controllers@75.2.0-preview-a7d366c"
     "@metamask/base-controller": ^8.3.0
     "@metamask/bitcoin-wallet-snap": ^1.0.0
     "@metamask/bridge-controller": ^43.2.0
@@ -33732,7 +33732,7 @@ __metadata:
     "@metamask/multichain-network-controller": ^0.12.0
     "@metamask/multichain-transactions-controller": ^5.0.0
     "@metamask/network-controller": ^24.1.0
-    "@metamask/network-enablement-controller": ^1.2.0
+    "@metamask/network-enablement-controller": "npm:@metamask-previews/network-enablement-controller@1.2.0-preview-a7d366c"
     "@metamask/notification-services-controller": ^18.1.0
     "@metamask/object-multiplex": ^1.1.0
     "@metamask/permission-controller": ^11.0.6
