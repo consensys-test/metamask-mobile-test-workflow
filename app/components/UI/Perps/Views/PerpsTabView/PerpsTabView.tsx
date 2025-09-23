@@ -242,7 +242,7 @@ const PerpsTabView: React.FC<PerpsTabViewProps> = () => {
   };
 
   return (
-    <SafeAreaView style={styles.wrapper} edges={['left', 'right']}>
+    <SafeAreaView style={styles.wrapper} edges={['left', 'right', 'bottom']}>
       <>
         <PerpsTabControlBar
           onManageBalancePress={handleManageBalancePress}
@@ -281,6 +281,7 @@ const PerpsTabView: React.FC<PerpsTabViewProps> = () => {
                     onPress={handleNewTrade}
                     style={styles.startTradingButton}
                     width={ButtonWidthTypes.Full}
+                    testID={PerpsTabViewSelectorsIDs.ONBOARDING_BUTTON}
                   />
                 </View>
               </View>
