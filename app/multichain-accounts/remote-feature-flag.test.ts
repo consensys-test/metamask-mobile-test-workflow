@@ -33,9 +33,9 @@ describe('Multichain Accounts Feature Flag', () => {
   });
 
   describe('isMultichainAccountsRemoteFeatureEnabled', () => {
-    it('returns false when the feature flag is not available', () => {
+    it('returns true as default value', () => {
       const result = isMultichainAccountsRemoteFeatureEnabled({}, ['1']);
-      expect(result).toBe(false);
+      expect(result).toBe(true);
     });
 
     it('returns false when the feature is not enabled', () => {
