@@ -63,7 +63,7 @@ export const isMultichainAccountsRemoteFeatureEnabled = (
     return override === 'true';
   }
 
-  return featureVersionsToCheck.some(({ version, featureKey }) => {
+  for (const { version, featureKey } of featureVersionsToCheck) {
     const featureFlag = remoteFeatureFlags[featureKey];
 
     if (!assertMultichainAccountsFeatureFlagType(featureFlag)) {
@@ -78,7 +78,9 @@ export const isMultichainAccountsRemoteFeatureEnabled = (
       featureVersion === version &&
       compareVersions.compare(minimumVersion, APP_VERSION, '<=')
     );
-  });
+  }
+
+  return true;
 };
 
 /**
