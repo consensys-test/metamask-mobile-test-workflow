@@ -137,7 +137,7 @@ pipelines:
       build_android_rc_and_upload_sourcemaps:
         depends_on:
         - bump_version_code
-      notify_success:
+      post_pr_comment:
         depends_on:
         - build_ios_rc_and_upload_sourcemaps
         - build_android_rc_and_upload_sourcemaps
@@ -830,6 +830,20 @@ workflows:
             - issue_number: '$GITHUB_PR_NUMBER'
             - api_base_url: 'https://api.github.com'
             - update_comment_tag: '$GITHUB_PR_HASH'
+  post_pr_comment:
+    steps:
+      - script@1:
+          title: Post comment to GitHub PR
+          inputs:
+            - content: |-
+                #!/usr/bin/env bash
+                set -euo pipefail
+
+                export COMMIT_HASH="${BRANCH_COMMIT_HASH:-${BITRISE_GIT_COMMIT:-unknown}}"
+                export PIPELINE_URL="${BITRISEIO_PIPELINE_BUILD_URL:-}"
+                export PIPELINE_TITLE="${BITRISEIO_PIPELINE_TITLE:-}"
+
+                bash ./scripts/post-pr-success-comment.sh
   bump_version_code:
     before_run:
       - _get_workflow_info
