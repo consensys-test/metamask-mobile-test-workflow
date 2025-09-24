@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { Image, TouchableOpacity, View, useColorScheme } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
+import ScrollableTabView from '@tommasini/react-native-scrollable-tab-view';
 import { strings } from '../../../../../../locales/i18n';
 import Button, {
   ButtonSize,
@@ -131,12 +131,14 @@ const PerpsTutorialCarousel: React.FC = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const safeAreaInsets = useSafeAreaInsets();
   const scrollableTabViewRef = useRef<
-    ScrollableTabView & { goToPage: (pageNumber: number) => void }
+    typeof ScrollableTabView & { goToPage: (pageNumber: number) => void }
   >(null);
   const hasTrackedViewed = useRef(false);
   const hasTrackedStarted = useRef(false);
   const tutorialStartTime = useRef(Date.now());
   const continueDebounceRef = useRef<NodeJS.Timeout | null>(null);
+  const previousTabRef = useRef(0);
+  const isProgrammaticNavigationRef = useRef(false);
   const { navigateToConfirmation } = useConfirmNavigation();
 
   const isEligible = useSelector(selectPerpsEligibility);
@@ -172,7 +174,6 @@ const PerpsTutorialCarousel: React.FC = () => {
   useEffect(() => {
     if (!hasTrackedViewed.current) {
       track(MetaMetricsEvents.PERPS_TUTORIAL_VIEWED, {
-        [PerpsEventProperties.TIMESTAMP]: Date.now(),
         [PerpsEventProperties.SOURCE]:
           PerpsEventValues.SOURCE.MAIN_ACTION_BUTTON,
       });
@@ -194,19 +195,45 @@ const PerpsTutorialCarousel: React.FC = () => {
   const handleTabChange = useCallback(
     // The next tab to change to
     (obj: { i: number }) => {
-      setCurrentTab(obj.i);
+      const newTab = obj.i;
+      const previousTab = previousTabRef.current;
+
+      // Skip tracking if this is programmatic navigation (from button click)
+      if (isProgrammaticNavigationRef.current) {
+        isProgrammaticNavigationRef.current = false; // Reset flag
+        previousTabRef.current = newTab;
+        setCurrentTab(newTab);
+        return; // Don't track programmatic navigation
+      }
+
+      // Only track if tab actually changed (user swipe)
+      if (newTab !== previousTab) {
+        track(MetaMetricsEvents.PERPS_TUTORIAL_CAROUSEL_NAVIGATED, {
+          [PerpsEventProperties.PREVIOUS_SCREEN]:
+            tutorialScreens[previousTab]?.id || 'unknown',
+          [PerpsEventProperties.CURRENT_SCREEN]:
+            tutorialScreens[newTab]?.id || 'unknown',
+          [PerpsEventProperties.SCREEN_POSITION]: newTab + 1,
+          [PerpsEventProperties.TOTAL_SCREENS]: tutorialScreens.length,
+          [PerpsEventProperties.NAVIGATION_METHOD]:
+            PerpsEventValues.NAVIGATION_METHOD.SWIPE,
+        });
+
+        previousTabRef.current = newTab;
+      }
+
+      setCurrentTab(newTab);
 
       // Track tutorial started when user moves to second screen
-      if (obj.i === 1 && !hasTrackedStarted.current) {
+      if (newTab === 1 && !hasTrackedStarted.current) {
         track(MetaMetricsEvents.PERPS_TUTORIAL_STARTED, {
-          [PerpsEventProperties.TIMESTAMP]: Date.now(),
           [PerpsEventProperties.SOURCE]:
             PerpsEventValues.SOURCE.MAIN_ACTION_BUTTON,
         });
         hasTrackedStarted.current = true;
       }
     },
-    [track],
+    [track, tutorialScreens],
   );
 
   const navigateToMarketsList = useCallback(() => {
@@ -263,12 +290,28 @@ const PerpsTutorialCarousel: React.FC = () => {
     } else {
       // Go to next screen using the ref
       const nextTab = Math.min(currentTab + 1, tutorialScreens.length - 1);
+
+      // Track carousel navigation via continue button (immediate, no debounce needed for button clicks)
+      if (nextTab !== currentTab) {
+        track(MetaMetricsEvents.PERPS_TUTORIAL_CAROUSEL_NAVIGATED, {
+          [PerpsEventProperties.PREVIOUS_SCREEN]:
+            tutorialScreens[currentTab]?.id || 'unknown',
+          [PerpsEventProperties.CURRENT_SCREEN]:
+            tutorialScreens[nextTab]?.id || 'unknown',
+          [PerpsEventProperties.SCREEN_POSITION]: nextTab + 1,
+          [PerpsEventProperties.TOTAL_SCREENS]: tutorialScreens.length,
+          [PerpsEventProperties.NAVIGATION_METHOD]:
+            PerpsEventValues.NAVIGATION_METHOD.CONTINUE_BUTTON,
+        });
+      }
+
+      // Set flag to indicate this is programmatic navigation
+      isProgrammaticNavigationRef.current = true;
       scrollableTabViewRef.current?.goToPage(nextTab);
 
       // Track tutorial started on first continue
       if (currentTab === 0 && !hasTrackedStarted.current) {
         track(MetaMetricsEvents.PERPS_TUTORIAL_STARTED, {
-          [PerpsEventProperties.TIMESTAMP]: Date.now(),
           [PerpsEventProperties.SOURCE]:
             PerpsEventValues.SOURCE.MAIN_ACTION_BUTTON,
         });
@@ -279,11 +322,11 @@ const PerpsTutorialCarousel: React.FC = () => {
     isLastScreen,
     track,
     currentTab,
+    tutorialScreens,
     markTutorialCompleted,
     isEligible,
     navigateToConfirmation,
     depositWithConfirmation,
-    tutorialScreens.length,
     ensureArbitrumNetworkExists,
     navigateToMarketsList,
   ]);
