@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PR_NUMBER="20188" # TODO: remove this hard-coded value after testing
+PR_NUMBER="${BITRISE_PULL_REQUEST:-}"
 echo "BITRISE_PULL_REQUEST=${PR_NUMBER}"
 
 if [ -z "${PR_NUMBER}" ] || [ "${PR_NUMBER}" = "0" ]; then
