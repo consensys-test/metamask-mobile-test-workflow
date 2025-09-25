@@ -8,6 +8,13 @@ import {
 } from '../../../../../../util/test/confirm-data-helpers';
 import PersonalSign from './personal-sign';
 
+jest.mock(
+  '../../../../../../selectors/featureFlagController/multichainAccounts',
+  () => ({
+    selectMultichainAccountsState2Enabled: () => false,
+  }),
+);
+
 jest.mock('../../../../../../core/Engine', () => ({
   getTotalEvmFiatAccountBalance: () => ({ tokenFiat: 10 }),
   context: {
