@@ -1522,7 +1522,7 @@
       },
       "watch_liquidation": {
         "title": "Likidasyona dikkat edin",
-        "description": "You’ll lose your entire margin if the token hits your liquidation price. Higher leverage means less room to liquidation."
+        "description": "Token, likidasyon fiyatınıza ulaşırsa tüm marjınızı kaybedersiniz. Daha yüksek kaldıraç likidasyon için daha az alan kalması anlamına gelir."
       },
       "close_anytime": {
         "title": "Dilediğinizde kapatın",
@@ -5882,7 +5882,7 @@
       "step_confirm": "Sonraki",
       "step_skip": "Skip",
       "step1_title": "Earn points on every trade",
-      "step1_description": "Every swap and perps trade you make in MetaMask gets you closer to rewards. Add your accounts and watch your points add up.",
+      "step1_description": "MetaMask'te yaptığınız her takas ve sürekli vadeli işlem sizi ödüllere yaklaştırır. Hesaplarınızı ekleyin ve puanlarınızı takip edin.",
       "step2_title": "Level up for bigger perks",
       "step2_description": "Belirli puanlara ulaştığınızda, sürekli vadeli işlem ücretlerinde %50 indirim, özel token’lar ve ücretsiz MetaMask Metal Kart gibi avantajlar kazanabilirsiniz.",
       "step3_title": "Exclusive seasonal rewards",
@@ -6034,5 +6034,10 @@
       "swap": "Token swap işlemi yapın",
       "swap_approval": "Approve tokens"
     }
+  },
+  "network_connection_banner": {
+    "still_connecting_network": "Still connecting to {{networkName}}...",
+    "unable_to_connect_network": "Unable to connect to {{networkName}}.",
+    "update_rpc": "Update RPC"
   }
 }
