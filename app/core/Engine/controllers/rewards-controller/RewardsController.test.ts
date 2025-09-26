@@ -1695,6 +1695,7 @@ describe('RewardsController', () => {
         seasonStatuses: {},
         activeBoosts: {},
         unlockedRewards: {},
+        pointsEvents: {},
       });
     });
   });
@@ -1917,6 +1918,7 @@ describe('RewardsController', () => {
           seasonStatuses: {
             [compositeKey]: mockSeasonStatus,
           },
+          pointsEvents: {},
         },
       });
 
@@ -1986,6 +1988,7 @@ describe('RewardsController', () => {
           seasons: {},
           subscriptionReferralDetails: {},
           seasonStatuses: {},
+          pointsEvents: {},
         },
       });
 
@@ -2044,6 +2047,7 @@ describe('RewardsController', () => {
           seasons: {},
           subscriptionReferralDetails: {},
           seasonStatuses: {},
+          pointsEvents: {},
         },
       });
 
@@ -2092,6 +2096,7 @@ describe('RewardsController', () => {
           seasons: {},
           subscriptionReferralDetails: {},
           seasonStatuses: {},
+          pointsEvents: {},
         },
       });
 
@@ -2125,6 +2130,7 @@ describe('RewardsController', () => {
         state.seasonStatuses = {};
         state.activeBoosts = {};
         state.unlockedRewards = {};
+        state.pointsEvents = {};
       });
 
       mockMessenger.call.mockRejectedValue(mockTimeoutError);
@@ -2169,6 +2175,7 @@ describe('RewardsController', () => {
         state.seasonStatuses = {};
         state.activeBoosts = {};
         state.unlockedRewards = {};
+        state.pointsEvents = {};
       });
 
       mockMessenger.call.mockRejectedValue(mock403Error);
@@ -2221,6 +2228,7 @@ describe('RewardsController', () => {
         state.seasonStatuses = {};
         state.activeBoosts = {};
         state.unlockedRewards = {};
+        state.pointsEvents = {};
       });
 
       mockMessenger.call.mockRejectedValue(serverError);
@@ -2259,6 +2267,7 @@ describe('RewardsController', () => {
         state.seasonStatuses = {};
         state.activeBoosts = {};
         state.unlockedRewards = {};
+        state.pointsEvents = {};
       });
 
       mockMessenger.call.mockRejectedValue(rateLimitError);
@@ -2314,6 +2323,7 @@ describe('RewardsController', () => {
             [mockSubscriptionId]: mockReferralDetailsState,
           },
           seasonStatuses: {},
+          pointsEvents: {},
         },
       });
 
@@ -2350,6 +2360,7 @@ describe('RewardsController', () => {
           seasons: {},
           subscriptionReferralDetails: {},
           seasonStatuses: {},
+          pointsEvents: {},
         },
       });
 
@@ -2390,6 +2401,7 @@ describe('RewardsController', () => {
           seasons: {},
           subscriptionReferralDetails: {},
           seasonStatuses: {},
+          pointsEvents: {},
         },
       });
 
@@ -2435,6 +2447,7 @@ describe('RewardsController', () => {
           seasons: {},
           subscriptionReferralDetails: {},
           seasonStatuses: {},
+          pointsEvents: {},
         },
       });
 
@@ -2467,6 +2480,7 @@ describe('RewardsController', () => {
           seasons: {},
           subscriptionReferralDetails: {},
           seasonStatuses: {},
+          pointsEvents: {},
         },
       });
 
@@ -2769,6 +2783,7 @@ describe('RewardsController', () => {
           seasons: {},
           subscriptionReferralDetails: {},
           seasonStatuses: {},
+          pointsEvents: {},
         },
       });
 
@@ -2803,6 +2818,7 @@ describe('RewardsController', () => {
           seasons: {},
           subscriptionReferralDetails: {},
           seasonStatuses: {},
+          pointsEvents: {},
         },
       });
 
@@ -2865,6 +2881,7 @@ describe('RewardsController', () => {
           seasons: {},
           subscriptionReferralDetails: {},
           seasonStatuses: {},
+          pointsEvents: {},
         },
       });
 
@@ -2958,6 +2975,7 @@ describe('RewardsController', () => {
           seasons: {},
           subscriptionReferralDetails: {},
           seasonStatuses: {},
+          pointsEvents: {},
         },
       });
 
@@ -3461,7 +3479,7 @@ describe('RewardsController', () => {
         typeof base58.decode
       >;
       mockBase58Decode.mockReturnValue(
-        Buffer.from('decodedSolanaSignature', 'utf8'),
+        Uint8Array.from(Buffer.from('decodedSolanaSignature', 'utf8')),
       );
       mockToHex.mockReturnValue('0xdecodedSolanaSignature');
 
@@ -3513,6 +3531,7 @@ describe('RewardsController', () => {
           seasons: {},
           subscriptionReferralDetails: {},
           seasonStatuses: {},
+          pointsEvents: {},
         },
       });
 
@@ -3890,6 +3909,7 @@ describe('RewardsController', () => {
               lastFetched: Date.now(),
             },
           },
+          pointsEvents: {},
         },
       });
 
@@ -4824,6 +4844,7 @@ describe('RewardsController', () => {
           seasonStatuses: {},
           activeBoosts: {},
           unlockedRewards: {},
+          pointsEvents: {},
         },
       });
 
@@ -4867,6 +4888,7 @@ describe('RewardsController', () => {
           seasonStatuses: {},
           activeBoosts: {},
           unlockedRewards: {},
+          pointsEvents: {},
         },
       });
 
@@ -4910,6 +4932,7 @@ describe('RewardsController', () => {
           seasonStatuses: {},
           activeBoosts: {},
           unlockedRewards: {},
+          pointsEvents: {},
         },
       });
 
@@ -6154,6 +6177,7 @@ describe('RewardsController', () => {
           seasons: {},
           subscriptionReferralDetails: {},
           seasonStatuses: {},
+          pointsEvents: {},
           activeBoosts: {
             [compositeKey]: mockCachedBoosts,
           },
@@ -6243,6 +6267,7 @@ describe('RewardsController', () => {
           seasons: {},
           subscriptionReferralDetails: {},
           seasonStatuses: {},
+          pointsEvents: {},
           activeBoosts: {
             [compositeKey]: mockStaleBoosts,
           },
@@ -6317,6 +6342,7 @@ describe('RewardsController', () => {
           subscriptionReferralDetails: {},
           seasonStatuses: {},
           activeBoosts: {},
+          pointsEvents: {},
         },
       });
 
@@ -6379,6 +6405,7 @@ describe('RewardsController', () => {
           subscriptionReferralDetails: {},
           seasonStatuses: {},
           activeBoosts: {}, // Empty cache
+          pointsEvents: {},
         },
       });
 
@@ -6474,6 +6501,7 @@ describe('RewardsController', () => {
               lastFetched: Date.now() - 30000, // Fresh cache
             },
           },
+          pointsEvents: {},
         },
       });
 
@@ -6591,6 +6619,7 @@ describe('RewardsController', () => {
           subscriptionReferralDetails: {},
           seasonStatuses: {},
           activeBoosts: {},
+          pointsEvents: {},
           unlockedRewards: {
             [compositeKey]: {
               rewards: mockCachedRewards,
@@ -6658,6 +6687,7 @@ describe('RewardsController', () => {
           subscriptionReferralDetails: {},
           seasonStatuses: {},
           activeBoosts: {},
+          pointsEvents: {},
           unlockedRewards: {
             [compositeKey]: {
               rewards: mockStaleRewards,
@@ -6840,6 +6870,7 @@ describe('RewardsController', () => {
           subscriptionReferralDetails: {},
           seasonStatuses: {},
           activeBoosts: {},
+          pointsEvents: {},
           unlockedRewards: {
             [compositeKey1]: {
               rewards: mockRewards1,
@@ -7061,6 +7092,7 @@ describe('RewardsController', () => {
             lastFetched: Date.now(),
           },
         },
+        pointsEvents: {},
       };
 
       controller = new RewardsController({
@@ -7248,6 +7280,7 @@ describe('RewardsController', () => {
         },
         activeBoosts: {},
         unlockedRewards: {},
+        pointsEvents: {},
       };
 
       controller = new RewardsController({
@@ -7404,6 +7437,7 @@ describe('RewardsController', () => {
           "accounts": {},
           "activeAccount": null,
           "activeBoosts": {},
+          "pointsEvents": {},
           "seasonStatuses": {},
           "seasons": {},
           "subscriptionReferralDetails": {},
@@ -7421,6 +7455,7 @@ describe('RewardsController', () => {
           "accounts": {},
           "activeAccount": null,
           "activeBoosts": {},
+          "pointsEvents": {},
           "seasonStatuses": {},
           "seasons": {},
           "subscriptionReferralDetails": {},
@@ -7442,6 +7477,7 @@ describe('RewardsController', () => {
           "accounts": {},
           "activeAccount": null,
           "activeBoosts": {},
+          "pointsEvents": {},
           "seasonStatuses": {},
           "seasons": {},
           "subscriptionReferralDetails": {},
@@ -7936,7 +7972,6 @@ describe('RewardsController', () => {
         boosts: [],
         lastFetched: Date.now(),
       };
-
       // Create a controller with our test state
       const testController = new RewardsController({
         messenger: mockMessenger,
