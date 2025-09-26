@@ -293,7 +293,7 @@ const mockInitialState = {
         useTokenDetection: true,
         isTokenNetworkFilterEqualToAllNetworks: false,
         tokenNetworkFilter: {
-          '0x1': 'mainnet', // Ethereum mainnet enabled
+          '0x1': true, // Ethereum mainnet enabled
         },
       },
       NetworkController: {
