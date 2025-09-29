@@ -377,3 +377,4 @@ export function shouldRunBitriseE2E(flags : E2ERunFlags): [boolean, string] {
   // Default case if no conditions met
   return [false, "Unexpected scenario or no relevant labels found."];
 }
+
