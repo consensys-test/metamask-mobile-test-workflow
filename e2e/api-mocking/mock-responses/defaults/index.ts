@@ -19,13 +19,15 @@ import { DEFAULT_RAMPS_API_MOCKS } from './onramp-apis';
 import { DEFAULT_GAS_API_MOCKS } from './gas-api';
 import { DEFAULT_BRIDGE_API_MOCKS } from './bridge-api';
 import { DEFAULT_IPFS_GATEWAY_MOCKS } from './ipfs-api';
+import { DEFAULT_RPC_ENDPOINT_MOCKS } from './rpc-endpoints';
+import { POLYMARKET_API_MOCKS } from './polymarket-apis';
 
 // Get auth mocks
 const authMocks = getAuthMocks();
 
 export const DEFAULT_MOCKS = {
   GET: [
-    ...authMocks.GET,
+    ...(authMocks.GET || []),
     ...(DAPP_SCANNING_MOCKS.GET || []),
     ...(PRICE_API_MOCKS.GET || []),
     ...(WEB_3_AUTH_MOCKS.GET || []),
@@ -39,6 +41,7 @@ export const DEFAULT_MOCKS = {
     ...(DEFAULT_GAS_API_MOCKS.GET || []),
     ...(DEFAULT_BRIDGE_API_MOCKS.GET || []),
     ...(DEFAULT_IPFS_GATEWAY_MOCKS.GET || []),
+    ...(POLYMARKET_API_MOCKS.GET || []),
     // Security Alerts Mock - Always responds with benign unless overridden by testSpecificMock
     {
       urlEndpoint:
@@ -248,9 +251,10 @@ export const DEFAULT_MOCKS = {
     },
   ],
   POST: [
-    ...authMocks.POST,
+    ...(authMocks.POST || []),
     ...(WALLETCONNECT_MOCKS.POST || []),
     ...(METAMETRICS_API_MOCKS.POST || []),
+    ...(DEFAULT_RPC_ENDPOINT_MOCKS.POST || []),
     {
       urlEndpoint: 'https://api.mixpanel.com/track',
       responseCode: 200,

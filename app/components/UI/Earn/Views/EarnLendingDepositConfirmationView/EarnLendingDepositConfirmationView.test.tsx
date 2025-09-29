@@ -1,4 +1,3 @@
-import { InternalAccount } from '@metamask/keyring-internal-api';
 import {
   Result,
   TransactionStatus,
@@ -13,7 +12,6 @@ import EarnLendingDepositConfirmationView, {
 } from '.';
 import { strings } from '../../../../../../locales/i18n';
 import Engine from '../../../../../core/Engine';
-import { selectSelectedInternalAccount } from '../../../../../selectors/accountsController';
 import { MOCK_ADDRESS_2 } from '../../../../../util/test/accountsControllerTestUtils';
 import { backgroundState } from '../../../../../util/test/initial-root-state';
 import renderWithProvider from '../../../../../util/test/renderWithProvider';
@@ -39,14 +37,16 @@ import Routes from '../../../../../constants/navigation/Routes';
 import { PROGRESS_STEPPER_TEST_IDS } from './components/ProgressStepper';
 import { endTrace, trace, TraceName } from '../../../../../util/trace';
 import Logger from '../../../../../util/Logger';
+import { MAINNET_DISPLAY_NAME } from '../../../../../core/Engine/constants';
 
 type TxCallback = (event: {
   transactionMeta: Partial<TransactionMeta>;
 }) => void;
 
-jest.mock('../../../../../selectors/accountsController', () => ({
-  ...jest.requireActual('../../../../../selectors/accountsController'),
-  selectSelectedInternalAccount: jest.fn(),
+jest.mock('../../../../../selectors/multichainAccounts/accounts', () => ({
+  selectSelectedInternalAccountByScope: jest.fn(() => () => ({
+    address: MOCK_ADDRESS_2,
+  })),
 }));
 
 const mockGoBack = jest.fn();
@@ -253,10 +253,6 @@ describe('EarnLendingDepositConfirmationView', () => {
     Engine.context.NetworkController.findNetworkClientIdByChainId,
   );
 
-  const selectSelectedInternalAccountMock = jest.mocked(
-    selectSelectedInternalAccount,
-  );
-
   const mockEndTrace = jest.mocked(endTrace);
   const mockTrace = jest.mocked(trace);
 
@@ -297,10 +293,6 @@ describe('EarnLendingDepositConfirmationView', () => {
         typeof selectStablecoinLendingEnabledFlag
       >
     ).mockReturnValue(true);
-
-    selectSelectedInternalAccountMock.mockReturnValue({
-      address: MOCK_ADDRESS_2,
-    } as InternalAccount);
   });
 
   it('matches snapshot', () => {
@@ -405,7 +397,7 @@ describe('EarnLendingDepositConfirmationView', () => {
       });
     });
 
-    it('renders allowance reset step for USDT on Ethereum mainnet', () => {
+    it('renders allowance reset step for USDT on Ethereum', () => {
       const { getByText, getAllByTestId } = renderWithProvider(
         <EarnLendingDepositConfirmationView />,
         {
@@ -455,7 +447,7 @@ describe('EarnLendingDepositConfirmationView', () => {
       });
     });
 
-    it("does not render allowance reset step for USDT on Ethereum mainnet when reset isn't required", () => {
+    it("does not render allowance reset step for USDT on Ethereum when reset isn't required", () => {
       const routeParamsWithApproveAction = {
         ...defaultRouteParams,
         params: {
@@ -498,7 +490,7 @@ describe('EarnLendingDepositConfirmationView', () => {
           .addProperties({
             action_type: 'deposit',
             experience: 'STABLECOIN_LENDING',
-            network: 'Ethereum Mainnet',
+            network: MAINNET_DISPLAY_NAME,
             token: 'USDT',
             transaction_value: '5 USDT',
             user_token_balance: undefined,
@@ -593,7 +585,7 @@ describe('EarnLendingDepositConfirmationView', () => {
           .addProperties({
             action_type: 'deposit',
             token: 'USDT',
-            network: 'Ethereum Mainnet',
+            network: MAINNET_DISPLAY_NAME,
             user_token_balance: undefined,
             experience: EARN_EXPERIENCES.STABLECOIN_LENDING,
             transaction_value: '5 USDT',
@@ -623,7 +615,7 @@ describe('EarnLendingDepositConfirmationView', () => {
           .addProperties({
             action_type: 'deposit',
             token: 'USDT',
-            network: 'Ethereum Mainnet',
+            network: MAINNET_DISPLAY_NAME,
             user_token_balance: undefined,
             transaction_value: '5 USDT',
             experience: EARN_EXPERIENCES.STABLECOIN_LENDING,
@@ -651,7 +643,7 @@ describe('EarnLendingDepositConfirmationView', () => {
           .addProperties({
             action_type: 'deposit',
             token: 'USDT',
-            network: 'Ethereum Mainnet',
+            network: MAINNET_DISPLAY_NAME,
             user_token_balance: undefined,
             experience: EARN_EXPERIENCES.STABLECOIN_LENDING,
             transaction_value: '5 USDT',
@@ -681,7 +673,7 @@ describe('EarnLendingDepositConfirmationView', () => {
           .addProperties({
             action_type: 'deposit',
             token: 'USDT',
-            network: 'Ethereum Mainnet',
+            network: MAINNET_DISPLAY_NAME,
             user_token_balance: undefined,
             experience: EARN_EXPERIENCES.STABLECOIN_LENDING,
             transaction_value: '5 USDT',
@@ -709,7 +701,7 @@ describe('EarnLendingDepositConfirmationView', () => {
           .addProperties({
             action_type: 'deposit',
             experience: 'STABLECOIN_LENDING',
-            network: 'Ethereum Mainnet',
+            network: MAINNET_DISPLAY_NAME,
             token: 'USDC',
             transaction_value: '5 USDC',
             user_token_balance: undefined,
@@ -842,7 +834,7 @@ describe('EarnLendingDepositConfirmationView', () => {
           .addProperties({
             action_type: 'deposit',
             token: 'USDC',
-            network: 'Ethereum Mainnet',
+            network: MAINNET_DISPLAY_NAME,
             user_token_balance: undefined,
             experience: EARN_EXPERIENCES.STABLECOIN_LENDING,
             transaction_value: '5 USDC',
@@ -872,7 +864,7 @@ describe('EarnLendingDepositConfirmationView', () => {
           .addProperties({
             action_type: 'deposit',
             token: 'USDC',
-            network: 'Ethereum Mainnet',
+            network: MAINNET_DISPLAY_NAME,
             user_token_balance: undefined,
             transaction_value: '5 USDC',
             experience: EARN_EXPERIENCES.STABLECOIN_LENDING,
@@ -907,7 +899,7 @@ describe('EarnLendingDepositConfirmationView', () => {
           .addProperties({
             action_type: 'deposit',
             token: 'USDC',
-            network: 'Ethereum Mainnet',
+            network: MAINNET_DISPLAY_NAME,
             user_token_balance: undefined,
             experience: EARN_EXPERIENCES.STABLECOIN_LENDING,
             transaction_value: '5 USDC',
@@ -937,7 +929,7 @@ describe('EarnLendingDepositConfirmationView', () => {
           .addProperties({
             action_type: 'deposit',
             token: 'USDC',
-            network: 'Ethereum Mainnet',
+            network: MAINNET_DISPLAY_NAME,
             user_token_balance: undefined,
             experience: EARN_EXPERIENCES.STABLECOIN_LENDING,
             transaction_value: '5 USDC',
@@ -1018,7 +1010,7 @@ describe('EarnLendingDepositConfirmationView', () => {
           .addProperties({
             action_type: 'deposit',
             token: 'USDC',
-            network: 'Ethereum Mainnet',
+            network: MAINNET_DISPLAY_NAME,
             user_token_balance: undefined,
             transaction_value: '5 USDC',
             transaction_id: '456',
@@ -1055,7 +1047,7 @@ describe('EarnLendingDepositConfirmationView', () => {
             selected_provider: 'consensys',
             text: 'Cancel',
             location: 'EarnLendingDepositConfirmationView',
-            network: 'Ethereum Mainnet',
+            network: MAINNET_DISPLAY_NAME,
             step: 'Deposit',
           })
           .build(),

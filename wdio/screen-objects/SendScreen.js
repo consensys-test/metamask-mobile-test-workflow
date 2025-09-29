@@ -13,6 +13,7 @@ import { TRANSACTION_AMOUNT_INPUT } from './testIDs/Screens/AmountScreen.testIds
 import AppwrightSelectors from '../helpers/AppwrightSelectors';
 import { SendViewSelectorsIDs } from '../../e2e/selectors/SendFlow/SendView.selectors.js';
 import { expect as appwrightExpect } from 'appwright';
+import { NETWORK_SELECTOR_TEST_IDS } from '../../app/constants/networkSelector.js';
 
 class SendScreen {
   get device() {
@@ -28,6 +29,14 @@ class SendScreen {
       return Selectors.getElementByPlatform(SEND_SCREEN_ID);
     } else {
       return AppwrightSelectors.getElementByID(this._device, SEND_SCREEN_ID);
+    }
+  }
+
+  get networkPicker() {
+    if (!this._device) {
+      return Selectors.getElementByPlatform(NETWORK_SELECTOR_TEST_IDS.CONTEXTUAL_NETWORK_PICKER);
+    } else {
+      return AppwrightSelectors.getElementByID(this._device, NETWORK_SELECTOR_TEST_IDS.CONTEXTUAL_NETWORK_PICKER);
     }
   }
 
@@ -64,13 +73,27 @@ class SendScreen {
     return Selectors.getElementByPlatform(ADD_ADDRESS_BUTTON);
   }
 
+  async openNetworkPicker() {
+    if (!this._device) {
+      await Gestures.waitAndTap(await this.networkPicker);
+    } else {
+      const element = await this.networkPicker;
+      await element.tap();
+    }
+  }
+
   async typeAddressInSendAddressField(address) {
     if (!this._device) {
       await Gestures.typeText(this.sendAddressInputField, address);
     } else {
-      const element = await AppwrightSelectors.getElementByID(this._device, SEND_ADDRESS_INPUT_FIELD);
+      const element = await AppwrightSelectors.getElementByCatchAll(this._device, 'Enter address to send to');
       await element.fill(address);
     }
+  }
+
+  async clickOnAccountByName(accountName) {
+    const account = await AppwrightSelectors.getElementByCatchAll(this._device, accountName);
+    await account.tap();
   }
 
   async isSendWarningMessageVisible(message) {
@@ -86,8 +109,8 @@ class SendScreen {
   }
 
   async isVisible() {
-    const element = await this.container;
-    await appwrightExpect(element).toBeVisible();
+    const networkButton = await AppwrightSelectors.getElementByCatchAll(this._device, 'Ethereum');
+    await appwrightExpect(networkButton).toBeVisible();
   }
 
   async tapAddAddressButton() {
@@ -141,6 +164,39 @@ class SendScreen {
       const element = await AppwrightSelectors.getElementByID(this._device, SendViewSelectorsIDs.ADDRESS_BOOK_NEXT_BUTTON);
       await element.tap();
     }
+  }
+
+  async selectNetwork(network) {
+    if (!this._device) {
+      await Gestures.tapTextByXpath(network);
+    } else {
+      const networkButton = await AppwrightSelectors.getElementByXpath(this._device, `//*[@content-desc="${network}"]`);
+      await networkButton.tap();
+    }
+  }
+
+  async selectToken(tokenName, tokenSymbol) {
+    if (!this._device) {
+      await Gestures.tapTextByXpath(tokenName);
+    } else {
+      const tokenButton = await AppwrightSelectors.getElementByCatchAll(this._device, `${tokenName}, ${tokenSymbol}`);
+      await tokenButton.tap();
+    }
+  }
+
+  async assetsListIsDisplayed() {
+    const assetsList = await AppwrightSelectors.getElementByCatchAll(this._device, 'Tokens');
+    await appwrightExpect(assetsList).toBeVisible();
+  }
+
+  async isSelectAddressScreenDisplayed() {
+    const selectAddressScreen = await AppwrightSelectors.getElementByCatchAll(this._device, 'Enter address to send to');
+    appwrightExpect(await selectAddressScreen).toBeVisible();
+  }
+
+  async clickOnReviewButton() {
+    const reviewButton = await AppwrightSelectors.getElementByCatchAll(this._device, 'Review');
+    await reviewButton.tap();
   }
 }
 
