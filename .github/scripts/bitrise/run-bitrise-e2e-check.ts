@@ -109,6 +109,8 @@ async function main(): Promise<void> {
   if (!shouldRun && isAutoTrigger && isReleaseBranch) {
     shouldRun = true;
     reason = `Auto-trigger on release PR (${releaseHead})`;
+    // Signal Bitrise that this run is an auto-trigger from a release PR
+    process.env.TRIGGERED_BY_RELEASE_PR = 'true';
   }
 
   console.log(`Should run: ${shouldRun}, Reason: ${reason}`);
@@ -142,6 +144,11 @@ async function main(): Promise<void> {
           {
             mapped_to: 'TRIGGERED_BY_PR_LABEL',
             value: `${isLabelTrigger}`,
+            is_expand: true,
+          },
+          {
+            mapped_to: 'TRIGGERED_BY_RELEASE_PR',
+            value: `${isReleaseBranch && isAutoTrigger}`,
             is_expand: true,
           },
           {
