@@ -103,15 +103,12 @@ async function main(): Promise<void> {
     triggerAction === PullRequestTriggerType.Reopened ||
     triggerAction === PullRequestTriggerType.Synchronize;
 
-  // Treat qualifying release PR auto events as eligible even without the label
+  // Treat any release/* PR auto events as eligible even without the label
   const releaseHead = prData.head?.ref || '';
   const isReleaseBranch = /^release\/\d+\.\d+\.\d+$/i.test(releaseHead);
-  const isStableBase = prData.base?.ref === 'stable';
-  const isReleasePR = isReleaseBranch && isStableBase;
-
-  if (!shouldRun && isAutoTrigger && isReleasePR) {
+  if (!shouldRun && isAutoTrigger && isReleaseBranch) {
     shouldRun = true;
-    reason = `Auto-trigger on release PR (${releaseHead} -> ${prData.base?.ref})`;
+    reason = `Auto-trigger on release PR (${releaseHead})`;
   }
 
   console.log(`Should run: ${shouldRun}, Reason: ${reason}`);
