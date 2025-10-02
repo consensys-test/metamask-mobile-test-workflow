@@ -407,3 +407,4 @@ async function main(): Promise<void> {
   await upsertStatusCheck(statusCheckName, latestCommitHash, checkStatus.status, checkStatus.conclusion, statusMessage);
 
 }
+
