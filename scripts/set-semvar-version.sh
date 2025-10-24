@@ -111,3 +111,4 @@ echo -e "-------------------"
 echo "Updating files:"
 
 perform_updates
+
