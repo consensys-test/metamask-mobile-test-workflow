@@ -7,6 +7,629 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [99.0.0]
+
+### Uncategorized
+
+- test: trigger workflow on valid release branch
+- Merge branch 'main' into chore/test-workflow
+- chore(INFRA-3081): test release
+- feat(card): cp-7.58.0 delegation flow ([#21667](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21667))
+- chore: add energy and bandwidth toggle ([#21575](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21575))
+- chore: remove deprecated network selector from settings ([#21614](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21614))
+- chore: fix typo in isPortfolioViewEnabled property name ([#21808](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21808))
+- fix(perps): cp-7.58.0 invalid tpsl behavior ([#21759](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21759))
+- docs: improve Infura setup instructions in README and .js.env.example ([#21651](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21651))
+- chore: cp-7.58.0 Add legal links and checkboxes to card onboarding ([#21814](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21814))
+- test: add predictions ci workflows ([#21795](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21795))
+- chore: update balance empty state to use primary button and buy flow ([#21817](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21817))
+- chore: Remove TokenListFooter component in favor of balance empty state ([#21490](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21490))
+- chore: Use universal link handler for metamask:// protocol ([#21005](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21005))
+- chore(predict): add loading state to place order screen and remove toasts ([#21818](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21818))
+- feat(card): cp-7.58.0 add delegation translations ([#21816](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21816))
+- fix(predict): ensure polygon network exists ([#21813](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21813))
+- chore(predict): change keypad to remove unnecessary props and show decimal dot ([#21810](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21810))
+- chore: Incrementally add Perps Home screen V2 components ([#21804](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21804))
+- feat(predict): cache balances at controller level ([#21756](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21756))
+- feat(card): add authentication + onboarding metrics ([#21528](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21528))
+- docs: update component library readme for storybook ([#21802](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21802))
+- fix(snaps): Only trigger `onActive` and `onInactive` when client is unlocked ([#21664](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21664))
+- chore(pipeline): Add BUGBOT rules to inc unit test guidelines ([#21760](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21760))
+- refactor: update alignment in PerpsMarketListView ([#21793](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21793))
+- chore: align opt design with authentication ([#21745](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21745))
+- chore(predict): add error handling for predict actions ([#21590](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21590))
+- feat(deposit): allow phone region to differ from KYC region ([#21002](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21002))
+- chore: upgrade build-version action ([#21687](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21687))
+- feat(multichain): update multichain accounts intro modal logic and tests ([#21762](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21762))
+- test: Add e2e rewards feature ([#21767](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21767))
+- docs: fix broken link ([#21404](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21404))
+- fix(predict): fix error toast for claim and withdraw ([#21740](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21740))
+- chore(predict): ui bug bash 2 ([#21683](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21683))
+- fix(INFRA-3066): path based rebuilds ([#21747](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21747))
+- chore: revert hardcoded fingerprint ([#21617](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21617))
+- test(predict): add cash out position e2e ([#21545](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21545))
+- refactor(predict): various visual tweaks (on card, feed, feed tabs) ([#21742](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21742))
+- chore: Persist preferred candle period ([#21593](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21593))
+- chore: cp-7.58.0 set MM_PERPS_ENABLED build flag to true ([#21734](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21734))
+- test: e2e test for predict geo restriction ([#21435](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21435))
+- chore(predict): remove dummy transactions from withdraw/deposit ([#21649](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21649))
+- fix(predict): add funds modal redirect ([#21675](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21675))
+- feat(INFRA-2576): Added new gh workflow to update changelog on cherrypicks to release ([#21434](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21434))
+- feat(rewards|perps): support batch points estimation for perps ([#21658](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21658))
+- test: updates the hash for setup e2e ([#21661](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21661))
+- chore: move confirmation scenarios from regression to smoke E2E suite ([#21660](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21660))
+- chore: adds TrxMethod to selectCanSignTransactions ([#21618](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21618))
+- chore: show staked tron element in the Trx detail page ([#21413](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21413))
+- chore: update reducer typing for signature request, legal notices, and accounts ([#21013](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21013))
+- feat(card): general onboarding fixes ([#21652](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21652))
+- chore: fix card KYC webview ([#21598](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21598))
+- chore: update to 2 buttons when max leverage is 3 ([#21645](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21645))
+- chore(predict): fix unit tests as per guidelines ([#21638](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21638))
+- fix(ramps): cp-7.58.0 do not throw when user details fetch is 401 ([#21633](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21633))
+- feat(card): Update onboarding images + metrics ([#21597](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21597))
+- feat(card): Card Onboarding edge cases and Onboarding token management ([#21594](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21594))
+- chore(predict): Improves predict market details tab order and visibility ([#21630](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21630))
+- feat(predict): add predict withdraw ([#21495](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21495))
+- chore: fix touchables more reverting 21426 cp-7.57.1 ([#21568](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21568))
+- chore: sync stable to main for version 7.57.0 ([#21538](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21538))
+- feat(predict): sticky tabs in predict feed ([#21600](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21600))
+- fix(predict): missing geoblock in certain actions ([#21588](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21588))
+- test: changing the timer location to not count the GTM modals ([#21611](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21611))
+- test: Adds CommandQueueServer to framework ([#21601](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21601))
+- chore: Add `@metamask-previews/*` to NPM age gate exceptions ([#21610](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21610))
+- feat(perps): swipable tabs in perps market details ([#21561](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21561))
+- chore: Configure NPM age gate ([#21566](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21566))
+- chore(perps): address sonarcloud issues in hooks ([#21516](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21516))
+- chore: adjust orders tab in tx history to make labels easier to read ([#21596](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21596))
+- feat(sentry): add searchable tags and context to Logger.error ([#21512](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21512))
+- chore: move user from redux store to card sdk context ([#21582](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21582))
+- feat(predict): Adds PredictPositionDetail component / correctly shows multiple positions in predict details ([#21591](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21591))
+- chore: switch rewards controller to new season discovery/metadata endpoints ([#21559](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21559))
+- chore(predict): rate limit buy orders ([#21540](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21540))
+- chore(core-backend): bump to 3.0.0 ([#21564](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21564))
+- test: wrap async refresh handlers in act() to prevent flaky tests ([#21563](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21563))
+- chore: New Crowdin translations by Github Action cp-7.58 ([#21441](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21441))
+- chore: improve add token screen experience ([#21472](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21472))
+- chore: Tron energy and bandwidth UI ([#21089](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21089))
+- chore: move bitcoin to main build ([#21537](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21537))
+- feat(perps): enable hyperliquid HIP-3 support ([#21323](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21323))
+- fix(predict): navigation stack ([#21544](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21544))
+- feat(predict): Updates market details view to use sticky tabs ([#21541](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21541))
+- chore: Update `sample-controllers` from v0.1.0 to v2 ([#21542](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21542))
+- docs: sample feature for tutorials ([#14158](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/14158))
+- chore: bump bridge controllers ([#21392](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21392))
+- test: add market feed mocks ([#21508](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21508))
+- chore: create feature flag for homepage redesign v1 ([#21526](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21526))
+- test: add mock responses for predict ([#21505](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21505))
+- chore: rename E2E json report ([#21524](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21524))
+- feat(card): add card FREEZE, BLOCKED warnings and card provisioning flow ([#21489](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21489))
+- chore: remove token selector from deposit/earn view ([#21514](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21514))
+- test(e2e): Use fixture for Snap lifecycle test ([#21513](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21513))
+- chore: bump `@metamask/base-controller` from `^8.3.0` to `^8.4.2` ([#21521](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21521))
+- chore: bump `@metamask/token-search-discovery-controller` to `^3.5.0` ([#21195](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21195))
+- chore: move bitcoin to experimental ([#21511](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21511))
+- release: Bump main version to 7.59.0 ([#21504](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21504))
+- chore: updated cron job to 4am UTC ([#21501](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21501))
+- feat(predict): Predict details outcome / status improvements ([#21486](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21486))
+- feat(card): disable swaps if selected address is different from priority token owner address ([#21454](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21454))
+- feat(card): OTP Authentication ([#21451](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21451))
+- feat(perps): new TPSL view design ([#21396](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21396))
+- chore: Update @metamask/signature-controller ([#20202](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20202))
+- chore: remove old reward animations ([#21299](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21299))
+- feat(predict): update buy confirmation to include balance check ([#21488](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21488))
+- chore: update phishing-controller to version 14.1.2 and add migration for urlScanCache reset ([#21417](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21417))
+- fix(predict): empty state ([#21479](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21479))
+- chore: Revert "fix: conditionally apply onPress for Accessibility mode for Android TouchableOpacity" ([#21342](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21342))
+- chore: Alphabetize list of controllers in `state` getter ([#21480](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21480))
+- chore: refactor homepage spacing to use flexbox layout with gap ([#21427](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21427))
+- test: Improve `Engine` unit test isolation ([#21469](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21469))
+- refactor: migrate sentry trace.js to ts ([#21074](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21074))
+- chore: homogenize experience when adding NFT and adding token ([#21259](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21259))
+- chore: Bump Snaps packages ([#21415](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21415))
+- chore: Rename FoxRiveLoaderAnimation mock ([#21431](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21431))
+- test: removes old framework and organizes the framework ([#21359](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21359))
+- fix(perps): balance display without full decimals cp-7.58.0 ([#21355](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21355))
+- test: Improve `RewardsController` unit test isolation ([#21452](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21452))
+- chore: adds TRX Staking feature flag ([#21458](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21458))
+- refactor: Simplify NPM fetching logic ([#21412](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21412))
+- chore: update to yarn v4 ([#21207](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21207))
+- chore: Remove `RewardsController` constructor side-effects ([#21437](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21437))
+- chore: Swaps design adjustments ([#21321](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21321))
+- feat(card): move Card authentication verification out of CardSDK context ([#21399](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21399))
+- refactor(perps): migrate tpsl bottomsheet to fullscreen view ([#21344](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21344))
+- chore(predict): adds initial logic to handle a resolved market ([#21382](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21382))
+- refactor(MultichainAccountSelectorList): remove initialScrollIndex from FlashList cp-7.57.0 ([#21332](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21332))
+- fix(predict): fee collector address for prod environment ([#21444](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21444))
+- feat(predict): add slippage to orders to improve failure rate ([#21443](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21443))
+- test: mock infura requests to unblock e2e ([#21438](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21438))
+- chore: update buffer polyfills - Margelo ([#21386](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21386))
+- chore: sync stable to main for version 7.58.0 ([#21001](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21001))
+- New Crowdin translations by Github Action ([#21397](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21397))
+- test: Add more predict e2e locators ([#21418](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21418))
+- chore: format ([#21422](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21422))
+- feat(INFRA-3034): ci cirrus 2 ([#21421](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21421))
+- Fix changelog for create release PR workflow ([#21360](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21360))
+- feat(card): Card authenticated info ([#21390](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21390))
+- chore: Update `build-utils` ([#21414](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21414))
+- fix(predict): order toasts ([#21395](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21395))
+- perf: Increase Snap timeouts slightly ([#21405](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21405))
+- chore: bump Tron snap version to 1.5.0 ([#21358](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21358))
+- feat(deposit): Locks user's region if they have submitted KYC ([#20822](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20822))
+- chore: fix e2e test reports ([#21354](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21354))
+- refactor: Refactor remaining controllers to use modular init pattern ([#21201](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21201))
+- fix(predict): small ui/ux fixes ([#21381](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21381))
+- chore: New Crowdin translations by Github Action cp-7.57.0 ([#21379](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21379))
+- chore(predict): refactor predict market list ([#21378](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21378))
+- docs: update cursor rules and commands for unit testing ([#20597](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20597))
+- chore: Update `eth-json-rpc-middleware` from v19 to v21 ([#21366](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21366))
+- fix(predict): change order toasts and show claim amount correctly ([#21356](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21356))
+- chore(predict): feed / search improvements ([#21353](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21353))
+- feat(card): display card button with geolocation and feature flag guards ([#21306](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21306))
+- chore(card): add new Baanx API key environment variables on build.sh ([#21317](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21317))
+- chore(predict): disable slippage (for now) ([#21322](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21322))
+- feat(MultichainPermissionsSummary): Add disconnect button cp-7.57.0 ([#21285](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21285))
+- feat(predict): claim ux ([#21311](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21311))
+- docs: fix broken links ([#20749](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20749))
+- refactor(perps): migrate to latest hyperliquid sdk ([#21128](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21128))
+- refactor(predict): preview/place order logic ([#21316](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21316))
+- fix(predict): predict resolved positions component ([#21301](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21301))
+- fix(SDKConnectV2): Fix storage regression ([#21283](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21283))
+- feat(core-backend): add AccountActivity and Websocket for TokenBalancesController ([#21111](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21111))
+- feat(predict): Adds predict transaction activity detail view ([#21293](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21293))
+- ci: remove unused bitrise workflow ([#21296](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21296))
+- feat(deposit): implement user limits fetch before proceeding with an order ([#21174](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21174))
+- test: aligns the e2e MetaMask environment through builds and test runs ([#20862](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20862))
+- chore: update animations for perps ([#21241](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21241))
+- chore: clean e2e stuff ([#21266](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21266))
+- refactor: Align add/switch chain logic with Extension (Fix addEthereumChain unneeded switch approval) ([#20649](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20649))
+- test: addresses flakiness in network expansion solana tests ([#21275](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21275))
+- chore: remove self hosted runners ([#21289](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21289))
+- refactor: Refactor PPOM controller to use modular init pattern ([#21188](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21188))
+- chore: useBridgeQuoteEvents hook ([#21249](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21249))
+- chore: update tron snap to latest version ([#21265](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21265))
+- test: removed unnecessary scroll that made the test flaky ([#21270](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21270))
+- refactor: Refactor remote feature flag controller to use modular init pattern ([#21213](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21213))
+- test: move smoke confirmations test to regression confirmations and r… ([#21134](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21134))
+- chore: bump `@metamask/remote-feature-flag-controller` to `^1.9.0` ([#21194](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21194))
+- feat(predict): deposit ux ([#21198](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21198))
+- chore: add env exp to profiler ([#21219](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21219))
+- feat(predict): adds transaction activity ([#21148](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21148))
+- fix(deposit): remove unresponsive period from keypad cp-7.57.0 ([#21233](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21233))
+- refactor: Refactor DeFi-related controllers to use modular init pattern ([#21135](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21135))
+- docs(perps): update metametrics references ([#21210](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21210))
+- chore: Update activity list codeowners ([#21052](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21052))
+- chore: clean e2e stuff ([#21196](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21196))
+- chore: Ignore warning log of keychain ([#21166](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21166))
+- chore: Bump bridge and bridge status controller to v50.0.0 ([#21137](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21137))
+- chore: update js example ([#21164](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21164))
+- chore: e2e cleaning ([#21143](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21143))
+- chore: local flask builds ([#21154](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21154))
+- fix(perps): adjust decimals logic accross perps codebase ([#20971](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20971))
+- feat(rewards): add new referred-related identities ([#21049](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21049))
+- fix(perps): optimize connection speed and consolidate architecture cp-7.57.0 ([#20946](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20946))
+- chore: update rewards animation ([#21153](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21153))
+- New Crowdin translations by Github Action ([#21018](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21018))
+- fix(deposit): payment method duration badge ([#21140](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21140))
+- chore: integrate delegation-controller ([#19964](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19964))
+- chore: Cleanup remove old collectible list ([#21133](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21133))
+- refactor: Refactor profile sync controllers to use modular init pattern ([#21102](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21102))
+- feat(INFRA-3009): ios only in GHA ([#20944](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20944))
+- ci(merge queue): Add merge group to workflow trigger ([#21109](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21109))
+- chore: clean e2e stuff ([#21081](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21081))
+- chore: cp-7.57.0 improve performance on accounts list ([#21098](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21098))
+- test: app readiness check in login process ([#21120](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21120))
+- chore: cp-7.57.0 chain filtering should not affect account picker balances ([#21122](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21122))
+- refactor: Refactor smart transactions controller to use modular init pattern ([#21088](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21088))
+- chore: add `@metamask/wallet-integrations` team as codeowners for `BackgroundBridge/` ([#21117](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21117))
+- chore: run AI analysis on all PRs ([#21053](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21053))
+- feat(predict): integrate fee collection via clob relayer ([#21119](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21119))
+- feat(predict): Predict Position Updates ([#20779](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20779))
+- chore: split new network manager tests ([#21112](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21112))
+- chore: Update keychain to v^9 ([#20625](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20625))
+- feat(ramp): mark country as selected if state is selected ([#21055](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21055))
+- feat (ramps): reset input when keyboard is reopened ([#20992](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20992))
+- feat(card): Card API foundations and Authentication screen ([#20984](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20984))
+- refactor: Refactor remaining assets controllers to use modular init pattern ([#21036](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21036))
+- refactor: Refactor token controllers to use modular init pattern ([#21029](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21029))
+- test: skip filtering tokens by selected network from enabled popular networks ([#21095](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21095))
+- chore: Bump `@metamask/ens-resolver-snap` to `1.0.0` ([#21047](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21047))
+- chore(SDKConnectV2): Update package ([#21087](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21087))
+- feat(predict): trade via proxy wallet rather than eoa ([#20994](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20994))
+- feat(predict): Adds predict region check ([#20661](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20661))
+- test: changed value for in-build SRP ([#20617](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20617))
+- MCRM-8: Updated add-team-label worklow to use topology.json ([#21003](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21003))
+- chore: add environment to the state logs ([#20783](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20783))
+- perf: add `SnapKeyring.setSelectedAccounts` support - cp-7.57.0 ([#20952](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20952))
+- fix(SDKConnectV2): Fixed race condition and expiry bug ([#20990](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20990))
+- fix(action): require changelog entry even if the PR description doesn't match template ([#21021](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21021))
+- fix(pr template): Use latest version of release pr template ([#21019](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21019))
+- fix(perps): remove loading delay from tutorial screen ([#20918](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20918))
+- feat(deposit): hide unsupported cryptocurrencies cp-7.57.0 ([#20993](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20993))
+- chore: cicd - revert to lg runners ([#21009](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21009))
+- test: self heal performance e2e ([#21006](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21006))
+- test: remove app launch times test, rename to expo_dev_pipeline ([#21008](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21008))
+- New Crowdin translations by Github Action ([#20943](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20943))
+- feat(predict): new buy/sell logic without on-chain tx ([#20665](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20665))
+- test: add predict e2e infrastructure ([#20965](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20965))
+- fix(predict): market details tabs ([#20970](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20970))
+- test: build android ([#20975](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20975))
+- feat(SDKConnectV2): allow shared ws connection on `WebSocketTransport` ([#20977](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20977))
+- test: Increase memory and cores in Detox configuration for CI stability ([#20974](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20974))
+- chore: Adding e2e test case for new send flow ([#20512](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20512))
+- test: Add first musd test ([#20815](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20815))
+- fix(perps): cp-7.57.0 missing trace attachment in sentry measurements ([#20817](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20817))
+- feat(perps): correct tab positions in market detail list ([#20716](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20716))
+- fix(predict): safe nonce when contract is not deployed ([#20963](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20963))
+- chore: sync stable to main for version 7.58.0 ([#20788](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20788))
+- feat(predict): Predict Details Outcome Sorting / Chart Performance ([#20880](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20880))
+- refactor: use extended thinking and tools for agentic e2e selection ([#20893](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20893))
+- test: quarantines ramps tests that were disabled, reduces trade shards ([#20945](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20945))
+- fix(deposit): get started mUSD cp-7.57.0 ([#20915](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20915))
+- chore(perps): remove mistakenly pushed task file ([#20919](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20919))
+- feat(SDKConnectV2): Add "Return to App" Toasts ([#20647](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20647))
+- refactor: custom amount confirmation ([#20599](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20599))
+- test: adds a guard to the flask test report to be skipped when it should ([#20858](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20858))
+- feat(perps): redirect to correct tab on order ([#20449](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20449))
+- chore: Added font preloader cp-7.57.0 ([#20331](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20331))
+- chore: Update perps related .js.env build flags to align with main-rc ([#20913](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20913))
+- ci: add build step for ios regression e2e ([#20897](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20897))
+- chore: disable RC auto generation ([#20896](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20896))
+- INFRA-2999-Fix create release PR workflow changelog issue for mobile ([#20894](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20894))
+- fix(ramp): prevent 'undefined' flash in sell amount input during load cp-7.57.0 ([#20881](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20881))
+- New Crowdin translations by Github Action ([#20794](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20794))
+- refactor: use bumped notification controller config cleanup ([#20860](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20860))
+- test: fixes schedule builds outputs ([#20867](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20867))
+- chore: cp-7.57.0 add padding between 'Your balance' and action buttons on token detail page ([#20843](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20843))
+- ci: remove identity ios regression e2e on bitrise ([#20864](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20864))
+- fix(deposit): error modal cp-7.57.0 ([#20772](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20772))
+- fix(deposit): region selector modal param cp-7.57.0 ([#20793](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20793))
+- test: add pred page objects ([#20823](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20823))
+- fix(release pr approval): add more explicit name for the job ([#20856](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20856))
+- chore: bump `@metamask/smart-transactions-controller` to `^19.2.0` ([#20152](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20152))
+- refactor: Refactor network controller to use messenger and init pattern ([#20741](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20741))
+- feat(ramp): add activation keys to all non-prod envs ([#20781](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20781))
+- test: regression tests reporting ([#20648](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20648))
+- chore: Bump Snaps packages ([#20834](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20834))
+- refactor: Refactor keyring controller to use modular init pattern ([#20732](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20732))
+- test: add job to run Flask Smoke E2E in GHA ([#19977](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19977))
+- fix(SDKConnectV2): Storage will automatically delete expired connections ([#20565](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20565))
+- fix(perps): cp-7.57.0 perps reward discount not applied correctly ([#20738](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20738))
+- chore: New Crowdin translations by Github Action ([#20670](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20670))
+- chore: Bump main version to 7.58.0 ([#20786](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20786))
+- chore: add deprecation notices to component-library components with design-system replacements ([#20760](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20760))
+- feat(ds): accept labelTextVariant prop ([#20773](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20773))
+- INFRA-2999-FixAutoCreateReleasePR ([#20744](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20744))
+- chore: move appwright to dev dependency ([#20354](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20354))
+- chore: update `CODEOWNERS.md` -> `@metamask/sdk-devs` to `@metamask/wallet-integrations` ([#20745](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20745))
+- chore: fix recently introduced lint issue ([#20776](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20776))
+- chore: account for rc builds on browserstack ([#20753](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20753))
+- chore: Update Earn controller to resolve peer dependency warnings ([#20044](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20044))
+- chore: Bump target SDK to 35 ([#20461](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20461))
+- chore: Bump Snaps packages ([#20684](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20684))
+- test: quarantine ramp test ([#20724](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20724))
+- chore(test): add option to skip react native reload in test cleanup ([#20527](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20527))
+- feat(predict): implement Safe fee authorization logic ([#20704](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20704))
+- chore: set BIP-44 as default cp-13.5.0 ([#20250](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20250))
+- fix(SDKConnectV2): Fix in-app QR Code scanner to handle SDK V2 deeplinks ([#20691](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20691))
+- chore: E2E docu updated ([#20709](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20709))
+- test: skip dorny on scheduled runs ([#20678](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20678))
+- refactor: add test env to feature flag mock ([#20721](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20721))
+- fix(SDKConnectV2): UI not showing the right dapp name/url/icon ([#20623](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20623))
+- fix(SDKConnectV2): SDKDisconnectModal `toHex` issue ([#20680](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20680))
+- fix(sign off list): remove legacy list of teams ([#20720](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20720))
+- revert: "feat: introduce native utils margelo" ([#20710](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20710))
+- test: fixed test `e2e/specs/assets/multichain/asset-list.spec.ts` ([#20671](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20671))
+- perf: speed up overlay animation duration to 150ms ([#20695](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20695))
+- test: Removed test scenario due to functionality change ([#20702](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20702))
+- INFRA-2999-Fixes for create release workflows ([#20653](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20653))
+- refactor: Refactor preferences controller to use modular init pattern ([#20683](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20683))
+- refactor: Refactor subject metadata controller to use modular init pattern ([#20688](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20688))
+- refactor: Refactor permission controller to use modular init ([#20510](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20510))
+- test: fix numberKey.waitFor is not a function ([#20667](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20667))
+- refactor: tab empty state cleanup ([#20652](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20652))
+- test: Account regression and smoke e2e tests ([#20273](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20273))
+- New Crowdin translations by Github Action ([#20608](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20608))
+- refactor(ramp): aggregator region UX update ([#20613](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20613))
+- refactor: ramp payment modal bottom sheet ([#20562](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20562))
+- refactor(deposit): use sdk env according MetaMask env ([#20520](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20520))
+- refactor(ramp): use sdk env according MetaMask env ([#20588](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20588))
+- test: Fixed the test `e2e/specs/assets/nft-detection-modal.spec.ts` ([#20631](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20631))
+- revert: "chore: Prioritize target and environment values from js env for build.sh" ([#20621](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20621))
+- test: refactors needs-builds step ([#20538](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20538))
+- test: convert appwright selectors to .ts ([#20580](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20580))
+- Chore: New Crowdin translations by Github Action cp-7.56.1 ([#20494](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20494))
+- test: fixed test `e2e/specs/assets/defi/view-defi-tab.spec.ts` ([#20582](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20582))
+- refactor: add common pattern for RewardsController caching & add pointsEvents caching ([#20471](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20471))
+- refactor(ramp): use avatar token icon ([#20587](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20587))
+- test: fix keyboard issue on import flow on iOS ([#20584](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20584))
+- test: fix assets view and send flow ([#20519](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20519))
+- refactor: Refactor selected network controller to use modular init pattern ([#20516](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20516))
+- test: Migrate appwright gestures to e2e/framework folder ([#20489](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20489))
+- ci: change performance run frequency ([#20553](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20553))
+- test: add unit tests on SegmentPersistor ([#20518](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20518))
+- test: fixes the scheduled main smoke e2e runs ([#20515](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20515))
+- New Crowdin translations by Github Action ([#20473](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20473))
+- Rewards rwds 495 hardware wallet settings exclusion v2 ([#20464](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20464))
+- test: fix flaky test `e2e/specs/assets/import-tokens-via-asset-watcher.spec.ts` ([#20409](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20409))
+- test: fix build state machine ([#20441](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20441))
+- ci: fix ios e2e in bitrise ([#20435](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20435))
+- ci: fix performance workflow ([#20416](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20416))
+- test: fix yarn setup in performance workflow ([#20397](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20397))
+- Fix broken type reference links in ButtonLink README ([#16509](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/16509))
+- test: add binary to anvil startup ([#20374](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20374))
+- test: add launch times tests to performance suite ([#20283](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20283))
+- refactor: use `@metamask/eth-qr-keyring` ([#17157](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/17157))
+- test: improve test execution consistency ([#20266](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20266))
+- test: adds unit tests to run-e2e-tags-gha.mjs ([#20306](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20306))
+- test: Fixed test `e2e/specs/wallet/send-ERC-token.spec.js` ([#20261](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20261))
+- test: disables flaky test ([#19974](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19974))
+- test: refactors the e2e sh script to mjs for flakiness detection ([#19838](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19838))
+- refactor: refactor BIP-44 feature flag ([#20109](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20109))
+- refactor: remove iconUrl from event asset and update ActivityEventRow to use network images ([#20244](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20244))
+- test: update account name change flow in multichain accounts tests ([#20216](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20216))
+- test: BIP-44 Account wallet details e2e tests ([#20213](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20213))
+- refactor: portfolio value format ([#20195](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20195))
+- refactor(ramps): update aggregator token modal to a bottom sheet ([#19185](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19185))
+- test: add multichainAccountsIntroModalSeen flag to default FixtureBuilder ([#20210](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20210))
+- ci: fix triggering performance e2e jobs ([#20208](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20208))
+- New Crowdin translations by Github Action ([#20176](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20176))
+- ci: clean up performance e2e workflow ([#20192](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20192))
+- refactor(perps): change reward controller cache duration to 5min ([#20134](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20134))
+- New Crowdin translations by Github Action ([#19898](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19898))
+- style: Overview tab UI tweaks ([#20130](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20130))
+- Fix: bip 44 bugs ([#20013](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20013))
+- INFRA-2911: Hardcoded parameters values for create release pull request ([#19353](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19353))
+- refactor(AccountCell): update navigation to account group details ([#20035](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20035))
+- test: Account list - import SRP ([#19955](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19955))
+- test: fix performance e2e: ios onboarding ([#20009](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20009))
+- test: Fixed onramp tests ([#20005](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20005))
+- test: perps perf e2e onboarding ([#19966](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19966))
+- test: add profiling data to performance test reports ([#19875](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19875))
+- ci: remove clean runner step for iOS E2E tests ([#19940](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19940))
+- test: Delete and import account with PK ([#19795](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19795))
+- ci: remove nick-retries from E2E run step ([#19909](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19909))
+- Rwds 270 level image name points threshold should come from rewards backend ([#19728](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19728))
+- New Crowdin translations by Github Action ([#19796](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19796))
+- test: update mock profile-sync fixtures ([#19879](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19879))
+- ci: only run performance job on release commit messages ([#19840](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19840))
+- RWDS-289 new header key for rewards auth ([#19767](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19767))
+- Feat/default-biometric-choice ([#19732](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19732))
+- INFRA-2919: Fix running infinite bitrise workflows on autotriggers ([#19771](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19771))
+- New Crowdin translations by Github Action ([#18904](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/18904))
+
+### Added
+
+- feat: align quote card design with Figma specifications ([#21656](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21656))
+- feat: add feature flag to blacklist custom networks (used to hide Monad before launch) ([#21616](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21616))
+- feat: Implement extra validations and alert when sending burn address in EVM transfer transactions ([#21772](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21772))
+- feat: remove skip bottomsheet on click of remind me later button ([#21766](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21766))
+- feat: add monad network ([#21491](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21491))
+- feat: Add NFTs full page ([#21647](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21647))
+- feat: add pre-push hook to prevent unformatted code from reaching remote ([#21335](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21335))
+- feat: Add tokens full page ([#21628](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21628))
+- feat: remove AccountBackupStep1 screen and modify manualbackup screens from onboarding(SRP flow) ([#21510](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21510))
+- feat: New Persistence System Improvements ([#21225](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21225))
+- feat: create feature flag for trending tokens ([#21655](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21655))
+- feat: speed up swap quote availability with SSE ([#20909](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20909))
+- feat: rewards compatible with basic functionality ([#21470](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21470))
+- feat: Analytics improvements and error logging examples ([#21543](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21543))
+- feat: update recipients UI on swaps cp-7.58.0 ([#21565](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21565))
+- feat: card onboarding integration ([#21455](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21455))
+- feat: add injective network ([#21291](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21291))
+- feat: add cronos network ([#21200](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21200))
+- feat: Add pending withdraw and deposit to Perps Activity tab ([#20904](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20904))
+- feat: quote card updates ([#21485](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21485))
+- feat: TAT-1863: as a user i want to see adl events in my trade activity page ([#21442](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21442))
+- feat: onboarding success animation ([#21302](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21302))
+- feat: control btc provider state via remote feature flag ([#20989](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20989))
+- feat: TAT-1662 trade fee does not adjust for market or limit order maker or taker ([#21428](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21428))
+- feat: add analytics tracking for Predict trade actions ([#21216](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21216))
+- feat: add BalanceEmptyState component ([#20782](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20782))
+- feat: l runners, cache updates ([#21327](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21327))
+- feat: predict confirmation metrics ([#21348](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21348))
+- feat: predict withdraw confirmation ([#21309](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21309))
+- feat: Add support for gas sponsorship ([#21121](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21121))
+- feat: TAT-1778 fix mm earn confirmation card account name issue ([#21238](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21238))
+- feat: cp-7.57.0 support external-link for notifications ([#21367](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21367))
+- feat: cp-7.58.0 max button in perps deposit ([#21257](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21257))
+- feat: card onboarding ([#21206](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21206))
+- feat: Add build type to version string ([#21326](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21326))
+- feat: Onboarding and ChoosePassword Loader update ([#21281](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21281))
+- feat: onboarding deeplink ([#20566](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20566))
+- feat: Swaps show BTC Native Segwit tag ([#21228](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21228))
+- feat: add action button event ([#20967](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20967))
+- feat: debounce metamask pay alerts ([#21243](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21243))
+- feat: Add trace callback in `TransactionController` constructor ([#20569](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20569))
+- feat: swaps recipient row ([#20921](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20921))
+- feat: btc swap button, BIP44 default pair ([#21062](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21062))
+- feat: Implement unsupported deeplink modal ([#20795](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20795))
+- feat: cp-7.57.0 TAT-1883 perps tutorial regressions animations are cut off and ready to trade text and subtext overlap ([#21220](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21220))
+- feat: add gasless support via 7702 ([#20233](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20233))
+- feat: update onboarding screen and replace lottie with rive animations. ([#19907](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19907))
+- feat: show card spend events in activity tab ([#21193](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21193))
+- feat: add lukso network ([#20846](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20846))
+- feat: rewards bip-44 match designs ([#21190](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21190))
+- feat: enable fullscreen browser view from clone ([#20956](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20956))
+- feat: social login check added in description in create password. cp-7.57.0 ([#21187](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21187))
+- feat: retry in perps deposit transaction details ([#21169](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21169))
+- feat: add network logo and native logo for Plasma network ([#20567](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20567))
+- feat: add ways to earn sheet for referrals ([#21124](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21124))
+- feat: rwds-492 make level image tappable ([#21136](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21136))
+- feat: add how to earn for card spend ([#21108](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21108))
+- feat: update transaction pay bridge estimates ([#21093](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21093))
+- feat: cp-7.57.0 Perps 7.57.0 Mandatory UI Fixes ([#21060](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21060))
+- feat: bump `@metamask/multichain-api-middleware` to `1.2.0` ([#20550](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20550))
+- feat: rewards bip-44 ([#20729](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20729))
+- feat: predict claim confirmation ([#21007](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21007))
+- feat: cp-7.57.0 updated PerpsController to use v2 perps geo block remote flag ([#21067](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21067))
+- feat: 14414 Replace redux-persist with barebones JS persist system using FileSystemStorage ([#17685](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/17685))
+- feat: update bitcoin snap version ([#21031](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21031))
+- feat: add activity details bottom sheet ([#20988](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20988))
+- feat: adapt emulator configs for cirrus runners ([#21041](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21041))
+- feat: Implement BTC labels in send flow ([#21028](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21028))
+- feat: predict deposit confirmation ([#20926](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20926))
+- feat: rehydration flow ios update ([#20799](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20799))
+- feat: swaps btc tx and history ([#20863](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20863))
+- feat: create `GasFeeTokenToast` component ([#18611](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/18611))
+- feat: add labels for btc assets ([#20859](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20859))
+- feat: agentic unit test automation ([#20837](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20837))
+- feat: add deeplink decompression logic for sdk v2 payload ([#20924](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20924))
+- feat: social login success screen added for social login users and ios platform. ([#20800](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20800))
+- feat: Bitcoin+Tron BIP44 integration ([#19971](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19971))
+- feat: cicd migration self-hosted to cirrus ([#20890](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20890))
+- feat: Swaps btc network ([#18851](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/18851))
+- feat: Feat/introduce native utils margelo ([#20778](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20778))
+- feat: cp-7.56.3 disable perps build flag and add belgium to build flag blocked regions fallback ([#20790](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20790))
+- feat: add dynamic carousel preview updates ([#20712](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20712))
+
+### Fixed
+
+- fix: update copy from `Create account` to `Add account` ([#21765](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21765))
+- fix: navigation when send confirmation is rejected. ([#21848](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21848))
+- fix: predict confirmation balance usage ([#21805](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21805))
+- fix: cp-7.58.0 formatTimeRemaining to correctly display time remaining ([#21843](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21843))
+- fix: change broken of Ledger Connection Tutorial Link. ([#21659](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21659))
+- fix: ui bugs ([#21841](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21841))
+- fix: Improve network connection banner ([#21644](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21644))
+- fix: fix invalid address behavior on custom token import ([#21812](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21812))
+- fix: fix clipped placeholder ([#21774](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21774))
+- fix: align balance loaders for account group and portfolio pages ([#21746](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21746))
+- fix: Display dynamic gas station fee ([#21406](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21406))
+- fix: formatting issues on main ([#21752](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21752))
+- fix: new homescreen formatting diffs from 21410 ([#21743](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21743))
+- fix: bitrise nightly flakiness ([#21741](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21741))
+- fix: gasless transaction submission method selection logic ([#21637](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21637))
+- fix: add account style on wallet details view ([#21672](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21672))
+- fix: ui bugs in OptinMetrics and OnboardingSuccess screen ([#21551](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21551))
+- fix: Input Text left align ([#21250](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21250))
+- fix: when clicking max token, show up to 5 decimals max ([#21059](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21059))
+- fix: Limit order card direction text ([#21586](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21586))
+- fix: font rendering issues by updating font preloader to preload all custom font files ([#21199](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21199))
+- fix: cp-7.58.0 close position disabled when receiveAmount <0 ([#21622](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21622))
+- fix: Fix flakey async unit tests in Perps domain ([#21632](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21632))
+- fix: cp-7.58.0 update swap asset balance on switch ([#21625](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21625))
+- fix: unit test flakiness ([#21623](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21623))
+- fix: cp-7.58.0 fix gasless transaction support logic ([#21604](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21604))
+- fix: redirect to blockexplorer from tx details ([#21612](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21612))
+- fix: Use account group address in `SnapUIAvatar` when applicable ([#21607](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21607))
+- fix: predict deposit token amount ([#21603](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21603))
+- fix: cp-7.58.0 Fix swipe gesture navigation in send flow amount page for Android ([#21518](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21518))
+- fix: add small margin bottom to TabBar ([#21562](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21562))
+- fix: Remove Ramp `SkeletonText` component from legacy confirmation ([#21330](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21330))
+- fix: disable toasts for all predict transactions ([#21529](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21529))
+- fix: lint ts issue fix ([#21587](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21587))
+- fix: update assets controllers ([#21465](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21465))
+- fix: Add shouldEnableAndroidPressIn prop to TempTouchableOpacity in Perps domain cp-7.57.1 ([#21535](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21535))
+- fix: Prevent relative paths in RNTar native modules ([#21408](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21408))
+- fix: rewards detects stale cache for opt in and link accounts ([#21520](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21520))
+- fix: show edit account bottomsheet on android when its behind the keyboard ([#21477](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21477))
+- fix: cp-7.58.0 rewards settings change icon open modal ([#21473](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21473))
+- fix: fixed issue where button is cutt off and keyboard aware scroll d… ([#21389](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21389))
+- fix: ShareAddressQR displays correct address for non-EVM assets ([#21449](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21449))
+- fix: Added TempTouchableOpacity to conditionally simulate tap behavior for android cp-7.57.0 ([#21426](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21426))
+- fix: Check case sensitive `Content-Length` header ([#21475](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21475))
+- fix: incorrect network when adding token ([#21461](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21461))
+- fix: cp-7.57.0 update destination chain balances after bridge transaction ([#21430](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21430))
+- fix: invalid balance passed to parseUnits ([#21464](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21464))
+- fix: cp-7.57.0 caip-issue causing failure to show points estimation ([#21462](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21462))
+- fix: update default swap destination for Sei ([#20731](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20731))
+- fix: improve perps tutorial carousel layout for longer translations ([#21295](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21295))
+- fix: exit useLatestBalance early on undefined chain ([#21407](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21407))
+- fix: cp-7.57.0 deeplink for rewards populates referral code ([#21403](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21403))
+- fix: Navigation title misalignment on Android ([#21280](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21280))
+- fix: formatting diffs 20904 ([#21315](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21315))
+- fix: cp-7.57.0 TAT-1888 fix perps controller geo block remote feature flag race condition ([#21385](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21385))
+- fix: patch bridge status controller 50 ([#21374](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21374))
+- fix: cp-7.58.0 metamask pay transaction failures ([#21287](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21287))
+- fix: update package to fix staking balance issue ([#21222](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21222))
+- fix: cp-7.58: fix amount/decimals in rewards activity ([#21334](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21334))
+- fix: Swaps incorrect token icon ([#21304](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21304))
+- fix: Fix stale block tracker cache bug ([#21288](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21288))
+- fix: rewards third iteration for bip-44 ([#21286](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21286))
+- fix: reduce number of notification details ([#21279](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21279))
+- fix: metamask pay metrics in finalized events ([#21237](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21237))
+- fix: fix displayed warning for network ([#21091](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21091))
+- fix: NFT image does not load when importing nft after app restart ([#21267](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21267))
+- fix: chart not displaying sometimes on android ([#21211](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21211))
+- fix: cp-7.57.0 prevent unnecessary reward navigation on account change ([#21264](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21264))
+- fix: cp-7.57.0 app bricks on asset sorting ([#21256](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21256))
+- fix: cp-7.57.0 target PRD for rc/pre-release ([#21254](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21254))
+- fix: now consider non-EVM account names for group names - cp-7.57.0 ([#21189](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21189))
+- fix: select first gas fee token automatically ([#18753](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/18753))
+- fix: Broken deposit monitor toasts cp-7.57.0 ([#21165](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21165))
+- fix: BackgroundBridge should not check the request origin when the connection is from WC or SDK ([#21118](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21118))
+- fix: cp-7.57.0 Initialize feature flags from state ([#21168](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21168))
+- fix: cp-7.57.0 slow reward signing, update sol snap ([#21202](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21202))
+- fix: conditionally apply onPress for Accessibility mode for Android TouchableOpacity cp-7.57.0 ([#21146](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21146))
+- fix: prevent swaps screen from briefly flashing bridgeview when loading ([#21116](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21116))
+- fix: multichain account network permissions switch cp-7.57.0 ([#21043](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21043))
+- fix: adds solana and btc account balances back to ramp quote page ([#21104](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21104))
+- fix: polygon in metamask pay ([#21191](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21191))
+- fix: cp-7.57.0 accounts list not scrollable on android ([#21180](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21180))
+- fix: Update text size in Tag to match designs ([#20999](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20999))
+- fix: update padding and icon sizing on the homepage ([#21171](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21171))
+- fix: cp-7.57.0 hide 0 balances account picker ([#21139](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21139))
+- fix: order size and margin displayed on trade screen differ from execution for small amounts ([#20576](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20576))
+- fix: rewards bip-44 modify opt out event emit ([#21123](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21123))
+- fix: critical type safety issue in tracing system cp-7.57.0 ([#21075](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21075))
+- fix: align perps activity items with perps activity UI ([#21097](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21097))
+- fix: BackgroundBridge onMessage origin check ([#20987](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20987))
+- fix: transaction pay loading ([#21090](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21090))
+- fix: update font size in RPC flow ([#21056](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21056))
+- fix: bump `@metamask/account-tree-controller` to `v1.4.2` cp-7.57.0 ([#21046](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21046))
+- fix: asset details showing -100% token price in Swaps UI ([#21026](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21026))
+- fix: consume send bundle feature flag to determine alternateGasFee support ([#19899](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19899))
+- fix: cp-7.67.0 improve tabs click and move polling provider to parent element ([#20898](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20898))
+- fix: cp-7.57.0 fix api fetcher balances ([#21014](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21014))
+- fix: Prevent throwing exception when save is clicked on cancel and speedup with a UI error ([#21038](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21038))
+- fix: Fix fallback of gas market estimates on send flow ([#21037](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21037))
+- fix: Adding missing metrics property is_smart_transaction for smart transactions ([#21027](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21027))
+- fix: Fix issue 20841 QR confirmation screen appearing after re-open MM. Unable to close. cp-13.5.0 ([#21024](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/21024))
+- fix: cp-7.57.0 fix padding after tabslist change ([#20986](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20986))
+- fix: lock time when skipping onboarding and test coverage ([#20865](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20865))
+- fix: seedless-rehydrate and sync issue ([#20829](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20829))
+- fix: deprecate legacy swaps ([#20947](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20947))
+- fix: Fix name of Snap keyring builder messenger ([#20981](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20981))
+- fix: cp-7.57.0 wallet initiated Send transactions are validated by security alerts API on mobile ([#20979](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20979))
+- fix: account backup screen ui in SRP flow. ([#20972](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20972))
+- fix: network `gasFeeTokenIcon` and display native amount as fallback cp-7.57.0 ([#20931](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20931))
+- fix: Addressing designs feedbacks on send amount page ([#20973](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20973))
+- fix: Updated rewards page spacing to allow active boosts's carousel to go to edge of screen cp-7.57.0 ([#20939](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20939))
+- fix: cp-7.57.0 Minimal pending deposit UI ([#20910](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20910))
+- fix: cp-7.57.0 handle URL-encoded characters in browser URL processing to fix home button navigation ([#20883](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20883))
+- fix: cp-7.57.0 no duplicate season status calls on account add ([#20942](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20942))
+- fix: webview protocols alert dialogs ([#19383](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/19383))
+- fix: cp-7.57.0 Fix insufficient alert on send max ([#20933](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20933))
+- fix: prevent duplicate switch requests in account network row modal ([#20633](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20633))
+- fix: skip specific regression tests for android and skip ios suite in ci ([#20920](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20920))
+- fix: Streamlined tabs underline bar logic and added padding to tabs content for better scroll experience cp-7.57.0 ([#20740](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20740))
+- fix: cp-7.57.0 Change rewards feature flag ([#20886](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20886))
+- fix: cp-7.57.0 bump assets controllers to v78.0.1 ([#20801](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20801))
+- fix: fix push events to contain better mixpanel data querying ([#20855](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20855))
+- fix: cp-7.57.0 update rewards event type for take profit and stop loss ([#20869](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20869))
+- fix: cp-7.57.0 disable swaps for unsupported chains ([#20838](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20838))
+- fix: Fix simulation total value to be settled in `properties` instead of `sensitiveProperties` ([#20840](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20840))
+- fix: cp-7.57.0 Fix new send flow metrics ([#20826](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20826))
+- fix: use old account indicator instead of checkmark cp-7.57.0 ([#20643](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20643))
+- fix: adds backup button click handler and navigates to backup flow ([#20832](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20832))
+- fix: cp-7.57.0 rewards gtm spawn modal different session than bip44 ([#20807](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20807))
+- fix: cp-7.57.0 remove rewards auth grace concept ([#20804](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20804))
+- fix: cp-7.57.0 prevent duplicate points events api calls ([#20802](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20802))
+- fix: cp-7.57.0 UI tour images are narrow small ([#20775](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20775))
+- fix: align connection logic with extension cp-7.57.0 ([#20578](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20578))
+- fix: cp-7.57.0 MM Poly font on iOS & onboarding title cropped ([#20736](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20736))
+- fix: cp-7.56.2 add contentful max version number segmentation ([#20706](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20706))
+- fix: cp-7.57.0 filter chainIds for staked balances ([#20755](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20755))
+- fix: cp-7.57.0 rive asset state machine name ([#20758](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20758))
+- fix: wallet-connect qrcode redirect ([#20636](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20636))
+- fix: cp-7.56.2 force rendering on token list when order changes ([#20697](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20697))
+- fix: tab bar alignment ([#20746](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20746))
+- fix: cp-7.57.0 side effect opt in default account in srp ([#20747](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20747))
+- fix: cp-7.57.0 handle session expiration for rewards module ([#20690](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20690))
+- fix: cp-7.57.0 make sure rewards session token exists when importing SRP that h… ([#20742](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20742))
+- fix: Nft grid refresh control not working correctly ([#20726](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20726))
+- fix: cp-7.56.2 remove unintended metrics from transaction finalised event ([#20700](https://github.com/consensys-test/metamask-mobile-test-workflow/pull/20700))
+
 ## [7.57.0]
 
 ### Added
@@ -403,34 +1026,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.56.5]
 
 ### Fixed
+
 - fix: use SharedDeeplinkManager to parse instead of Linking API ([#20960](https://github.com/MetaMask/metamask-mobile/pull/20960))
 
 ## [7.56.4]
 
 ### Fixed
+
 - fix: address feature flag config issue
 
 ## [7.56.3]
 
 ### Fixed
-- fix: remove unintended metrics from transaction finalised event ([#20733](https://github.com/MetaMask/metamask-mobile/pull/20733))							
-- fix: force rendering on token list when order changes ([#20771](https://github.com/MetaMask/metamask-mobile/pull/20771)) 									
-- fix: add contentful max version number segmentation ([#20769](https://github.com/MetaMask/metamask-mobile/pull/20769))									
+
+- fix: remove unintended metrics from transaction finalised event ([#20733](https://github.com/MetaMask/metamask-mobile/pull/20733))
+- fix: force rendering on token list when order changes ([#20771](https://github.com/MetaMask/metamask-mobile/pull/20771))
+- fix: add contentful max version number segmentation ([#20769](https://github.com/MetaMask/metamask-mobile/pull/20769))
 
 ## [7.56.2]
 
 ### Fixed
+
 - fix: address feature flag config issue
 
 ## [7.56.1]
 
 ### Fixed
-- fix: in recipient validations for internal accounts ([#20694](https://github.com/MetaMask/metamask-mobile/pull/20694)) 
+
+- fix: in recipient validations for internal accounts ([#20694](https://github.com/MetaMask/metamask-mobile/pull/20694))
 - feat: iOS Rehydration Flow Update to release/7.56.1 ([#20681](https://github.com/MetaMask/metamask-mobile/pull/20681))
 - feat: social login success screen added for social login users and ios platform. ([#20679](https://github.com/MetaMask/metamask-mobile/pull/20679))
 - fix: Returned Scrollview to Perps and Defi tab cp-7.56.1 ([#20650](https://github.com/MetaMask/metamask-mobile/pull/20650))
 - fix: missing transactions in activity after perps deposit (\#20507) ([09ef7e5](https://github.com/MetaMask/metamask-mobile/commit/09ef7e5f5111d0d3592b5e6d60499f31dc22f013))
-- fix: cp-7.56.1 Temp Revert page-level scroll for Wallet (#20579) ([#20616](https://github.com/MetaMask/metamask-mobile/pull/20616)) 
+- fix: cp-7.56.1 Temp Revert page-level scroll for Wallet (#20579) ([#20616](https://github.com/MetaMask/metamask-mobile/pull/20616))
 - fix: Temp Revert page-level scroll for Wallet (\#20579) ([9022244](https://github.com/MetaMask/metamask-mobile/commit/902224410fbdf37250b990c75986eb7a948fb5ec))
 
 ## [7.56.0]
@@ -7632,196 +8260,197 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#957](https://github.com/MetaMask/metamask-mobile/pull/957): fix timeouts (#957)
 - [#954](https://github.com/MetaMask/metamask-mobile/pull/954): Bugfix: onboarding navigation (#954)
 
-[Unreleased]: https://github.com/MetaMask/metamask-mobile/compare/v7.57.0...HEAD
-[7.57.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.56.5...v7.57.0
-[7.56.5]: https://github.com/MetaMask/metamask-mobile/compare/v7.56.4...v7.56.5
-[7.56.4]: https://github.com/MetaMask/metamask-mobile/compare/v7.56.3...v7.56.4
-[7.56.3]: https://github.com/MetaMask/metamask-mobile/compare/v7.56.2...v7.56.3
-[7.56.2]: https://github.com/MetaMask/metamask-mobile/compare/v7.56.1...v7.56.2
-[7.56.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.56.0...v7.56.1
-[7.56.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.55.1...v7.56.0
-[7.55.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.55.0...v7.55.1
-[7.55.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.54.2...v7.55.0
-[7.54.2]: https://github.com/MetaMask/metamask-mobile/compare/v7.54.1...v7.54.2
-[7.54.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.54.0...v7.54.1
-[7.54.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.53.1...v7.54.0
-[7.53.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.53.0...v7.53.1
-[7.53.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.51.4...v7.53.0
-[7.51.4]: https://github.com/MetaMask/metamask-mobile/compare/v7.51.3...v7.51.4
-[7.51.3]: https://github.com/MetaMask/metamask-mobile/compare/v7.51.2...v7.51.3
-[7.51.2]: https://github.com/MetaMask/metamask-mobile/compare/v7.51.1...v7.51.2
-[7.51.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.51.0...v7.51.1
-[7.51.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.50.2...v7.51.0
-[7.50.2]: https://github.com/MetaMask/metamask-mobile/compare/v7.50.1...v7.50.2
-[7.50.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.50.0...v7.50.1
-[7.50.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.47.3...v7.50.0
-[7.47.3]: https://github.com/MetaMask/metamask-mobile/compare/v7.47.2...v7.47.3
-[7.47.2]: https://github.com/MetaMask/metamask-mobile/compare/v7.47.1...v7.47.2
-[7.47.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.47.0...v7.47.1
-[7.47.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.46.2...v7.47.0
-[7.46.2]: https://github.com/MetaMask/metamask-mobile/compare/v7.46.1...v7.46.2
-[7.46.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.46.0...v7.46.1
-[7.46.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.45.2...v7.46.0
-[7.45.2]: https://github.com/MetaMask/metamask-mobile/compare/v7.45.1...v7.45.2
-[7.45.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.45.0...v7.45.1
-[7.45.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.44.0...v7.45.0
-[7.44.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.43.0...v7.44.0
-[7.43.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.42.1...v7.43.0
-[7.42.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.42.0...v7.42.1
-[7.42.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.41.0...v7.42.0
-[7.41.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.40.0...v7.41.0
-[7.40.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.39.0...v7.40.0
-[7.39.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.38.1...v7.39.0
-[7.38.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.38.0...v7.38.1
-[7.38.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.37.1...v7.38.0
-[7.37.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.37.0...v7.37.1
-[7.37.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.36.0...v7.37.0
-[7.36.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.35.1...v7.36.0
-[7.35.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.35.0...v7.35.1
-[7.35.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.34.1...v7.35.0
-[7.34.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.34.0...v7.34.1
-[7.34.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.33.2...v7.34.0
-[7.33.2]: https://github.com/MetaMask/metamask-mobile/compare/v7.33.1...v7.33.2
-[7.33.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.33.0...v7.33.1
-[7.33.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.32.0...v7.33.0
-[7.32.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.31.1...v7.32.0
-[7.31.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.31.0...v7.31.1
-[7.31.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.30.0...v7.31.0
-[7.30.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.29.2...v7.30.0
-[7.29.2]: https://github.com/MetaMask/metamask-mobile/compare/v7.29.1...v7.29.2
-[7.29.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.29.0...v7.29.1
-[7.29.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.28.1...v7.29.0
-[7.28.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.28.0...v7.28.1
-[7.28.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.27.1...v7.28.0
-[7.27.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.27.0...v7.27.1
-[7.27.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.26.1...v7.27.0
-[7.26.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.26.0...v7.26.1
-[7.26.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.24.4...v7.26.0
-[7.24.4]: https://github.com/MetaMask/metamask-mobile/compare/v7.24.3...v7.24.4
-[7.24.3]: https://github.com/MetaMask/metamask-mobile/compare/v7.24.2...v7.24.3
-[7.24.2]: https://github.com/MetaMask/metamask-mobile/compare/v7.24.1...v7.24.2
-[7.24.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.24.0...v7.24.1
-[7.24.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.23.0...v7.24.0
-[7.23.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.22.0...v7.23.0
-[7.22.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.21.0...v7.22.0
-[7.21.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.20.1...v7.21.0
-[7.20.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.20.0...v7.20.1
-[7.20.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.19.1...v7.20.0
-[7.19.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.19.0...v7.19.1
-[7.19.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.18.0...v7.19.0
-[7.18.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.17.1...v7.18.0
-[7.17.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.17.0...v7.17.1
-[7.17.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.16.0...v7.17.0
-[7.16.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.15.0...v7.16.0
-[7.15.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.14.0...v7.15.0
-[7.14.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.12.5...v7.14.0
-[7.12.5]: https://github.com/MetaMask/metamask-mobile/compare/v7.12.3...v7.12.5
-[7.12.3]: https://github.com/MetaMask/metamask-mobile/compare/v7.12.2...v7.12.3
-[7.12.2]: https://github.com/MetaMask/metamask-mobile/compare/v7.12.1...v7.12.2
-[7.12.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.12.0...v7.12.1
-[7.12.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.11.0...v7.12.0
-[7.11.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.10.0...v7.11.0
-[7.10.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.9.1...v7.10.0
-[7.9.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.9.0...v7.9.1
-[7.9.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.8.0...v7.9.0
-[7.8.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.7.0...v7.8.0
-[7.7.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.6.0...v7.7.0
-[7.6.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.5.0...v7.6.0
-[7.5.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.4.0...v7.5.0
-[7.4.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.3.1...v7.4.0
-[7.3.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.3.0...v7.3.1
-[7.3.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.2.0...v7.3.0
-[7.2.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.1.0...v7.2.0
-[7.1.0]: https://github.com/MetaMask/metamask-mobile/compare/v7.0.1...v7.1.0
-[7.0.1]: https://github.com/MetaMask/metamask-mobile/compare/v7.0.0...v7.0.1
-[7.0.0]: https://github.com/MetaMask/metamask-mobile/compare/v6.6.0...v7.0.0
-[6.6.0]: https://github.com/MetaMask/metamask-mobile/compare/v6.5.0...v6.6.0
-[6.5.0]: https://github.com/MetaMask/metamask-mobile/compare/v6.4.0...v6.5.0
-[6.4.0]: https://github.com/MetaMask/metamask-mobile/compare/v6.3.0...v6.4.0
-[6.3.0]: https://github.com/MetaMask/metamask-mobile/compare/v6.2.0...v6.3.0
-[6.2.0]: https://github.com/MetaMask/metamask-mobile/compare/v6.1.2...v6.2.0
-[6.1.2]: https://github.com/MetaMask/metamask-mobile/compare/v6.1.1...v6.1.2
-[6.1.1]: https://github.com/MetaMask/metamask-mobile/compare/v6.1.0...v6.1.1
-[6.1.0]: https://github.com/MetaMask/metamask-mobile/compare/v6.0.1...v6.1.0
-[6.0.1]: https://github.com/MetaMask/metamask-mobile/compare/v6.0.0...v6.0.1
-[6.0.0]: https://github.com/MetaMask/metamask-mobile/compare/v5.14.0...v6.0.0
-[5.14.0]: https://github.com/MetaMask/metamask-mobile/compare/v5.13.0...v5.14.0
-[5.13.0]: https://github.com/MetaMask/metamask-mobile/compare/v5.12.3...v5.13.0
-[5.12.3]: https://github.com/MetaMask/metamask-mobile/compare/v5.12.1...v5.12.3
-[5.12.1]: https://github.com/MetaMask/metamask-mobile/compare/v5.12.0...v5.12.1
-[5.12.0]: https://github.com/MetaMask/metamask-mobile/compare/v5.11.0...v5.12.0
-[5.11.0]: https://github.com/MetaMask/metamask-mobile/compare/v5.10.0...v5.11.0
-[5.10.0]: https://github.com/MetaMask/metamask-mobile/compare/v5.9.1...v5.10.0
-[5.9.1]: https://github.com/MetaMask/metamask-mobile/compare/v5.9.0...v5.9.1
-[5.9.0]: https://github.com/MetaMask/metamask-mobile/compare/v5.8.1...v5.9.0
-[5.8.1]: https://github.com/MetaMask/metamask-mobile/compare/v5.8.0...v5.8.1
-[5.8.0]: https://github.com/MetaMask/metamask-mobile/compare/v5.7.0...v5.8.0
-[5.7.0]: https://github.com/MetaMask/metamask-mobile/compare/v5.6.1...v5.7.0
-[5.6.1]: https://github.com/MetaMask/metamask-mobile/compare/v5.6.0...v5.6.1
-[5.6.0]: https://github.com/MetaMask/metamask-mobile/compare/v5.5.1...v5.6.0
-[5.5.1]: https://github.com/MetaMask/metamask-mobile/compare/v5.5.0...v5.5.1
-[5.5.0]: https://github.com/MetaMask/metamask-mobile/compare/v5.4.0...v5.5.0
-[5.4.0]: https://github.com/MetaMask/metamask-mobile/compare/v5.3.0...v5.4.0
-[5.3.0]: https://github.com/MetaMask/metamask-mobile/compare/v5.2.0...v5.3.0
-[5.2.0]: https://github.com/MetaMask/metamask-mobile/compare/v5.1.0...v5.2.0
-[5.1.0]: https://github.com/MetaMask/metamask-mobile/compare/v5.0.1...v5.1.0
-[5.0.1]: https://github.com/MetaMask/metamask-mobile/compare/v5.0.0...v5.0.1
-[5.0.0]: https://github.com/MetaMask/metamask-mobile/compare/v4.4.0...v5.0.0
-[4.4.0]: https://github.com/MetaMask/metamask-mobile/compare/v4.3.1...v4.4.0
-[4.3.1]: https://github.com/MetaMask/metamask-mobile/compare/v4.3.0...v4.3.1
-[4.3.0]: https://github.com/MetaMask/metamask-mobile/compare/v4.2.2...v4.3.0
-[4.2.2]: https://github.com/MetaMask/metamask-mobile/compare/v4.1.1...v4.2.2
-[4.1.1]: https://github.com/MetaMask/metamask-mobile/compare/v4.1.0...v4.1.1
-[4.1.0]: https://github.com/MetaMask/metamask-mobile/compare/v4.0.1...v4.1.0
-[4.0.1]: https://github.com/MetaMask/metamask-mobile/compare/v4.0.0...v4.0.1
-[4.0.0]: https://github.com/MetaMask/metamask-mobile/compare/v3.8.0...v4.0.0
-[3.8.0]: https://github.com/MetaMask/metamask-mobile/compare/v3.7.0...v3.8.0
-[3.7.0]: https://github.com/MetaMask/metamask-mobile/compare/v3.6.0...v3.7.0
-[3.6.0]: https://github.com/MetaMask/metamask-mobile/compare/v3.5.0...v3.6.0
-[3.5.0]: https://github.com/MetaMask/metamask-mobile/compare/v3.4.1...v3.5.0
-[3.4.1]: https://github.com/MetaMask/metamask-mobile/compare/v3.3.0...v3.4.1
-[3.3.0]: https://github.com/MetaMask/metamask-mobile/compare/v3.2.0...v3.3.0
-[3.2.0]: https://github.com/MetaMask/metamask-mobile/compare/v3.1.0...v3.2.0
-[3.1.0]: https://github.com/MetaMask/metamask-mobile/compare/v3.0.1...v3.1.0
-[3.0.1]: https://github.com/MetaMask/metamask-mobile/compare/v3.0.0...v3.0.1
-[3.0.0]: https://github.com/MetaMask/metamask-mobile/compare/v2.6.0...v3.0.0
-[2.6.0]: https://github.com/MetaMask/metamask-mobile/compare/v2.5.0...v2.6.0
-[2.5.0]: https://github.com/MetaMask/metamask-mobile/compare/v2.4.0...v2.5.0
-[2.4.0]: https://github.com/MetaMask/metamask-mobile/compare/v2.3.0...v2.4.0
-[2.3.0]: https://github.com/MetaMask/metamask-mobile/compare/v2.2.0...v2.3.0
-[2.2.0]: https://github.com/MetaMask/metamask-mobile/compare/v2.1.3...v2.2.0
-[2.1.3]: https://github.com/MetaMask/metamask-mobile/compare/v2.1.2...v2.1.3
-[2.1.2]: https://github.com/MetaMask/metamask-mobile/compare/v2.1.1...v2.1.2
-[2.1.1]: https://github.com/MetaMask/metamask-mobile/compare/v2.1.0...v2.1.1
-[2.1.0]: https://github.com/MetaMask/metamask-mobile/compare/v2.0.1...v2.1.0
-[2.0.1]: https://github.com/MetaMask/metamask-mobile/compare/v2.0.0...v2.0.1
-[2.0.0]: https://github.com/MetaMask/metamask-mobile/compare/v1.0.11...v2.0.0
-[1.0.11]: https://github.com/MetaMask/metamask-mobile/compare/v1.0.10...v1.0.11
-[1.0.10]: https://github.com/MetaMask/metamask-mobile/compare/v1.0.9...v1.0.10
-[1.0.9]: https://github.com/MetaMask/metamask-mobile/compare/v1.0.8...v1.0.9
-[1.0.8]: https://github.com/MetaMask/metamask-mobile/compare/v1.0.7...v1.0.8
-[1.0.7]: https://github.com/MetaMask/metamask-mobile/compare/v1.0.6...v1.0.7
-[1.0.6]: https://github.com/MetaMask/metamask-mobile/compare/v1.0.5...v1.0.6
-[1.0.5]: https://github.com/MetaMask/metamask-mobile/compare/v1.0.4...v1.0.5
-[1.0.4]: https://github.com/MetaMask/metamask-mobile/compare/v1.0.3...v1.0.4
-[1.0.3]: https://github.com/MetaMask/metamask-mobile/compare/v1.0.2...v1.0.3
-[1.0.2]: https://github.com/MetaMask/metamask-mobile/compare/v1.0.1...v1.0.2
-[1.0.1]: https://github.com/MetaMask/metamask-mobile/compare/v1.0.0...v1.0.1
-[1.0.0]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.20...v1.0.0
-[0.2.20]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.19...v0.2.20
-[0.2.19]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.18...v0.2.19
-[0.2.18]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.17...v0.2.18
-[0.2.17]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.16...v0.2.17
-[0.2.16]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.15...v0.2.16
-[0.2.15]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.14...v0.2.15
-[0.2.14]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.13...v0.2.14
-[0.2.13]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.12...v0.2.13
-[0.2.12]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.11...v0.2.12
-[0.2.11]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.10...v0.2.11
-[0.2.10]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.8...v0.2.10
-[0.2.8]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.7...v0.2.8
-[0.2.7]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.6...v0.2.7
-[0.2.6]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.5...v0.2.6
-[0.2.5]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.4...v0.2.5
-[0.2.4]: https://github.com/MetaMask/metamask-mobile/compare/v0.2.3...v0.2.4
-[0.2.3]: https://github.com/MetaMask/metamask-mobile/releases/tag/v0.2.3
+[Unreleased]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v99.0.0...HEAD
+[99.0.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.57.0...v99.0.0
+[7.57.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.56.5...v7.57.0
+[7.56.5]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.56.4...v7.56.5
+[7.56.4]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.56.3...v7.56.4
+[7.56.3]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.56.2...v7.56.3
+[7.56.2]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.56.1...v7.56.2
+[7.56.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.56.0...v7.56.1
+[7.56.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.55.1...v7.56.0
+[7.55.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.55.0...v7.55.1
+[7.55.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.54.2...v7.55.0
+[7.54.2]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.54.1...v7.54.2
+[7.54.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.54.0...v7.54.1
+[7.54.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.53.1...v7.54.0
+[7.53.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.53.0...v7.53.1
+[7.53.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.51.4...v7.53.0
+[7.51.4]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.51.3...v7.51.4
+[7.51.3]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.51.2...v7.51.3
+[7.51.2]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.51.1...v7.51.2
+[7.51.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.51.0...v7.51.1
+[7.51.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.50.2...v7.51.0
+[7.50.2]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.50.1...v7.50.2
+[7.50.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.50.0...v7.50.1
+[7.50.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.47.3...v7.50.0
+[7.47.3]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.47.2...v7.47.3
+[7.47.2]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.47.1...v7.47.2
+[7.47.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.47.0...v7.47.1
+[7.47.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.46.2...v7.47.0
+[7.46.2]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.46.1...v7.46.2
+[7.46.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.46.0...v7.46.1
+[7.46.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.45.2...v7.46.0
+[7.45.2]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.45.1...v7.45.2
+[7.45.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.45.0...v7.45.1
+[7.45.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.44.0...v7.45.0
+[7.44.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.43.0...v7.44.0
+[7.43.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.42.1...v7.43.0
+[7.42.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.42.0...v7.42.1
+[7.42.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.41.0...v7.42.0
+[7.41.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.40.0...v7.41.0
+[7.40.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.39.0...v7.40.0
+[7.39.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.38.1...v7.39.0
+[7.38.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.38.0...v7.38.1
+[7.38.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.37.1...v7.38.0
+[7.37.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.37.0...v7.37.1
+[7.37.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.36.0...v7.37.0
+[7.36.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.35.1...v7.36.0
+[7.35.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.35.0...v7.35.1
+[7.35.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.34.1...v7.35.0
+[7.34.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.34.0...v7.34.1
+[7.34.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.33.2...v7.34.0
+[7.33.2]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.33.1...v7.33.2
+[7.33.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.33.0...v7.33.1
+[7.33.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.32.0...v7.33.0
+[7.32.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.31.1...v7.32.0
+[7.31.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.31.0...v7.31.1
+[7.31.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.30.0...v7.31.0
+[7.30.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.29.2...v7.30.0
+[7.29.2]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.29.1...v7.29.2
+[7.29.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.29.0...v7.29.1
+[7.29.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.28.1...v7.29.0
+[7.28.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.28.0...v7.28.1
+[7.28.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.27.1...v7.28.0
+[7.27.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.27.0...v7.27.1
+[7.27.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.26.1...v7.27.0
+[7.26.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.26.0...v7.26.1
+[7.26.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.24.4...v7.26.0
+[7.24.4]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.24.3...v7.24.4
+[7.24.3]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.24.2...v7.24.3
+[7.24.2]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.24.1...v7.24.2
+[7.24.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.24.0...v7.24.1
+[7.24.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.23.0...v7.24.0
+[7.23.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.22.0...v7.23.0
+[7.22.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.21.0...v7.22.0
+[7.21.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.20.1...v7.21.0
+[7.20.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.20.0...v7.20.1
+[7.20.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.19.1...v7.20.0
+[7.19.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.19.0...v7.19.1
+[7.19.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.18.0...v7.19.0
+[7.18.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.17.1...v7.18.0
+[7.17.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.17.0...v7.17.1
+[7.17.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.16.0...v7.17.0
+[7.16.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.15.0...v7.16.0
+[7.15.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.14.0...v7.15.0
+[7.14.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.12.5...v7.14.0
+[7.12.5]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.12.3...v7.12.5
+[7.12.3]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.12.2...v7.12.3
+[7.12.2]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.12.1...v7.12.2
+[7.12.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.12.0...v7.12.1
+[7.12.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.11.0...v7.12.0
+[7.11.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.10.0...v7.11.0
+[7.10.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.9.1...v7.10.0
+[7.9.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.9.0...v7.9.1
+[7.9.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.8.0...v7.9.0
+[7.8.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.7.0...v7.8.0
+[7.7.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.6.0...v7.7.0
+[7.6.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.5.0...v7.6.0
+[7.5.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.4.0...v7.5.0
+[7.4.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.3.1...v7.4.0
+[7.3.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.3.0...v7.3.1
+[7.3.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.2.0...v7.3.0
+[7.2.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.1.0...v7.2.0
+[7.1.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.0.1...v7.1.0
+[7.0.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v7.0.0...v7.0.1
+[7.0.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v6.6.0...v7.0.0
+[6.6.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v6.5.0...v6.6.0
+[6.5.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v6.4.0...v6.5.0
+[6.4.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v6.3.0...v6.4.0
+[6.3.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v6.2.0...v6.3.0
+[6.2.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v6.1.2...v6.2.0
+[6.1.2]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v6.1.1...v6.1.2
+[6.1.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v6.1.0...v6.1.1
+[6.1.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v6.0.1...v6.1.0
+[6.0.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v6.0.0...v6.0.1
+[6.0.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.14.0...v6.0.0
+[5.14.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.13.0...v5.14.0
+[5.13.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.12.3...v5.13.0
+[5.12.3]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.12.1...v5.12.3
+[5.12.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.12.0...v5.12.1
+[5.12.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.11.0...v5.12.0
+[5.11.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.10.0...v5.11.0
+[5.10.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.9.1...v5.10.0
+[5.9.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.9.0...v5.9.1
+[5.9.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.8.1...v5.9.0
+[5.8.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.8.0...v5.8.1
+[5.8.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.7.0...v5.8.0
+[5.7.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.6.1...v5.7.0
+[5.6.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.6.0...v5.6.1
+[5.6.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.5.1...v5.6.0
+[5.5.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.5.0...v5.5.1
+[5.5.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.4.0...v5.5.0
+[5.4.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.3.0...v5.4.0
+[5.3.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.2.0...v5.3.0
+[5.2.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.1.0...v5.2.0
+[5.1.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.0.1...v5.1.0
+[5.0.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v5.0.0...v5.0.1
+[5.0.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v4.4.0...v5.0.0
+[4.4.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v4.3.1...v4.4.0
+[4.3.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v4.3.0...v4.3.1
+[4.3.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v4.2.2...v4.3.0
+[4.2.2]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v4.1.1...v4.2.2
+[4.1.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v4.1.0...v4.1.1
+[4.1.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v4.0.1...v4.1.0
+[4.0.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v4.0.0...v4.0.1
+[4.0.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v3.8.0...v4.0.0
+[3.8.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v3.7.0...v3.8.0
+[3.7.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v3.6.0...v3.7.0
+[3.6.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v3.5.0...v3.6.0
+[3.5.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v3.4.1...v3.5.0
+[3.4.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v3.3.0...v3.4.1
+[3.3.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v3.2.0...v3.3.0
+[3.2.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v3.1.0...v3.2.0
+[3.1.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v3.0.1...v3.1.0
+[3.0.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v3.0.0...v3.0.1
+[3.0.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v2.6.0...v3.0.0
+[2.6.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v2.5.0...v2.6.0
+[2.5.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v2.4.0...v2.5.0
+[2.4.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v2.3.0...v2.4.0
+[2.3.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v2.2.0...v2.3.0
+[2.2.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v2.1.3...v2.2.0
+[2.1.3]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v2.1.2...v2.1.3
+[2.1.2]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v2.1.1...v2.1.2
+[2.1.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v2.1.0...v2.1.1
+[2.1.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v2.0.1...v2.1.0
+[2.0.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v2.0.0...v2.0.1
+[2.0.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v1.0.11...v2.0.0
+[1.0.11]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v1.0.10...v1.0.11
+[1.0.10]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v1.0.9...v1.0.10
+[1.0.9]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v1.0.8...v1.0.9
+[1.0.8]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v1.0.7...v1.0.8
+[1.0.7]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v1.0.6...v1.0.7
+[1.0.6]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v1.0.5...v1.0.6
+[1.0.5]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v1.0.4...v1.0.5
+[1.0.4]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v1.0.3...v1.0.4
+[1.0.3]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v1.0.2...v1.0.3
+[1.0.2]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v1.0.1...v1.0.2
+[1.0.1]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.20...v1.0.0
+[0.2.20]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.19...v0.2.20
+[0.2.19]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.18...v0.2.19
+[0.2.18]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.17...v0.2.18
+[0.2.17]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.16...v0.2.17
+[0.2.16]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.15...v0.2.16
+[0.2.15]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.14...v0.2.15
+[0.2.14]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.13...v0.2.14
+[0.2.13]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.12...v0.2.13
+[0.2.12]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.11...v0.2.12
+[0.2.11]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.10...v0.2.11
+[0.2.10]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.8...v0.2.10
+[0.2.8]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.7...v0.2.8
+[0.2.7]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.6...v0.2.7
+[0.2.6]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.5...v0.2.6
+[0.2.5]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.4...v0.2.5
+[0.2.4]: https://github.com/consensys-test/metamask-mobile-test-workflow/compare/v0.2.3...v0.2.4
+[0.2.3]: https://github.com/consensys-test/metamask-mobile-test-workflow/releases/tag/v0.2.3
