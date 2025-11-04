@@ -6,10 +6,17 @@ on:
       semver-version:
         description: 'A semantic version, eg: x.x.x'
         required: true
+      build-version:
+        description: 'Build version (for testing purposes)'
+        required: true
 
   workflow_call:
     inputs:
       semver-version:
+        required: true
+        type: string
+      build-version:
+        description: 'Build version (for testing purposes)'
         required: true
         type: string
     secrets:
@@ -71,22 +78,23 @@ jobs:
         run: |
           .github/scripts/resolve-previous-ref.sh
 
-  generate-build-version:
-    uses: MetaMask/metamask-mobile-build-version/.github/workflows/metamask-mobile-build-version.yml@v0.3.0
-    permissions:
-      id-token: write
+  # COMMENTED OUT FOR TESTING: Using build-version input instead of generating it
+  # generate-build-version:
+  #   uses: MetaMask/metamask-mobile-build-version/.github/workflows/metamask-mobile-build-version.yml@v0.3.0
+  #   permissions:
+  #     id-token: write
 
   create-release-pr:
-    needs: [resolve-bases, resolve-previous-ref, generate-build-version]
+    needs: [resolve-bases, resolve-previous-ref]
     name: Create Release Pull Request using Github Tools
-    uses: MetaMask/github-tools/.github/workflows/create-release-pr.yml@7fe185fdb0e60981c898e88d82e44ff33f604daa
+    uses: MetaMask/github-tools/.github/workflows/create-release-pr.yml@68474d2d55056233fb8e98c43048899c3fe8101e
     with:
       platform: mobile
       checkout-base-branch: ${{ needs.resolve-bases.outputs.checkout_base }}
       release-pr-base-branch: ${{ needs.resolve-bases.outputs.release_base }}
       semver-version: ${{ inputs.semver-version }}
       previous-version-ref: ${{ needs.resolve-previous-ref.outputs.previous_ref }}
-      mobile-build-version: ${{ needs.generate-build-version.outputs.build-version }}
+      mobile-build-version: ${{ inputs.build-version }}  # FOR TESTING: Using input instead of generated version
       github-tools-version: 68474d2d55056233fb8e98c43048899c3fe8101e
     secrets:
       # This token needs write permissions to metamask-mobile & read permissions to metamask-planning
