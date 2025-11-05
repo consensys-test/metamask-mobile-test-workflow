@@ -8,8 +8,8 @@ import {
   selectBridgeQuotes,
   selectIsSubmittingTx,
   selectBridgeFeatureFlags,
-  selectIsSolanaToEvm,
   selectIsSolanaSwap,
+  selectIsSolanaToNonSolana,
 } from '../../../../../core/redux/slices/bridge';
 import { RequestStatus } from '@metamask/bridge-controller';
 import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
@@ -25,7 +25,6 @@ import {
 } from '../../utils/quoteUtils';
 
 import { selectTicker } from '../../../../../selectors/networkController';
-import { formatAmount } from '../../../SimulationDetails/formatAmount';
 import { BigNumber } from 'bignumber.js';
 import I18n from '../../../../../../locales/i18n';
 import useFiatFormatter from '../../../SimulationDetails/FiatDisplay/useFiatFormatter';
@@ -57,7 +56,7 @@ export const useBridgeQuoteData = ({
   const quotes = useSelector(selectBridgeQuotes);
   const bridgeFeatureFlags = useSelector(selectBridgeFeatureFlags);
   const isSolanaSwap = useSelector(selectIsSolanaSwap);
-  const isSolanaToEvm = useSelector(selectIsSolanaToEvm);
+  const isSolanaToNonSolana = useSelector(selectIsSolanaToNonSolana);
   const { validateBridgeTx } = useValidateBridgeTx();
 
   const [blockaidError, setBlockaidError] = useState<string | null>(null);
@@ -124,9 +123,11 @@ export const useBridgeQuoteData = ({
       return '-';
     }
 
-    const formattedAmount = `${formatAmount(
-      locale,
-      new BigNumber(amount),
+    const networkFeeFormatter = getIntlNumberFormatter(locale, {
+      maximumFractionDigits: 6,
+    });
+    const formattedAmount = `${networkFeeFormatter.format(
+      Number(amount),
     )} ${ticker}`;
     const formattedValueInCurrency = fiatFormatter(
       new BigNumber(valueInCurrency),
@@ -192,14 +193,39 @@ export const useBridgeQuoteData = ({
     !bestQuote && quotesLastFetched && !isLoading,
   );
 
+  // Check if price impact warning should be shown
+  const shouldShowPriceImpactWarning = Boolean(
+    activeQuote?.quote.priceData?.priceImpact !== undefined &&
+      bridgeFeatureFlags?.priceImpactThreshold &&
+      ((activeQuote?.quote.gasIncluded &&
+        Number(activeQuote?.quote.priceData?.priceImpact) >=
+          bridgeFeatureFlags.priceImpactThreshold.gasless) ||
+        (!activeQuote?.quote.gasIncluded &&
+          Number(activeQuote?.quote.priceData?.priceImpact) >=
+            bridgeFeatureFlags.priceImpactThreshold.normal)),
+  );
+
+  const abortController = useRef<AbortController | null>(new AbortController());
+  useEffect(
+    () => () => {
+      abortController.current?.abort();
+      abortController.current = null;
+    },
+    [],
+  );
+
   const validateQuote = useCallback(async () => {
     // Increment validation ID for this request
     const validationId = ++currentValidationIdRef.current;
+    // Cancel any ongoing request
+    abortController.current?.abort();
+    abortController.current = new AbortController();
 
-    if (activeQuote && (isSolanaSwap || isSolanaToEvm)) {
+    if (activeQuote && (isSolanaSwap || isSolanaToNonSolana)) {
       try {
         const validationResult = await validateBridgeTx({
           quoteResponse: activeQuote,
+          signal: abortController.current?.signal,
         });
 
         // Check if this is still the current validation after async operation
@@ -228,13 +254,13 @@ export const useBridgeQuoteData = ({
           return;
         }
 
-        console.error('Validation error:', error);
+        console.error('Swaps Quote Data Validation error:', error);
         setBlockaidError(null);
       }
     } else {
       setBlockaidError(null);
     }
-  }, [activeQuote, isSolanaSwap, isSolanaToEvm, validateBridgeTx]);
+  }, [activeQuote, isSolanaSwap, isSolanaToNonSolana, validateBridgeTx]);
 
   useEffect(() => {
     validateQuote();
@@ -244,12 +270,14 @@ export const useBridgeQuoteData = ({
     bestQuote,
     quoteFetchError,
     activeQuote,
+    quotesLoadingStatus,
     destTokenAmount: formattedDestTokenAmount,
-    isLoading: quotesLoadingStatus === RequestStatus.LOADING,
+    isLoading,
     formattedQuoteData,
     isNoQuotesAvailable,
     willRefresh,
     isExpired,
     blockaidError,
+    shouldShowPriceImpactWarning,
   };
 };

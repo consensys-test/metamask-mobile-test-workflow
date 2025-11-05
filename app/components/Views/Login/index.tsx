@@ -7,7 +7,6 @@ import {
   BackHandler,
   TouchableOpacity,
   TextInput,
-  Platform,
 } from 'react-native';
 import { captureException } from '@sentry/react-native';
 import Text, {
@@ -68,6 +67,7 @@ import {
 import TextField, {
   TextFieldSize,
 } from '../../../component-library/components/Form/TextField';
+import Label from '../../../component-library/components/Form/Label';
 import HelpText, {
   HelpTextSeverity,
 } from '../../../component-library/components/Form/HelpText';
@@ -109,10 +109,7 @@ import {
   SeedlessOnboardingControllerError,
   SeedlessOnboardingControllerErrorType,
 } from '../../../core/Engine/controllers/seedless-onboarding-controller/error';
-import {
-  selectIsSeedlessPasswordOutdated,
-  selectSeedlessOnboardingLoginFlow,
-} from '../../../selectors/seedlessOnboardingController';
+import { selectIsSeedlessPasswordOutdated } from '../../../selectors/seedlessOnboardingController';
 import FOX_LOGO from '../../../images/branding/fox.png';
 import { usePromptSeedlessRelogin } from '../../hooks/SeedlessHooks';
 import { useNetInfo } from '@react-native-community/netinfo';
@@ -178,8 +175,6 @@ const Login: React.FC<LoginProps> = ({ saveOnboardingEvent }) => {
   const isSeedlessPasswordOutdated = useSelector(
     selectIsSeedlessPasswordOutdated,
   );
-
-  const isSocialLoginUser = useSelector(selectSeedlessOnboardingLoginFlow);
 
   const track = (
     event: IMetaMetricsEvent,
@@ -255,9 +250,8 @@ const Login: React.FC<LoginProps> = ({ saveOnboardingEvent }) => {
       const previouslyDisabled = await StorageWrapper.getItem(
         BIOMETRY_CHOICE_DISABLED,
       );
-      const passcodePreviouslyDisabled = await StorageWrapper.getItem(
-        PASSCODE_DISABLED,
-      );
+      const passcodePreviouslyDisabled =
+        await StorageWrapper.getItem(PASSCODE_DISABLED);
 
       if (authData.currentAuthType === AUTHENTICATION_TYPE.PASSCODE) {
         setBiometryType(passcodeType(authData.currentAuthType));
@@ -370,6 +364,11 @@ const Login: React.FC<LoginProps> = ({ saveOnboardingEvent }) => {
   };
 
   const handleUseOtherMethod = () => {
+    if (isComingFromOauthOnboarding) {
+      track(MetaMetricsEvents.USE_DIFFERENT_LOGIN_METHOD_CLICKED, {
+        account_type: 'social',
+      });
+    }
     navigation.goBack();
     OAuthService.resetOauthState();
   };
@@ -452,6 +451,13 @@ const Login: React.FC<LoginProps> = ({ saveOnboardingEvent }) => {
         seedlessError.message ===
         SeedlessOnboardingControllerErrorMessage.IncorrectPassword
       ) {
+        if (isComingFromOauthOnboarding) {
+          track(MetaMetricsEvents.REHYDRATION_PASSWORD_FAILED, {
+            account_type: 'social',
+            failed_attempts: rehydrationFailedAttempts,
+            error_type: 'incorrect_password',
+          });
+        }
         setError(strings('login.invalid_password'));
         return;
       } else if (
@@ -461,6 +467,14 @@ const Login: React.FC<LoginProps> = ({ saveOnboardingEvent }) => {
         // Synchronize rehydrationFailedAttempts with numberOfAttempts from the error data
         if (seedlessError.data?.numberOfAttempts !== undefined) {
           setRehydrationFailedAttempts(seedlessError.data.numberOfAttempts);
+        }
+        if (isComingFromOauthOnboarding) {
+          track(MetaMetricsEvents.REHYDRATION_PASSWORD_FAILED, {
+            account_type: 'social',
+            failed_attempts:
+              seedlessError.data?.numberOfAttempts ?? rehydrationFailedAttempts,
+            error_type: 'incorrect_password',
+          });
         }
         if (typeof seedlessError.data?.remainingTime === 'number') {
           tooManyAttemptsError(seedlessError.data?.remainingTime).catch(
@@ -474,6 +488,13 @@ const Login: React.FC<LoginProps> = ({ saveOnboardingEvent }) => {
         seedlessError.code ===
         SeedlessOnboardingControllerErrorType.PasswordRecentlyUpdated
       ) {
+        if (isComingFromOauthOnboarding) {
+          track(MetaMetricsEvents.REHYDRATION_PASSWORD_FAILED, {
+            account_type: 'social',
+            failed_attempts: rehydrationFailedAttempts,
+            error_type: 'unknown_error',
+          });
+        }
         setError(strings('login.seedless_password_outdated'));
         return;
       }
@@ -501,6 +522,12 @@ const Login: React.FC<LoginProps> = ({ saveOnboardingEvent }) => {
 
     // capture unexpected exception for oauth login (rehydration) failures
     if (isComingFromOauthOnboarding) {
+      track(MetaMetricsEvents.REHYDRATION_PASSWORD_FAILED, {
+        account_type: 'social',
+        failed_attempts: rehydrationFailedAttempts,
+        error_type: 'unknown_error',
+      });
+
       // If user has already consented to analytics, report error using regular Sentry
       if (isMetricsEnabled()) {
         captureException(seedlessError, {
@@ -519,13 +546,6 @@ const Login: React.FC<LoginProps> = ({ saveOnboardingEvent }) => {
   };
 
   const handlePasswordError = (loginErrorMessage: string) => {
-    if (isComingFromOauthOnboarding) {
-      track(MetaMetricsEvents.REHYDRATION_PASSWORD_FAILED, {
-        account_type: 'social',
-        failed_attempts: rehydrationFailedAttempts,
-      });
-    }
-
     setLoading(false);
 
     setError(strings('login.invalid_password'));
@@ -553,10 +573,21 @@ const Login: React.FC<LoginProps> = ({ saveOnboardingEvent }) => {
       return;
     }
 
-    const isPasswordError =
+    const isWrongPasswordError =
       toLowerCaseEquals(loginErrorMessage, WRONG_PASSWORD_ERROR) ||
       toLowerCaseEquals(loginErrorMessage, WRONG_PASSWORD_ERROR_ANDROID) ||
-      toLowerCaseEquals(loginErrorMessage, WRONG_PASSWORD_ERROR_ANDROID_2) ||
+      toLowerCaseEquals(loginErrorMessage, WRONG_PASSWORD_ERROR_ANDROID_2);
+
+    if (isWrongPasswordError && isComingFromOauthOnboarding) {
+      track(MetaMetricsEvents.REHYDRATION_PASSWORD_FAILED, {
+        account_type: 'social',
+        failed_attempts: rehydrationFailedAttempts,
+        error_type: 'incorrect_password',
+      });
+    }
+
+    const isPasswordError =
+      isWrongPasswordError ||
       loginErrorMessage.includes(PASSWORD_REQUIREMENTS_NOT_MET);
 
     if (isPasswordError) {
@@ -586,6 +617,14 @@ const Login: React.FC<LoginProps> = ({ saveOnboardingEvent }) => {
       updateBiometryChoice(false);
     } else {
       setError(loginErrorMessage);
+    }
+
+    if (isComingFromOauthOnboarding) {
+      track(MetaMetricsEvents.REHYDRATION_PASSWORD_FAILED, {
+        account_type: 'social',
+        failed_attempts: rehydrationFailedAttempts,
+        error_type: 'unknown_error',
+      });
     }
 
     setLoading(false);
@@ -797,14 +836,16 @@ const Login: React.FC<LoginProps> = ({ saveOnboardingEvent }) => {
             </Text>
 
             <View style={styles.field}>
+              <Label
+                variant={TextVariant.BodyMDMedium}
+                color={TextColor.Default}
+                style={styles.label}
+              >
+                {strings('login.password')}
+              </Label>
               <TextField
                 size={TextFieldSize.Lg}
-                placeholder={strings(
-                  Platform.OS === 'ios' &&
-                    (isSocialLoginUser || isComingFromOauthOnboarding)
-                    ? 'login.pin_placeholder'
-                    : 'login.password_placeholder',
-                )}
+                placeholder={strings('login.password_placeholder')}
                 placeholderTextColor={colors.text.alternative}
                 testID={LoginViewSelectors.PASSWORD_INPUT}
                 returnKeyType={'done'}
@@ -860,11 +901,7 @@ const Login: React.FC<LoginProps> = ({ saveOnboardingEvent }) => {
                   variant={ButtonVariants.Link}
                   onPress={toggleWarningModal}
                   testID={LoginViewSelectors.RESET_WALLET}
-                  label={strings(
-                    Platform.OS === 'ios' && isSocialLoginUser
-                      ? 'login.forgot_pin'
-                      : 'login.forgot_password',
-                  )}
+                  label={strings('login.forgot_password')}
                   isDisabled={finalLoading}
                   size={ButtonSize.Lg}
                 />

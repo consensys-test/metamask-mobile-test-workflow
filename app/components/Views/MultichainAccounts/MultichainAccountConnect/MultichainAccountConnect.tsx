@@ -95,11 +95,34 @@ import MultichainPermissionsSummary, {
 } from '../MultichainPermissionsSummary/MultichainPermissionsSummary.tsx';
 import MultichainAccountConnectMultiSelector from './MultichainAccountConnectMultiSelector/MultichainAccountConnectMultiSelector.tsx';
 import { getPermissions } from '../../../../selectors/snaps/index.ts';
+import { useSDKV2Connection } from '../../../hooks/useSDKV2Connection';
 import { useAccountGroupsForPermissions } from '../../../hooks/useAccountGroupsForPermissions/useAccountGroupsForPermissions.ts';
 import NetworkConnectMultiSelector from '../../NetworkConnect/NetworkConnectMultiSelector/index.ts';
 import { Box } from '@metamask/design-system-react-native';
 import { TESTNET_CAIP_IDS } from '../../../../constants/network.js';
 import { getCaip25AccountIdsFromAccountGroupAndScope } from '../../../../util/multichain/getCaip25AccountIdsFromAccountGroupAndScope.ts';
+
+interface ScreenContainerProps {
+  isVisible: boolean;
+  children: React.ReactNode;
+  styles: {
+    screenVisible: object;
+    screenHidden: object;
+  };
+}
+
+const ScreenContainer: React.FC<ScreenContainerProps> = ({
+  isVisible,
+  children,
+  styles,
+}) => (
+  <Box
+    style={isVisible ? styles.screenVisible : styles.screenHidden}
+    pointerEvents={isVisible ? 'auto' : 'none'}
+  >
+    {children}
+  </Box>
+);
 
 const MultichainAccountConnect = (props: AccountConnectProps) => {
   const { colors } = useTheme();
@@ -128,7 +151,7 @@ const MultichainAccountConnect = (props: AccountConnectProps) => {
             requiredScopes: {},
             optionalScopes: {},
             sessionProperties: {},
-            isMultichainOrigin: true,
+            isMultichainOrigin: false,
           },
     [existingPermissionsForHost, hostInfo?.metadata?.origin],
   );
@@ -214,6 +237,12 @@ const MultichainAccountConnect = (props: AccountConnectProps) => {
   const { wc2Metadata } = useSelector((state: RootState) => state.sdk);
 
   const { origin: channelIdOrHostname, isEip1193Request } = hostInfo.metadata;
+
+  const sdkV2Connection = useSDKV2Connection(channelIdOrHostname);
+  const isOriginMMSDKV2RemoteConn = useMemo(
+    () => Boolean(sdkV2Connection?.isV2),
+    [sdkV2Connection?.isV2],
+  );
 
   const isChannelId = isUUID(channelIdOrHostname);
 
@@ -395,7 +424,10 @@ const MultichainAccountConnect = (props: AccountConnectProps) => {
 
   const accountsLength = useSelector(selectAccountsLength);
 
-  const dappUrl = sdkConnection?.originatorInfo?.url ?? '';
+  const dappUrl =
+    sdkConnection?.originatorInfo?.url ??
+    sdkV2Connection?.originatorInfo?.url ??
+    '';
 
   const { domainTitle, hostname } = useMemo(() => {
     let title = strings('sdk.unknown');
@@ -414,11 +446,16 @@ const MultichainAccountConnect = (props: AccountConnectProps) => {
     } else if (!isChannelId && (dappUrl || channelIdOrHostname)) {
       title = prefixUrlWithProtocol(dappUrl || channelIdOrHostname);
       dappHostname = channelIdOrHostname;
+    } else if (isOriginMMSDKV2RemoteConn) {
+      title = sdkV2Connection?.origin;
+      dappHostname = sdkV2Connection?.originatorInfo?.title ?? '';
     }
     return { domainTitle: title, hostname: dappHostname };
   }, [
     isOriginWalletConnect,
     isOriginMMSDKRemoteConn,
+    isOriginMMSDKV2RemoteConn,
+    sdkV2Connection,
     isChannelId,
     dappUrl,
     channelIdOrHostname,
@@ -427,7 +464,7 @@ const MultichainAccountConnect = (props: AccountConnectProps) => {
   ]);
 
   const urlWithProtocol =
-    hostname && !isUUID(hostname)
+    hostname && !isUUID(hostname) && !isOriginMMSDKV2RemoteConn
       ? prefixUrlWithProtocol(getHost(hostname))
       : domainTitle;
 
@@ -840,25 +877,26 @@ const MultichainAccountConnect = (props: AccountConnectProps) => {
     ],
   );
 
-  const renderConnectScreens = useCallback(() => {
-    switch (screen) {
-      case AccountConnectScreens.SingleConnect:
-        return renderPermissionsSummaryScreen();
-      case AccountConnectScreens.MultiConnectSelector:
-        return renderMultiConnectSelectorScreen();
-      case AccountConnectScreens.MultiConnectNetworkSelector:
-        return renderMultiConnectNetworkSelectorScreen();
-    }
-  }, [
-    screen,
-    renderPermissionsSummaryScreen,
-    renderMultiConnectSelectorScreen,
-    renderMultiConnectNetworkSelectorScreen,
-  ]);
-
   return (
     <Box style={styles.container}>
-      {renderConnectScreens()}
+      <ScreenContainer
+        isVisible={screen === AccountConnectScreens.SingleConnect}
+        styles={styles}
+      >
+        {renderPermissionsSummaryScreen()}
+      </ScreenContainer>
+      <ScreenContainer
+        isVisible={screen === AccountConnectScreens.MultiConnectSelector}
+        styles={styles}
+      >
+        {renderMultiConnectSelectorScreen()}
+      </ScreenContainer>
+      <ScreenContainer
+        isVisible={screen === AccountConnectScreens.MultiConnectNetworkSelector}
+        styles={styles}
+      >
+        {renderMultiConnectNetworkSelectorScreen()}
+      </ScreenContainer>
       {renderPhishingModal()}
     </Box>
   );
