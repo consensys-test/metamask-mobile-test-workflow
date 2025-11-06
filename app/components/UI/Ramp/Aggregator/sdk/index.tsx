@@ -13,6 +13,7 @@ import {
   RegionsService,
   CryptoCurrency,
   Payment,
+  Environment,
 } from '@consensys/on-ramp-sdk';
 import { getSdkEnvironment } from './getSdkEnvironment';
 import { getCaipChainIdFromCryptoCurrency } from '../utils';
@@ -24,8 +25,6 @@ import {
   setFiatOrdersGetStartedAGG,
   setFiatOrdersRegionAGG,
   fiatOrdersRegionSelectorAgg,
-  fiatOrdersPaymentMethodSelectorAgg,
-  setFiatOrdersPaymentMethodAGG,
   networkShortNameSelector,
   fiatOrdersGetStartedSell,
   setFiatOrdersGetStartedSell,
@@ -38,13 +37,15 @@ import useActivationKeys from '../hooks/useActivationKeys';
 import useRampAccountAddress from '../../hooks/useRampAccountAddress';
 import { selectNickname } from '../../../../../selectors/networkController';
 
+const environment = getSdkEnvironment();
+
 const isDevelopment =
   process.env.NODE_ENV !== 'production' ||
   process.env.RAMP_DEV_BUILD === 'true';
 const isInternalBuild = process.env.RAMP_INTERNAL_BUILD === 'true';
-const isDevelopmentOrInternalBuild = isDevelopment || isInternalBuild;
-
-const environment = getSdkEnvironment();
+const isProduction = environment === Environment.Production;
+const isDevelopmentOrInternalBuild =
+  isDevelopment || isInternalBuild || !isProduction;
 
 let context = Context.Mobile;
 if (Device.isAndroid()) {
@@ -115,9 +116,9 @@ interface ProviderProps<T> {
   children?: React.ReactNode;
 }
 
-export const callbackBaseUrl = isDevelopment
-  ? 'https://on-ramp-content.uat-api.cx.metamask.io/regions/fake-callback'
-  : 'https://on-ramp-content.api.cx.metamask.io/regions/fake-callback';
+export const callbackBaseUrl = isProduction
+  ? 'https://on-ramp-content.api.cx.metamask.io/regions/fake-callback'
+  : 'https://on-ramp-content.uat-api.cx.metamask.io/regions/fake-callback';
 
 export const callbackBaseDeeplink = 'metamask://';
 
@@ -167,9 +168,6 @@ export const RampSDKProvider = ({
   const selectedNetworkName =
     selectedNetworkNickname || selectedAggregatorNetworkName;
 
-  const INITIAL_PAYMENT_METHOD_ID = useSelector(
-    fiatOrdersPaymentMethodSelectorAgg,
-  );
   const INITIAL_SELECTED_ASSET = null;
 
   const [rampType, setRampType] = useState(providerRampType ?? RampType.BUY);
@@ -185,9 +183,9 @@ export const RampSDKProvider = ({
   const caipChainId = getCaipChainIdFromCryptoCurrency(selectedAsset);
   const selectedAddress = useRampAccountAddress(caipChainId);
 
-  const [selectedPaymentMethodId, setSelectedPaymentMethodId] = useState(
-    INITIAL_PAYMENT_METHOD_ID,
-  );
+  const [selectedPaymentMethodId, setSelectedPaymentMethodId] = useState<
+    string | null
+  >(null);
   const [selectedFiatCurrencyId, setSelectedFiatCurrencyId] = useState<
     string | null
   >(null);
@@ -214,9 +212,8 @@ export const RampSDKProvider = ({
   const setSelectedPaymentMethodIdCallback = useCallback(
     (paymentMethodId: Payment['id'] | null) => {
       setSelectedPaymentMethodId(paymentMethodId);
-      dispatch(setFiatOrdersPaymentMethodAGG(paymentMethodId));
     },
-    [dispatch],
+    [],
   );
 
   const setSelectedAssetCallback = useCallback((asset: CryptoCurrency) => {
@@ -313,11 +310,10 @@ export const useRampSDK = () => {
 
 // TODO: Replace "any" with type
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const withRampSDK = (Component: React.FC) => (props: any) =>
-  (
-    <RampSDKProvider>
-      <Component {...props} />
-    </RampSDKProvider>
-  );
+export const withRampSDK = (Component: React.FC) => (props: any) => (
+  <RampSDKProvider>
+    <Component {...props} />
+  </RampSDKProvider>
+);
 
 export default SDKContext;

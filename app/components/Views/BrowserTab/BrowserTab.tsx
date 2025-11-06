@@ -32,7 +32,11 @@ import resolveEnsToIpfsContentId from '../../../lib/ens-ipfs/resolver';
 import { strings } from '../../../../locales/i18n';
 import URLParse from 'url-parse';
 import WebviewErrorComponent from '../../UI/WebviewError';
-import { addToHistory, addToWhitelist } from '../../../actions/browser';
+import {
+  addToHistory,
+  addToWhitelist,
+  toggleFullscreen,
+} from '../../../actions/browser';
 import Device from '../../../util/device';
 import AppConstants from '../../../core/AppConstants';
 import { MetaMetricsEvents } from '../../../core/Analytics';
@@ -116,6 +120,8 @@ import {
 import { isPerDappSelectedNetworkEnabled } from '../../../util/networks';
 import { toHex } from '@metamask/controller-utils';
 import { parseCaipAccountId } from '@metamask/utils';
+import { selectBrowserFullscreen } from '../../../selectors/browser';
+import { selectAssetsTrendingTokensEnabled } from '../../../selectors/featureFlagController/assetsTrendingTokens';
 
 /**
  * Tab component for the in-app browser
@@ -125,6 +131,8 @@ export const BrowserTab: React.FC<BrowserTabProps> = React.memo(
     id: tabId,
     isIpfsGatewayEnabled,
     addToWhitelist: triggerAddToWhitelist,
+    isFullscreen,
+    toggleFullscreen,
     showTabs,
     linkType,
     isInTabsView,
@@ -136,6 +144,7 @@ export const BrowserTab: React.FC<BrowserTabProps> = React.memo(
     newTab,
     homePageUrl,
     activeChainId,
+    fromTrending,
   }) => {
     // This any can be removed when react navigation is bumped to v6 - issue https://github.com/react-navigation/react-navigation/issues/9037#issuecomment-735698288
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -187,6 +196,9 @@ export const BrowserTab: React.FC<BrowserTabProps> = React.memo(
     }>();
     const fromHomepage = useRef(false);
     const searchEngine = useSelector(selectSearchEngine);
+    const isAssetsTrendingTokensEnabled = useSelector(
+      selectAssetsTrendingTokensEnabled,
+    );
 
     const permittedEvmAccountsList = useSelector((state: RootState) => {
       const permissionsControllerState = selectPermissionControllerState(state);
@@ -806,25 +818,27 @@ export const BrowserTab: React.FC<BrowserTabProps> = React.memo(
         }
       }
 
-      // Continue request loading it the protocol is whitelisted
       const { protocol } = new URLParse(urlToLoad);
-      if (protocolAllowList.includes(protocol)) return true;
-      Logger.log(`Protocol not allowed ${protocol}`);
 
-      // If it is a trusted deeplink protocol, do not show the
-      // warning alert. Allow the OS to deeplink the URL
-      // and stop the webview from loading it.
       if (trustedProtocolToDeeplink.includes(protocol)) {
         allowLinkOpen(urlToLoad);
+
+        // Webview should not load deeplink protocols
+        // We redirect them to the OS linking system instead
         return false;
       }
 
-      // TODO: add logging for untrusted protocol being used
-      // Sentry
-      const alertMsg = getAlertMessage(protocol, strings);
+      if (protocolAllowList.includes(protocol)) {
+        // Continue with the URL loading on the Webview
+        return true;
+      }
+
+      // Use Sentry Breadcumbs to log the untrusted protocol
+      Logger.log(`Protocol not allowed ${protocol}`);
 
       // Pop up an alert dialog box to prompt the user for permission
       // to execute the request
+      const alertMsg = getAlertMessage(protocol, strings);
       Alert.alert(strings('onboarding.warning_title'), alertMsg, [
         {
           text: strings('browser.protocol_alert_options.ignore'),
@@ -1297,6 +1311,8 @@ export const BrowserTab: React.FC<BrowserTabProps> = React.memo(
           showUrlModal={toggleUrlModal}
           toggleOptions={toggleOptions}
           goHome={goToHomepage}
+          toggleFullscreen={toggleFullscreen}
+          isFullscreen={isFullscreen}
         />
       ) : null;
 
@@ -1339,12 +1355,23 @@ export const BrowserTab: React.FC<BrowserTabProps> = React.memo(
     );
 
     const onCancelUrlBar = useCallback(() => {
+      // If from trending and feature flag is on, navigate back to trending
+      if (fromTrending && isAssetsTrendingTokensEnabled) {
+        navigation.navigate(Routes.TRENDING_VIEW);
+        return;
+      }
+
       hideAutocomplete();
       // Reset the url bar to the current url
       const hostName =
         new URLParse(resolvedUrlRef.current).origin || resolvedUrlRef.current;
       urlBarRef.current?.setNativeProps({ text: hostName });
-    }, [hideAutocomplete]);
+    }, [
+      hideAutocomplete,
+      fromTrending,
+      isAssetsTrendingTokensEnabled,
+      navigation,
+    ]);
 
     const onFocusUrlBar = useCallback(() => {
       // Show the autocomplete results
@@ -1445,6 +1472,18 @@ export const BrowserTab: React.FC<BrowserTabProps> = React.memo(
     // Don't render webview unless ready to load. This should save on performance for initial app start.
     if (!isWebViewReadyToLoad.current) return null;
 
+    /*
+     * Wildcard '*' matches all URL that go through WebView,
+     * so that all content gets filtered by onShouldStartLoadWithRequest function.
+     *
+     * All URL that do not match will bypass onShouldStartLoadWithRequest
+     * and go directly to the OS handler
+     *
+     * source: https://github.com/react-native-webview/react-native-webview/blob/master/docs/Reference.md#originwhitelist
+     *
+     */
+    const webViewOriginWhitelist = ['*'];
+
     /**
      * Main render
      */
@@ -1467,6 +1506,7 @@ export const BrowserTab: React.FC<BrowserTabProps> = React.memo(
               activeUrl={resolvedUrlRef.current}
               setIsUrlBarFocused={setIsUrlBarFocused}
               isUrlBarFocused={isUrlBarFocused}
+              showCloseButton={fromTrending && isAssetsTrendingTokensEnabled}
             />
             <View style={styles.wrapper}>
               {renderProgressBar()}
@@ -1474,17 +1514,7 @@ export const BrowserTab: React.FC<BrowserTabProps> = React.memo(
                 {!!entryScriptWeb3 && firstUrlLoaded && (
                   <>
                     <WebView
-                      originWhitelist={[
-                        'https://',
-                        'http://',
-                        'metamask://',
-                        'dapp://',
-                        'wc://',
-                        'ethereum://',
-                        'file://',
-                        // Needed for Recaptcha
-                        'about:srcdoc',
-                      ]}
+                      originWhitelist={webViewOriginWhitelist}
                       decelerationRate={0.998}
                       ref={webviewRef}
                       renderError={() => (
@@ -1575,12 +1605,16 @@ const mapStateToProps = (state: RootState) => ({
   selectedAddress: selectSelectedInternalAccountFormattedAddress(state),
   isIpfsGatewayEnabled: selectIsIpfsGatewayEnabled(state),
   activeChainId: selectEvmChainId(state),
+  isFullscreen: selectBrowserFullscreen(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   addToBrowserHistory: ({ url, name }: { name: string; url: string }) =>
     dispatch(addToHistory({ url, name })),
   addToWhitelist: (url: string) => dispatch(addToWhitelist(url)),
+  toggleFullscreen: (isFullscreen: boolean) => {
+    dispatch(toggleFullscreen(isFullscreen));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BrowserTab);
