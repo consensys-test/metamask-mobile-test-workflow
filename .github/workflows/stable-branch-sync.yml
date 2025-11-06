@@ -45,3 +45,4 @@ jobs:
       repo-type: 'mobile' # Accepts 'mobile' or 'extension'
       github-tools-version: 'INFRA-3041-AdditionalChanges'
       stable-branch-name: 'stable'
+
