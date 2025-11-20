@@ -8,8 +8,8 @@ on:
 jobs:
   merge-pr:
     runs-on: ubuntu-latest
-    # Only run if the comment is on a PR and the comment body contains "Merge my PR"
-    if: github.event.issue.pull_request && contains(github.event.comment.body, 'Merge my PR')
+    # Only run if the comment is on a PR and the comment body matches exactly "Merge my PR"
+    if: github.event.issue.pull_request && github.event.comment.body == 'Merge my PR'
     permissions:
       pull-requests: write # Required to merge PRs
       contents: write      # Required to update the repository content
