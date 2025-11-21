@@ -12,6 +12,6 @@ jobs:
     permissions:
       pull-requests: write # Required to merge PRs
       contents: write      # Required to update the repository content
-    uses: MetaMask/github-tools/.github/workflows/merge_approved_pr.yml@INFRA-2925-AddMergingGithubAction
+    uses: MetaMask/github-tools/.github/workflows/merge-approved-pr.yml@INFRA-2925-AddMergingGithubAction
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
