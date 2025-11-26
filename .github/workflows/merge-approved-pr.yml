@@ -6,7 +6,8 @@ on:
     types: [created]
 
 jobs:
-  merge-pr:
+  # First job: Access the environment to make secrets available
+  prepare:
     # Only run if the comment is on a PR and the comment body matches exactly "Merge my PR"
     if: >-
       github.event.issue.pull_request &&
@@ -15,6 +16,18 @@ jobs:
         github.event.comment.author_association == 'MEMBER' ||
         github.event.comment.author_association == 'OWNER'
       )
+    runs-on: ubuntu-latest
+    environment: default-branch
+    outputs:
+      github-token: ${{ steps.get-token.outputs.token }}
+    steps:
+      - name: Get token
+        id: get-token
+        run: echo "token=${{ secrets.METAMASK_MOBILE_BRANCH_SYNC_TOKEN }}" >> "$GITHUB_OUTPUT"
+
+  # Second job: Call the reusable workflow
+  merge-pr:
+    needs: prepare
     permissions:
       pull-requests: write # Required to merge PRs
       contents: write      # Required to update the repository content
@@ -22,4 +35,4 @@ jobs:
     with:
       pr-number: ${{ github.event.issue.number }}
     secrets:
-      github-token: ${{ secrets.METAMASK_MOBILE_BRANCH_SYNC_TOKEN }}
+      github-token: ${{ needs.prepare.outputs.github-token }}
