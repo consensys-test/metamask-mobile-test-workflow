@@ -40,3 +40,4 @@ jobs:
       github-token: ${{ secrets.METAMASK_MOBILE_BRANCH_SYNC_TOKEN }}
     with:
       new-release-branch: ${{ github.event.ref }}
+
