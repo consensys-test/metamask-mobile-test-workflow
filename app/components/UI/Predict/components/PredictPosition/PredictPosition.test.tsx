@@ -34,6 +34,15 @@ jest.mock('../../hooks/usePredictPositions', () => ({
   })),
 }));
 
+jest.mock('../../../../../../locales/i18n', () => ({
+  strings: jest.fn((key: string, vars?: Record<string, string | number>) => {
+    if (key === 'predict.position_info' && vars) {
+      return `${vars.initialValue} on ${vars.outcome} to win ${vars.shares}`;
+    }
+    return key;
+  }),
+}));
+
 const basePosition: PredictPositionType = {
   id: 'pos-1',
   providerId: 'polymarket',

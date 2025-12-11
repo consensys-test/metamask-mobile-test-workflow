@@ -146,6 +146,12 @@ jest.mock('react-redux', () => ({
 const renderWithProviders = (component: React.ReactElement) =>
   render(component);
 
+jest.mock('../../../../Views/confirmations/hooks/useConfirmNavigation', () => ({
+  useConfirmNavigation: () => ({
+    navigateToConfirmation: jest.fn(),
+  }),
+}));
+
 import PredictTabView from './PredictTabView';
 import { useSelector } from 'react-redux';
 

@@ -152,8 +152,6 @@ export function getAvailableTokens({
 
       return {
         ...token,
-        disabled,
-        disabledMessage,
         isSelected,
       };
     });

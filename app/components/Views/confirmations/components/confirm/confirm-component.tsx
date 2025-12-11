@@ -40,6 +40,14 @@ const TRANSACTION_TYPES_DISABLE_ALERT_BANNER = [
   TransactionType.predictWithdraw,
 ];
 
+const TRANSACTION_TYPES_DISABLE_SCROLL = [TransactionType.predictClaim];
+
+const TRANSACTION_TYPES_DISABLE_ALERT_BANNER = [
+  TransactionType.perpsDeposit,
+  TransactionType.predictDeposit,
+  TransactionType.predictWithdraw,
+];
+
 export enum ConfirmationLoader {
   Default = 'default',
   CustomAmount = 'customAmount',
