@@ -42,4 +42,4 @@ jobs:
         with:
           merged-release-branch: ${{ github.event.pull_request.head.ref }}
           repo-type: 'mobile'
-          github-token: ${{ secrets.RELEASE_BRANCH_SYNC_TOKEN }}
+          github-token: ${{ secrets.STABLE_SYNC_TOKEN }}
